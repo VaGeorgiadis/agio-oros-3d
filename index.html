@@ -72,6 +72,15 @@
       background: #1a1a1a;
       padding: 4px;
     }
+
+    /* ΥΠΕΡΒΑΣΗ ΓΙΑ ΤΟ INFOBOX ΤΟΥ CESIUM - ΑΥΤΟ ΘΑ ΤΟ ΜΕΓΑΛΩΣΕΙ ΟΡΙΣΤΙΚΑ */
+    .cesium-infoBox {
+      width: 500px !important; /* Το μεγαλώνουμε στα 500px */
+      min-width: 450px !important;
+      max-height: 85% !important;
+      background: #1a1a1a !important;
+      border: 1px solid #dfb76c !important;
+    }
   </style>
 </head>
 <body>
@@ -143,8 +152,9 @@
       const style = document.createElement('style');
       style.innerHTML = `
         .cesium-infoBox {
-          width: 450px !important;
-          max-height: 90% !important;
+          width: 500px !important;
+          min-width: 450px !important;
+          max-height: 85% !important;
         }
         .cesium-infoBox-iframe {
           width: 100% !important;
