@@ -18,50 +18,57 @@
       background-color: #000;
     }
 
-    /* Στυλ για τη Μπάρα Αναζήτησης */
-    #searchContainer {
+    /* Στυλ για το Μενού Επιλογής */
+    #menuContainer {
       position: absolute;
       top: 20px;
       left: 20px;
       z-index: 1000;
-      background: rgba(40, 40, 40, 0.85);
-      padding: 10px;
+      background: rgba(30, 30, 30, 0.9);
+      padding: 12px;
       border-radius: 8px;
-      box-shadow: 0px 4px 15px rgba(0,0,0,0.5);
-      display: flex;
-      gap: 5px;
+      box-shadow: 0px 4px 20px rgba(0,0,0,0.6);
+      border: 1px solid #444;
     }
 
-    #searchInput {
-      width: 250px;
-      padding: 8px;
+    label {
+      color: #dfb76c; /* Βυζαντινό χρυσό χρώμα για το κείμενο */
+      font-family: Arial, sans-serif;
+      font-size: 12px;
+      font-weight: bold;
+      display: block;
+      margin-bottom: 5px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    #locationSelect {
+      width: 280px;
+      padding: 10px;
       border: 1px solid #555;
       border-radius: 4px;
-      background: #222;
+      background: #1a1a1a;
       color: #fff;
       font-size: 14px;
-    }
-
-    #searchButton {
-      padding: 8px 15px;
-      background: #8b0000;
-      color: white;
-      border: none;
-      border-radius: 4px;
       cursor: pointer;
-      font-weight: bold;
+      outline: none;
     }
 
-    #searchButton:hover {
-      background: #a00000;
+    #locationSelect:focus {
+      border-color: #dfb76c;
     }
   </style>
 </head>
 <body>
 
-  <div id="searchContainer">
-    <input type="text" id="searchInput" placeholder="Αναζήτηση (π.χ. Σίμωνος Πέτρα)...">
-    <button id="searchButton">Μετάβαση</button>
+  <div id="menuContainer">
+    <label for="locationSelect">Πλοήγηση στο Άγιο Όρος</label>
+    <select id="locationSelect">
+      <option value="" disabled selected>Επιλέξτε Μονή ή Σκήτη...</option>
+      <option value="general">-- Γενική Άποψη --</option>
+      <option value="simonopetra">Ιερά Μονή Σίμωνος Πέτρας</option>
+      <option value="karyes">Καρυές (Πρωτάτο)</option>
+    </select>
   </div>
 
   <div id="cesiumContainer"></div>
@@ -81,11 +88,7 @@
     // Αρχική θέση (Γενική θέα του Αγίου Όρους)
     viewer.camera.setView({
       destination: Cesium.Cartesian3.fromDegrees(24.2464, 40.2574, 12000),
-      orientation: {
-        heading: Cesium.Math.toRadians(0.0),
-        pitch: Cesium.Math.toRadians(-45.0),
-        roll: 0.0
-      }
+      orientation: { heading: Cesium.Math.toRadians(0.0), pitch: Cesium.Math.toRadians(-45.0), roll: 0.0 }
     });
 
     // Πινέζες (Markers)
@@ -106,50 +109,12 @@
     });
 
 
-    // Λίστα τοποθεσιών για την αναζήτηση (με απλοποιημένα ονόματα)
+    // Καθαρή λίστα με τις συντεταγμένες των σημείων
     const locations = {
-      "σιμωνος πετρα": { lon: 24.2461, lat: 40.1891, height: 800 },
-      "σιμωνοπετρα": { lon: 24.2461, lat: 40.1891, height: 800 },
-      "καρυες": { lon: 24.2447, lat: 40.2572, height: 1000 }
+      "general": { lon: 24.2464, lat: 40.2574, height: 12000, pitch: -45.0 },
+      "simonopetra": { lon: 24.2461, lat: 40.1891, height: 800, pitch: -30.0 },
+      "karyes": { lon: 24.2447, lat: 40.2572, height: 1000, pitch: -30.0 }
     };
 
-    // Μια έξυπνη συνάρτηση που αφαιρεί τόνους και μετατρέπει σε μικρά ελληνικά γράμματα
-    function cleanString(str) {
-      return str
-        .toLowerCase()
-        .normalize("NFD")
-        .replace(/[\u0300-\u036f]/g, "") // Αφαιρεί τους τόνους
-        .replace(/ς\b/g, "σ"); // Μετατρέπει το τελικό ς σε σ για να μην μπερδεύεται
-    }
-
-    function performSearch() {
-      let rawInput = document.getElementById('searchInput').value.trim();
-      let cleanedInput = cleanString(rawInput);
-      
-      if (locations[cleanedInput]) {
-        const target = locations[cleanedInput];
-        
-        viewer.camera.flyTo({
-          destination: Cesium.Cartesian3.fromDegrees(target.lon, target.lat, target.height),
-          orientation: {
-            heading: Cesium.Math.toRadians(0.0),
-            pitch: Cesium.Math.toRadians(-30.0), 
-            roll: 0.0
-          },
-          duration: 3.0
-        });
-      } else {
-        alert("Το σημείο '" + rawInput + "' δεν βρέθηκε στη βάση μας ακόμα. Δοκίμασε 'Σίμωνος Πέτρα' ή 'Καρυές'.");
-      }
-    }
-
-    document.getElementById('searchButton').addEventListener('click', performSearch);
-    document.getElementById('searchInput').addEventListener('keypress', function (e) {
-      if (e.key === 'Enter') {
-        performSearch();
-      }
-    });
-
-  </script>
-</body>
-</html>
+    // Λειτουργία όταν αλλάζει η επιλογή στη λίστα
+    document.
