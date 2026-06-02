@@ -24,26 +24,28 @@
       top: 20px;
       left: 20px;
       z-index: 1000;
-      background: rgba(30, 30, 30, 0.9);
-      padding: 12px;
+      background: rgba(30, 30, 30, 0.95);
+      padding: 15px;
       border-radius: 8px;
       box-shadow: 0px 4px 20px rgba(0,0,0,0.6);
-      border: 1px solid #444;
+      border: 1px solid #dfb76c;
+      max-height: 85vh;
+      overflow-y: auto;
     }
 
     label {
-      color: #dfb76c; /* Βυζαντινό χρυσό χρώμα για το κείμενο */
-      font-family: Arial, sans-serif;
-      font-size: 12px;
+      color: #dfb76c; /* Βυζαντινό χρυσό */
+      font-family: 'Segoe UI', Arial, sans-serif;
+      font-size: 13px;
       font-weight: bold;
       display: block;
-      margin-bottom: 5px;
+      margin-bottom: 8px;
       text-transform: uppercase;
       letter-spacing: 1px;
     }
 
     #locationSelect {
-      width: 280px;
+      width: 300px;
       padding: 10px;
       border: 1px solid #555;
       border-radius: 4px;
@@ -57,6 +59,19 @@
     #locationSelect:focus {
       border-color: #dfb76c;
     }
+
+    optgroup {
+      background: #222;
+      color: #dfb76c;
+      font-style: normal;
+      font-weight: bold;
+    }
+
+    option {
+      color: #fff;
+      background: #1a1a1a;
+      padding: 4px;
+    }
   </style>
 </head>
 <body>
@@ -64,17 +79,54 @@
   <div id="menuContainer">
     <label for="locationSelect">Πλοήγηση στο Άγιο Όρος</label>
     <select id="locationSelect">
-      <option value="" disabled selected>Επιλέξτε Μονή ή Σκήτη...</option>
-      <option value="general">-- Γενική Άποψη --</option>
-      <option value="simonopetra">Ιερά Μονή Σίμωνος Πέτρας</option>
-      <option value="karyes">Καρυές (Πρωτάτο)</option>
+      <option value="" disabled selected>Επιλέξτε προορισμό...</option>
+      <option value="general">-- Γενική Άποψη Χερσονήσου --</option>
+      
+      <optgroup label="ΙΕΡΕΣ ΜΟΝΕΣ">
+        <option value="megistis_lavras">Ι.Μ. Μεγίστης Λαύρας</option>
+        <option value="vatopediou">Ι.Μ. Βατοπαιδίου</option>
+        <option value="iviron">Ι.Μ. Ιβήρων</option>
+        <option value="chilandariou">Ι.Μ. Χιλανδαρίου</option>
+        <option value="dionysiou">Ι.Μ. Διονυσίου</option>
+        <option value="koutloumousiou">Ι.Μ. Κουτλουμουσίου</option>
+        <option value="pantokratoros">Ι.Μ. Παντοκράτορος</option>
+        <option value="xiropotamou">Ι.Μ. Ξηροποτάμου</option>
+        <option value="zografou">Ι.Μ. Ζωγράφου</option>
+        <option value="docheiariou">Ι.Μ. Δοχειαρίου</option>
+        <option value="karakallou">Ι.Μ. Καρακάλλου</option>
+        <option value="filotheou">Ι.Μ. Φιλοθέου</option>
+        <option value="simonopetra">Ι.Μ. Σίμωνος Πέτρας</option>
+        <option value="agiou_pavlou">Ι.Μ. Αγίου Παύλου</option>
+        <option value="stavronikita">Ι.Μ. Σταυρονικήτα</option>
+        <option value="xenofontos">Ι.Μ. Ξενοφώντος</option>
+        <option value="grigoriou">Ι.Μ. Γρηγορίου</option>
+        <option value="esfigmenou">Ι.Μ. Εσφιγμένου</option>
+        <option value="agiou_panteleimonos">Ι.Μ. Αγίου Παντελεήμονος (Ρωσικό)</option>
+        <option value="konstamonitou">Ι.Μ. Κωνσταμονίτου</option>
+      </optgroup>
+
+      <optgroup label="ΣΚΗΤΕΣ">
+        <option value="agias_annis">Σκήτη Αγίας Άννης (Μεγ. Λαύρας)</option>
+        <option value="mikra_agia_anna">Μικρά Αγία Άννα (Μεγ. Λαύρας)</option>
+        <option value="kafsokalyvia">Καυσοκαλύβια (Μεγ. Λαύρας)</option>
+        <option value="provata">Σκήτη Προβάτα (Μεγ. Λαύρας)</option>
+        <option value="agiou_dimitriou">Σκήτη Αγίου Δημητρίου (Βατοπαιδίου)</option>
+        <option value="agiou_andrea">Σκήτη Αγίου Ανδρέα / Σεράι (Βατοπαιδίου)</option>
+        <option value="timiou_prodromou">Σκήτη Τιμίου Προδρόμου (Ιβήρων)</option>
+        <option value="profiti_ilia">Σκήτη Προφήτου Ηλιού (Παντοκράτορος)</option>
+        <option value="agias_triados">Σκήτη Αγίας Τριάδος (Χιλανδαρίου)</option>
+        <option value="nea_skiti">Νέα Σκήτη (Αγίου Παύλου)</option>
+        <option value="evaggelismou_xenof">Σκήτη Ευαγγελισμού της Θεοτόκου (Ξενοφώντος)</option>
+        <option value="agiou_panteleimonos_kout">Σκήτη Αγίου Παντελεήμονος (Κουτλουμουσίου)</option>
+        <option value="evaggelismou_filoth">Σκήτη Ευαγγελισμού της Θεοτόκου (Φιλοθέου)</option>
+      </optgroup>
     </select>
   </div>
 
   <div id="cesiumContainer"></div>
 
   <script>
-    // ΑΝΤΙΚΑΤΑΣΤΗΣΕ ΜΕ ΤΟ ΔΙΚΟ ΣΟΥ ΤΟΚΕΝ
+    // ⚠️ ΒΑΛΕ ΤΟ TOKEN ΣΟΥ ΑΝΑΜΕΣΑ ΣΤΑ ΕΙΣΑΓΩΓΙΚΑ ΚΑΤΩ:
     Cesium.Ion.defaultAccessToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiJhYzA1Y2NhMS1hYjhlLTRjZjUtODRmZS0zNjNhYTFmOTUwYjIiLCJpZCI6NDM5NDgxLCJpc3MiOiJodHRwczovL2FwaS5jZXNpdW0uY29tIiwiYXVkIjoidW5kZWZpbmVkX2RlZmF1bHQiLCJpYXQiOjE3ODA0MTI3Nzl9.TfMTqoDjne1KkA63XMF41szdDtICT4kHVaa9QthS70Q';
 
     const viewer = new Cesium.Viewer('cesiumContainer', {
@@ -85,36 +137,90 @@
       infoBox: true
     });
 
-    // Αρχική θέση (Γενική θέα του Αγίου Όρους)
+    // Αρχική θέση κάμερας
     viewer.camera.setView({
-      destination: Cesium.Cartesian3.fromDegrees(24.2464, 40.2574, 12000),
-      orientation: { heading: Cesium.Math.toRadians(0.0), pitch: Cesium.Math.toRadians(-45.0), roll: 0.0 }
+      destination: Cesium.Cartesian3.fromDegrees(24.2300, 40.2300, 22000),
+      orientation: { heading: Cesium.Math.toRadians(0.0), pitch: Cesium.Math.toRadians(-50.0), roll: 0.0 }
     });
 
-    // Πινέζες (Markers)
-    // 1. Σίμωνος Πέτρα
-    viewer.entities.add({
-      position: Cesium.Cartesian3.fromDegrees(24.2461, 40.1891, 300), 
-      point: { pixelSize: 12, color: Cesium.Color.RED, outlineColor: Cesium.Color.WHITE, outlineWidth: 3, heightReference: Cesium.HeightReference.RELATIVE_TO_GROUND },
-      name: 'Ιερά Μονή Σίμωνος Πέτρας',
-      description: '<div style="direction: ltr;"><h3>Ιερά Μονή Σίμωνος Πέτρας</h3><p>Φωτογραφίες σύντομα...</p></div>'
-    });
-
-    // 2. Καρυές
-    viewer.entities.add({
-      position: Cesium.Cartesian3.fromDegrees(24.2447, 40.2572, 370), 
-      point: { pixelSize: 12, color: Cesium.Color.BLUE, outlineColor: Cesium.Color.WHITE, outlineWidth: 3, heightReference: Cesium.HeightReference.RELATIVE_TO_GROUND },
-      name: 'Καρυές (Πρωτάτο)',
-      description: '<div style="direction: ltr;"><h3>Καρυές</h3><p>Η πρωτεύουσα του Αγίου Όρους.</p></div>'
-    });
-
-
-    // Καθαρή λίστα με τις συντεταγμένες των σημείων
+    // Βάση Δεδομένων με Συντεταγμένες και Υψόμετρα για πτήση
     const locations = {
-      "general": { lon: 24.2464, lat: 40.2574, height: 12000, pitch: -45.0 },
-      "simonopetra": { lon: 24.2461, lat: 40.1891, height: 800, pitch: -30.0 },
-      "karyes": { lon: 24.2447, lat: 40.2572, height: 1000, pitch: -30.0 }
+      "general": { lon: 24.2300, lat: 40.2300, height: 22000, pitch: -50.0, heading: 0.0 },
+      // Μονές
+      "megistis_lavras": { lon: 24.3824, lat: 40.1704, height: 600, pitch: -25.0, heading: 270.0, name: "Ι.Μ. Μεγίστης Λαύρας" },
+      "vatopediou": { lon: 24.2108, lat: 40.3211, height: 700, pitch: -30.0, heading: 180.0, name: "Ι.Μ. Βατοπαιδίου" },
+      "iviron": { lon: 24.2852, lat: 40.2454, height: 600, pitch: -25.0, heading: 290.0, name: "Ι.Μ. Ιβήρων" },
+      "chilandariou": { lon: 24.1197, lat: 40.3344, height: 650, pitch: -30.0, heading: 45.0, name: "Ι.Μ. Χιλανδαρίου" },
+      "dionysiou": { lon: 24.2238, lat: 40.1681, height: 600, pitch: -25.0, heading: 45.0, name: "Ι.Μ. Διονυσίου" },
+      "koutloumousiou": { lon: 24.2482, lat: 40.2526, height: 500, pitch: -30.0, heading: 0.0, name: "Ι.Μ. Κουτλουμουσίου" },
+      "pantokratoros": { lon: 24.2664, lat: 40.2701, height: 600, pitch: -25.0, heading: 250.0, name: "Ι.Μ. Παντοκράτορος" },
+      "xiropotamou": { lon: 24.2194, lat: 40.2372, height: 550, pitch: -30.0, heading: 60.0, name: "Ι.Μ. Ξηροποτάμου" },
+      "zografou": { lon: 24.1604, lat: 40.3017, height: 600, pitch: -30.0, heading: 130.0, name: "Ι.Μ. Ζωγράφου" },
+      "docheiariou": { lon: 24.1736, lat: 40.2764, height: 550, pitch: -25.0, heading: 90.0, name: "Ι.Μ. Δοχειαρίου" },
+      "karakallou": { lon: 24.3082, lat: 40.2241, height: 600, pitch: -25.0, heading: 300.0, name: "Ι.Μ. Καρακάλλου" },
+      "filotheou": { lon: 24.2854, lat: 40.2291, height: 600, pitch: -30.0, heading: 320.0, name: "Ι.Μ. Φιλοθέου" },
+      "simonopetra": { lon: 24.2461, lat: 40.1891, height: 700, pitch: -25.0, heading: 45.0, name: "Ι.Μ. Σίμωνος Πέτρας" },
+      "agiou_pavlou": { lon: 24.2564, lat: 40.1608, height: 750, pitch: -25.0, heading: 20.0, name: "Ι.Μ. Αγίου Παύλου" },
+      "stavronikita": { lon: 24.2764, lat: 40.2608, height: 550, pitch: -25.0, heading: 240.0, name: "Ι.Μ. Σταυρονικήτα" },
+      "xenofontos": { lon: 24.1786, lat: 40.2425, height: 550, pitch: -25.0, heading: 90.0, name: "Ι.Μ. Ξενοφώντος" },
+      "grigoriou": { lon: 24.2341, lat: 40.1794, height: 600, pitch: -25.0, heading: 45.0, name: "Ι.Μ. Γρηγορίου" },
+      "esfigmenou": { lon: 24.1378, lat: 40.3514, height: 550, pitch: -25.0, heading: 180.0, name: "Ι.Μ. Εσφιγμένου" },
+      "agiou_panteleimonos": { lon: 24.2008, lat: 40.2414, height: 600, pitch: -25.0, heading: 90.0, name: "Ι.Μ. Αγίου Παντελεήμονος" },
+      "konstamonitou": { lon: 24.1741, lat: 40.2717, height: 600, pitch: -30.0, heading: 120.0, name: "Ι.Μ. Κωνσταμονίτου" },
+      // Σκήτες
+      "agias_annis": { lon: 24.2961, lat: 40.1444, height: 650, pitch: -25.0, heading: 45.0, name: "Σκήτη Αγίας Άννης" },
+      "mikra_agia_anna": { lon: 24.3038, lat: 40.1388, height: 500, pitch: -25.0, heading: 30.0, name: "Μικρά Αγία Άννα" },
+      "kafsokalyvia": { lon: 24.3644, lat: 40.1336, height: 600, pitch: -25.0, heading: 340.0, name: "Καυσοκαλύβια" },
+      "provata": { lon: 24.3197, lat: 40.2417, height: 600, pitch: -30.0, heading: 270.0, name: "Σκήτη Προβάτα" },
+      "agiou_dimitriou": { lon: 24.2364, lat: 40.3014, height: 550, pitch: -30.0, heading: 180.0, name: "Σκήτη Αγίου Δημητρίου" },
+      "agiou_andrea": { lon: 24.2525, lat: 40.2602, height: 500, pitch: -30.0, heading: 210.0, name: "Σκήτη Αγίου Ανδρέα (Σεράι)" },
+      "timiou_prodromou": { lon: 24.3164, lat: 40.2486, height: 500, pitch: -25.0, heading: 270.0, name: "Σκήτη Τιμίου Προδρόμου" },
+      "profiti_ilia": { lon: 24.2497, lat: 40.2741, height: 550, pitch: -25.0, heading: 160.0, name: "Σκήτη Προφήτου Ηλιού" },
+      "agias_triados": { lon: 24.1238, lat: 40.3214, height: 550, pitch: -30.0, heading: 45.0, name: "Σκήτη Αγίας Τριάδος" },
+      "nea_skiti": { lon: 24.2694, lat: 40.1472, height: 600, pitch: -25.0, heading: 45.0, name: "Νέα Σκήτη" },
+      "evaggelismou_xenof": { lon: 24.1947, lat: 40.2528, height: 550, pitch: -30.0, heading: 90.0, name: "Σκήτη Ευαγγελισμού (Ξενοφώντος)" },
+      "agiou_panteleimonos_kout": { lon: 24.2547, lat: 40.2444, height: 500, pitch: -30.0, heading: 0.0, name: "Σκήτη Αγίου Παντελεήμονος (Κουτλουμουσίου)" },
+      "evaggelismou_filoth": { lon: 24.3114, lat: 40.2164, height: 550, pitch: -30.0, heading: 320.0, name: "Σκήτη Ευαγγελισμού (Φιλοθέου)" }
     };
 
-    // Λειτουργία όταν αλλάζει η επιλογή στη λίστα
-    document.
+    // Αυτόματη δημιουργία Πινεζών (Markers) στον χάρτη
+    for (const key in locations) {
+      if (key === "general") continue;
+      
+      const loc = locations[key];
+      // Αν το όνομα περιέχει "Σκήτη" ή "Μικρά" ή "Καυσοκαλύβια", το κάνουμε Μπλε, αλλιώς Κόκκινο (Μονές)
+      const isSkiti = loc.name.includes("Σκήτη") || loc.name.includes("Μικρά") || loc.name.includes("Καυσοκαλύβια");
+      const markerColor = isSkiti ? Cesium.Color.DODGERBLUE : Cesium.Color.RED;
+
+      viewer.entities.add({
+        position: Cesium.Cartesian3.fromDegrees(loc.lon, loc.lat),
+        point: {
+          pixelSize: 11,
+          color: markerColor,
+          outlineColor: Cesium.Color.WHITE,
+          outlineWidth: 2,
+          heightReference: Cesium.HeightReference.RELATIVE_TO_GROUND
+        },
+        name: loc.name,
+        description: `<div style="direction: ltr; font-family: Arial, sans-serif;"><h3>${loc.name}</h3><p>Εδώ θα ανέβουν οι φωτογραφίες σου.</p></div>`
+      });
+    }
+
+    // Λειτουργία Πλοήγησης από το Dropdown
+    document.getElementById('locationSelect').addEventListener('change', function() {
+      const target = locations[this.value];
+      if (target) {
+        viewer.camera.flyTo({
+          destination: Cesium.Cartesian3.fromDegrees(target.lon, target.lat, target.height),
+          orientation: {
+            heading: Cesium.Math.toRadians(target.heading),
+            pitch: Cesium.Math.toRadians(target.pitch),
+            roll: 0.0
+          },
+          duration: 3.5
+        });
+      }
+    });
+  </script>
+</body>
+</html>
