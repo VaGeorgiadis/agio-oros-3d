@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Άγιο Όρος 3D Χάρτης</title>
+  
+  <script src="https://cesium.com/downloads/cesiumjs/releases/1.115/Build/Cesium/Cesium.js"></script>
+  <link href="https://cesium.com/downloads/cesiumjs/releases/1.115/Build/Cesium/Widgets/widgets.css" rel="stylesheet">
+
+  <style>
+    html, body, #cesiumContainer {
+      width: 100%;
+      height: 100%;
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+      background-color: #000;
+    }
+  </style>
+</head>
+<body>
+
+  <div id="cesiumContainer"></div>
+
+  <script>
+    // ΑΝΤΙΚΑΤΑΣΤΗΣΕ ΤΟ ΠΑΡΑΚΑΤΩ ΜΕ ΤΟ ΔΙΚΟ ΣΟΥ ΔΩΡΕΑΝ ΤΟΚΕΝ
+    Cesium.Ion.defaultAccessToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiJhYzA1Y2NhMS1hYjhlLTRjZjUtODRmZS0zNjNhYTFmOTUwYjIiLCJpZCI6NDM5NDgxLCJpc3MiOiJodHRwczovL2FwaS5jZXNpdW0uY29tIiwiYXVkIjoidW5kZWZpbmVkX2RlZmF1bHQiLCJpYXQiOjE3ODA0MTI3Nzl9.TfMTqoDjne1KkA63XMF41szdDtICT4kHVaa9QthS70Q';
+
+    // Αρχικοποίηση του Viewer με τον νέο, σωστό τρόπο για το Terrain
+    const viewer = new Cesium.Viewer('cesiumContainer', {
+      terrain: Cesium.Terrain.fromWorldTerrain(), // Ο νέος τρόπος για το 3D ανάγλυφο
+      animation: false,
+      timeline: false,
+      sceneModePicker: false,
+      infoBox: true
+    });
+
+    // Συντεταγμένες για το Άγιο Όρος (Κέντρο / Καρυές)
+    const longitude = 24.2464; 
+    const latitude = 40.2574;
+    const height = 12000; // Κατεβάσαμε την κάμερα στα 12 χιλιόμετρα για καλύτερη λεπτομέρεια
+
+    // Η κάμερα πετάει στο σημείο
+    viewer.camera.setView({
+      destination: Cesium.Cartesian3.fromDegrees(longitude, latitude, height),
+      orientation: {
+        heading: Cesium.Math.toRadians(0.0),   // Βορράς
+        pitch: Cesium.Math.toRadians(-45.0),   // Πλάγια γωνία για να φαίνονται τα βουνά 3D
+        roll: 0.0
+      }
+    });
+  </script>
+</body>
+</html>
