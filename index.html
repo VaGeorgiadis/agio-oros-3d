@@ -17,39 +17,127 @@
       overflow: hidden;
       background-color: #000;
     }
+
+    /* Στυλ για τη Μπάρα Αναζήτησης */
+    #searchContainer {
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      z-index: 1000; /* Για να κάθεται πάνω από τον χάρτη */
+      background: rgba(40, 40, 40, 0.85);
+      padding: 10px;
+      border-radius: 8px;
+      box-shadow: 0px 4px 15px rgba(0,0,0,0.5);
+      display: flex;
+      gap: 5px;
+    }
+
+    #searchInput {
+      width: 250px;
+      padding: 8px;
+      border: 1px solid #555;
+      border-radius: 4px;
+      background: #222;
+      color: #fff;
+      font-size: 14px;
+    }
+
+    #searchButton {
+      padding: 8px 15px;
+      background: #8b0000; /* Σκούρο κόκκινο/βυζαντινό */
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    #searchButton:hover {
+      background: #a00000;
+    }
   </style>
 </head>
 <body>
 
+  <div id="searchContainer">
+    <input type="text" id="searchInput" placeholder="Αναζήτηση Μονής (π.χ. Σίμωνος Πέτρα)...">
+    <button id="searchButton">Μετάβαση</button>
+  </div>
+
   <div id="cesiumContainer"></div>
 
   <script>
-    // ΑΝΤΙΚΑΤΑΣΤΗΣΕ ΤΟ ΠΑΡΑΚΑΤΩ ΜΕ ΤΟ ΔΙΚΟ ΣΟΥ ΔΩΡΕΑΝ ΤΟΚΕΝ
+    // ΑΝΤΙΚΑΤΑΣΤΗΣΕ ΜΕ ΤΟ ΔΙΚΟ ΣΟΥ ΤΟΚΕΝ
     Cesium.Ion.defaultAccessToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiJhYzA1Y2NhMS1hYjhlLTRjZjUtODRmZS0zNjNhYTFmOTUwYjIiLCJpZCI6NDM5NDgxLCJpc3MiOiJodHRwczovL2FwaS5jZXNpdW0uY29tIiwiYXVkIjoidW5kZWZpbmVkX2RlZmF1bHQiLCJpYXQiOjE3ODA0MTI3Nzl9.TfMTqoDjne1KkA63XMF41szdDtICT4kHVaa9QthS70Q';
 
-    // Αρχικοποίηση του Viewer με τον νέο, σωστό τρόπο για το Terrain
     const viewer = new Cesium.Viewer('cesiumContainer', {
-      terrain: Cesium.Terrain.fromWorldTerrain(), // Ο νέος τρόπος για το 3D ανάγλυφο
+      terrain: Cesium.Terrain.fromWorldTerrain(),
       animation: false,
       timeline: false,
       sceneModePicker: false,
       infoBox: true
     });
 
-    // Συντεταγμένες για το Άγιο Όρος (Κέντρο / Καρυές)
-    const longitude = 24.2464; 
-    const latitude = 40.2574;
-    const height = 12000; // Κατεβάσαμε την κάμερα στα 12 χιλιόμετρα για καλύτερη λεπτομέρεια
-
-    // Η κάμερα πετάει στο σημείο
+    // Αρχική θέση (Γενική θέα του Αγίου Όρους)
     viewer.camera.setView({
-      destination: Cesium.Cartesian3.fromDegrees(longitude, latitude, height),
+      destination: Cesium.Cartesian3.fromDegrees(24.2464, 40.2574, 12000),
       orientation: {
-        heading: Cesium.Math.toRadians(0.0),   // Βορράς
-        pitch: Cesium.Math.toRadians(-45.0),   // Πλάγια γωνία για να φαίνονται τα βουνά 3D
+        heading: Cesium.Math.toRadians(0.0),
+        pitch: Cesium.Math.toRadians(-45.0),
         roll: 0.0
       }
     });
+
+    // Πινέζα: Μονή Σίμωνος Πέτρας
+    const simonopetra = viewer.entities.add({
+      position: Cesium.Cartesian3.fromDegrees(24.2461, 40.1891, 300), 
+      point: { pixelSize: 12, color: Cesium.Color.RED, outlineColor: Cesium.Color.WHITE, outlineWidth: 3, heightReference: Cesium.HeightReference.RELATIVE_TO_GROUND },
+      name: 'Ιερά Μονή Σίμωνος Πέτρας',
+      description: '<div style="direction: ltr;"><h3>Ιερά Μονή Σίμωνος Πέτρας</h3><p>Φωτογραφίες σύντομα...</p></div>'
+    });
+
+    // ----------------------------------------------------
+    // ΛΕΙΤΟΥΡΓΙΑ ΑΝΑΖΗΤΗΣΗΣ & ΠΤΗΣΗΣ (FLY-TO)
+    // ----------------------------------------------------
+
+    // Μια μικρή λίστα με τα σημεία και τις συντεταγμένες τους (θα την μεγαλώσουμε μετά)
+    const locations = {
+      "σιμωνος πετρα": { lon: 24.2461, lat: 40.1891, height: 800 },
+      "σιμωνόπετρα": { lon: 24.2461, lat: 40.1891, height: 800 },
+      "καρυες": { lon: 24.2447, lat: 40.2572, height: 1000 }
+    };
+
+    function performSearch() {
+      // Παίρνουμε τι έγραψε ο χρήστης, το κάνουμε πεζά και αφαιρούμε τόνους για ευκολία
+      let query = document.getElementById('searchInput').value.toLowerCase().trim();
+      
+      // Έλεγχος αν το σημείο υπάρχει στη λίστα μας
+      if (locations[query]) {
+        const target = locations[query];
+        
+        // Η εντολή flyTo κάνει την ομαλή πτήση της κάμερας!
+        viewer.camera.flyTo({
+          destination: Cesium.Cartesian3.fromDegrees(target.lon, target.lat, target.height),
+          orientation: {
+            heading: Cesium.Math.toRadians(0.0),
+            pitch: Cesium.Math.toRadians(-30.0), // Πιο χαμηλή γωνία για να βλέπει το κτίριο
+            roll: 0.0
+          },
+          duration: 3.0 // Διάρκεια πτήσης σε δευτερόλεπτα
+        });
+      } else {
+        alert("Το σημείο δεν βρέθηκε. Δοκίμασε 'Σίμωνος Πέτρα' ή 'Καρυές'.");
+      }
+    }
+
+    // Σύνδεση της αναζήτησης με το κουμπί και το κουμπί Enter
+    document.getElementById('searchButton').addEventListener('click', performSearch);
+    document.getElementById('searchInput').addEventListener('keypress', function (e) {
+      if (e.key === 'Enter') {
+        performSearch();
+      }
+    });
+
   </script>
 </body>
 </html>
