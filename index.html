@@ -23,7 +23,7 @@
       position: absolute;
       top: 20px;
       left: 20px;
-      z-index: 1000; /* Για να κάθεται πάνω από τον χάρτη */
+      z-index: 1000;
       background: rgba(40, 40, 40, 0.85);
       padding: 10px;
       border-radius: 8px;
@@ -44,7 +44,7 @@
 
     #searchButton {
       padding: 8px 15px;
-      background: #8b0000; /* Σκούρο κόκκινο/βυζαντινό */
+      background: #8b0000;
       color: white;
       border: none;
       border-radius: 4px;
@@ -60,7 +60,7 @@
 <body>
 
   <div id="searchContainer">
-    <input type="text" id="searchInput" placeholder="Αναζήτηση Μονής (π.χ. Σίμωνος Πέτρα)...">
+    <input type="text" id="searchInput" placeholder="Αναζήτηση (π.χ. Σίμωνος Πέτρα)...">
     <button id="searchButton">Μετάβαση</button>
   </div>
 
@@ -88,49 +88,61 @@
       }
     });
 
-    // Πινέζα: Μονή Σίμωνος Πέτρας
-    const simonopetra = viewer.entities.add({
+    // Πινέζες (Markers)
+    // 1. Σίμωνος Πέτρα
+    viewer.entities.add({
       position: Cesium.Cartesian3.fromDegrees(24.2461, 40.1891, 300), 
       point: { pixelSize: 12, color: Cesium.Color.RED, outlineColor: Cesium.Color.WHITE, outlineWidth: 3, heightReference: Cesium.HeightReference.RELATIVE_TO_GROUND },
       name: 'Ιερά Μονή Σίμωνος Πέτρας',
       description: '<div style="direction: ltr;"><h3>Ιερά Μονή Σίμωνος Πέτρας</h3><p>Φωτογραφίες σύντομα...</p></div>'
     });
 
-    // ----------------------------------------------------
-    // ΛΕΙΤΟΥΡΓΙΑ ΑΝΑΖΗΤΗΣΗΣ & ΠΤΗΣΗΣ (FLY-TO)
-    // ----------------------------------------------------
+    // 2. Καρυές
+    viewer.entities.add({
+      position: Cesium.Cartesian3.fromDegrees(24.2447, 40.2572, 370), 
+      point: { pixelSize: 12, color: Cesium.Color.BLUE, outlineColor: Cesium.Color.WHITE, outlineWidth: 3, heightReference: Cesium.HeightReference.RELATIVE_TO_GROUND },
+      name: 'Καρυές (Πρωτάτο)',
+      description: '<div style="direction: ltr;"><h3>Καρυές</h3><p>Η πρωτεύουσα του Αγίου Όρους.</p></div>'
+    });
 
-    // Μια μικρή λίστα με τα σημεία και τις συντεταγμένες τους (θα την μεγαλώσουμε μετά)
+
+    // Λίστα τοποθεσιών για την αναζήτηση (με απλοποιημένα ονόματα)
     const locations = {
       "σιμωνος πετρα": { lon: 24.2461, lat: 40.1891, height: 800 },
-      "σιμωνόπετρα": { lon: 24.2461, lat: 40.1891, height: 800 },
+      "σιμωνοπετρα": { lon: 24.2461, lat: 40.1891, height: 800 },
       "καρυες": { lon: 24.2447, lat: 40.2572, height: 1000 }
     };
 
+    // Μια έξυπνη συνάρτηση που αφαιρεί τόνους και μετατρέπει σε μικρά ελληνικά γράμματα
+    function cleanString(str) {
+      return str
+        .toLowerCase()
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "") // Αφαιρεί τους τόνους
+        .replace(/ς\b/g, "σ"); // Μετατρέπει το τελικό ς σε σ για να μην μπερδεύεται
+    }
+
     function performSearch() {
-      // Παίρνουμε τι έγραψε ο χρήστης, το κάνουμε πεζά και αφαιρούμε τόνους για ευκολία
-      let query = document.getElementById('searchInput').value.toLowerCase().trim();
+      let rawInput = document.getElementById('searchInput').value.trim();
+      let cleanedInput = cleanString(rawInput);
       
-      // Έλεγχος αν το σημείο υπάρχει στη λίστα μας
-      if (locations[query]) {
-        const target = locations[query];
+      if (locations[cleanedInput]) {
+        const target = locations[cleanedInput];
         
-        // Η εντολή flyTo κάνει την ομαλή πτήση της κάμερας!
         viewer.camera.flyTo({
           destination: Cesium.Cartesian3.fromDegrees(target.lon, target.lat, target.height),
           orientation: {
             heading: Cesium.Math.toRadians(0.0),
-            pitch: Cesium.Math.toRadians(-30.0), // Πιο χαμηλή γωνία για να βλέπει το κτίριο
+            pitch: Cesium.Math.toRadians(-30.0), 
             roll: 0.0
           },
-          duration: 3.0 // Διάρκεια πτήσης σε δευτερόλεπτα
+          duration: 3.0
         });
       } else {
-        alert("Το σημείο δεν βρέθηκε. Δοκίμασε 'Σίμωνος Πέτρα' ή 'Καρυές'.");
+        alert("Το σημείο '" + rawInput + "' δεν βρέθηκε στη βάση μας ακόμα. Δοκίμασε 'Σίμωνος Πέτρα' ή 'Καρυές'.");
       }
     }
 
-    // Σύνδεση της αναζήτησης με το κουμπί και το κουμπί Enter
     document.getElementById('searchButton').addEventListener('click', performSearch);
     document.getElementById('searchInput').addEventListener('keypress', function (e) {
       if (e.key === 'Enter') {
