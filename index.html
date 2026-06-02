@@ -16,6 +16,7 @@
       padding: 0;
       overflow: hidden;
       background-color: #000;
+      font-family: 'Segoe UI', Arial, sans-serif;
     }
 
     /* Στυλ για το Μενού Επιλογής */
@@ -35,7 +36,6 @@
 
     label {
       color: #dfb76c;
-      font-family: 'Segoe UI', Arial, sans-serif;
       font-size: 13px;
       font-weight: bold;
       display: block;
@@ -63,23 +63,78 @@
     optgroup {
       background: #222;
       color: #dfb76c;
-      font-style: normal;
-      font-weight: bold;
     }
 
     option {
       color: #fff;
       background: #1a1a1a;
-      padding: 4px;
     }
 
-    /* ΥΠΕΡΒΑΣΗ ΓΙΑ ΤΟ INFOBOX ΤΟΥ CESIUM - ΑΥΤΟ ΘΑ ΤΟ ΜΕΓΑΛΩΣΕΙ ΟΡΙΣΤΙΚΑ */
-    .cesium-infoBox {
-      width: 500px !important; /* Το μεγαλώνουμε στα 500px */
-      min-width: 450px !important;
-      max-height: 85% !important;
-      background: #1a1a1a !important;
-      border: 1px solid #dfb76c !important;
+    /* ΤΟ ΝΕΟ CUSTOM ΠΑΡΑΘΥΡΟ ΠΛΗΡΟΦΟΡΙΩΝ (SIDEBAR) */
+    #customInfoBox {
+      position: absolute;
+      top: 20px;
+      right: -550px; /* Κρυμμένο αρχικά έξω από την οθόνη */
+      width: 480px;  /* Πραγματικά μεγάλο μέγεθος! */
+      max-height: calc(100% - 40px);
+      background: rgba(20, 20, 20, 0.95);
+      border: 1px solid #dfb76c;
+      border-radius: 8px;
+      box-shadow: -5px 4px 25px rgba(0,0,0,0.7);
+      z-index: 1001;
+      padding: 20px;
+      box-sizing: border-box;
+      color: #fff;
+      overflow-y: auto;
+      transition: right 0.4s ease; /* Ομαλό animation όταν ανοιγοκλείνει */
+    }
+
+    #customInfoBox.active {
+      right: 20px; /* Εμφανίζεται στην οθόνη */
+    }
+
+    #closeBtn {
+      position: absolute;
+      top: 15px;
+      right: 15px;
+      background: none;
+      border: none;
+      color: #aaa;
+      font-size: 22px;
+      cursor: pointer;
+    }
+
+    #closeBtn:hover {
+      color: #dfb76c;
+    }
+
+    #infoTitle {
+      color: #dfb76c;
+      margin-top: 10px;
+      border-bottom: 1px solid #444;
+      padding-bottom: 10px;
+      font-size: 22px;
+    }
+
+    #infoImage {
+      width: 100%;
+      max-height: 350px;
+      object-fit: contain;
+      border-radius: 6px;
+      margin-top: 15px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+    }
+
+    #infoCaption {
+      font-size: 15px;
+      font-style: italic;
+      color: #ddd;
+      line-height: 1.6;
+      margin-top: 15px;
+      background: #222;
+      padding: 12px;
+      border-left: 4px solid #dfb76c;
+      border-radius: 0 6px 6px 0;
     }
   </style>
 </head>
@@ -132,37 +187,28 @@
     </select>
   </div>
 
+  <div id="customInfoBox">
+    <button id="closeBtn">&times;</button>
+    <h2 id="infoTitle">Όνομα Τοποθεσίας</h2>
+    <img id="infoImage" src="" alt="" />
+    <p id="infoCaption">Λεζάντα Φωτογραφίας...</p>
+  </div>
+
   <div id="cesiumContainer"></div>
 
   <script>
     // ⚠️ ΒΑΛΕ ΤΟ TOKEN ΣΟΥ ΑΝΑΜΕΣΑ ΣΤΑ ΕΙΣΑΓΩΓΙΚΑ ΚΑΤΩ:
     Cesium.Ion.defaultAccessToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiJhYzA1Y2NhMS1hYjhlLTRjZjUtODRmZS0zNjNhYTFmOTUwYjIiLCJpZCI6NDM5NDgxLCJpc3MiOiJodHRwczovL2FwaS5jZXNpdW0uY29tIiwiYXVkIjoidW5kZWZpbmVkX2RlZmF1bHQiLCJpYXQiOjE3ODA0MTI3Nzl9.TfMTqoDjne1KkA63XMF41szdDtICT4kHVaa9QthS70Q';
 
+    // Απενεργοποιούμε το infoBox και το selectionIndicator του Cesium για να μην μπερδεύονται
     const viewer = new Cesium.Viewer('cesiumContainer', {
       terrain: Cesium.Terrain.fromWorldTerrain(),
       animation: false,
       timeline: false,
       sceneModePicker: false,
-      infoBox: true
+      infoBox: false,                 // ΚΛΕΙΝΟΥΜΕ το έτοιμο pop-up
+      selectionIndicator: false       // Κλείνουμε το πράσινο τετράγωνο επιλογής
     });
-
-    // Ρύθμιση για να γίνει το παράθυρο πληροφοριών (infoBox) ΠΟΛΥ ΠΙΟ ΜΕΓΑΛΟ
-    if (viewer.infoBox) {
-      const infoBoxContainer = viewer.infoBox.container;
-      const style = document.createElement('style');
-      style.innerHTML = `
-        .cesium-infoBox {
-          width: 500px !important;
-          min-width: 450px !important;
-          max-height: 85% !important;
-        }
-        .cesium-infoBox-iframe {
-          width: 100% !important;
-          height: 100% !important;
-        }
-      `;
-      document.head.appendChild(style);
-    }
 
     // Αρχική θέση κάμερας
     viewer.camera.setView({
@@ -173,8 +219,6 @@
     // Βάση Δεδομένων
     const locations = {
       "general": { lon: 24.2300, lat: 40.2300, height: 22000, pitch: -50.0, heading: 0.0 },
-      
-      // Μονές
       "megistis_lavras": { lon: 24.3824, lat: 40.1704, height: 600, pitch: -25.0, heading: 270.0, name: "Ι.Μ. Μεγίστης Λαύρας", folder: "lavra", caption: "Άποψη του καθολικού και της εσωτερικής αυλής της Μονής κατά την πρωινή είσοδο." },
       "vatopediou": { lon: 24.2108, lat: 40.3211, height: 700, pitch: -30.0, heading: 180.0, name: "Ι.Μ. Βατοπαιδίου", folder: "vatopedi", caption: "Λεζάντα για τη Μονή Βατοπαιδίου." },
       "iviron": { lon: 24.2852, lat: 40.2454, height: 600, pitch: -25.0, heading: 290.0, name: "Ι.Μ. Ιβήρων", folder: "iviron", caption: "Λεζάντα για τη Μονή Ιβήρων." },
@@ -220,9 +264,7 @@
       const isSkiti = loc.name.includes("Σκήτη") || loc.name.includes("Μικρά") || loc.name.includes("Καυσοκαλύβια");
       const markerColor = isSkiti ? Cesium.Color.DODGERBLUE : Cesium.Color.RED;
 
-      const imagePath = `fotografies/${loc.folder}/${loc.folder}_1.jpg`;
-
-      viewer.entities.add({
+      const entity = viewer.entities.add({
         position: Cesium.Cartesian3.fromDegrees(loc.lon, loc.lat, 0), 
         point: {
           pixelSize: 12,
@@ -231,36 +273,72 @@
           outlineWidth: 2,
           heightReference: Cesium.HeightReference.CLAMP_TO_GROUND 
         },
-        name: loc.name,
-        description: `
-          <div style="direction: ltr; font-family: 'Segoe UI', Arial, sans-serif; color: #fff; background: #1a1a1a; padding: 10px; border-radius: 6px;">
-            <h2 style="color: #dfb76c; border-bottom: 1px solid #444; padding-bottom: 8px; margin-top: 0;">${loc.name}</h2>
-            <div style="margin-top: 10px; text-align: center;">
-              <img src="${imagePath}" style="width: 100%; max-height: 300px; object-fit: contain; border-radius: 4px; box-shadow: 0 4px 10px rgba(0,0,0,0.5);" alt="${loc.name}"/>
-            </div>
-            <p style="font-size: 14px; font-style: italic; color: #ccc; line-height: 1.5; margin-top: 12px; background: #222; padding: 8px; border-left: 3px solid #dfb76c; border-radius: 0 4px 4px 0;">
-              ${loc.caption}
-            </p>
-          </div>
-        `
+        name: loc.name
       });
+
+      // Αποθηκεύουμε το "κλειδί" της τοποθεσίας μέσα στην πινέζα για να ξέρουμε ποια είναι όταν την πατάμε
+      entity.locationKey = key;
     }
 
-    // Λειτουργία Πλοήγησης από το Dropdown
+    // ΣΥΝΑΡΤΗΣΗ ΠΟΥ ΕΜΦΑΝΙΖΕΙ ΤΑ ΔΕΔΟΜΕΝΑ ΣΤΟ CUSTOM ΠΑΡΑΘΥΡΟ
+    function showLocationInfo(key) {
+      const data = locations[key];
+      if (!data || key === "general") {
+        document.getElementById('customInfoBox').classList.remove('active');
+        return;
+      }
+
+      // Γεμίζουμε τα στοιχεία του custom παραθύρου
+      document.getElementById('infoTitle').innerText = data.name;
+      document.getElementById('infoImage').src = `fotografies/${data.folder}/${data.folder}_1.jpg`;
+      document.getElementById('infoImage').alt = data.name;
+      document.getElementById('infoCaption').innerText = data.caption;
+
+      // Εμφανίζουμε το παράθυρο (ανοίγει από δεξιά)
+      document.getElementById('customInfoBox').classList.add('active');
+    }
+
+    // 1. Λειτουργία όταν ο χρήστης πατάει πάνω σε μια ΠΙΝΕΖΑ
+    const handler = new Cesium.ScreenSpaceEventHandler(viewer.scene.canvas);
+    handler.setInputAction(function(movement) {
+      const pickedObject = viewer.scene.pick(movement.position);
+      if (Cesium.defined(pickedObject) && Cesium.defined(pickedObject.id)) {
+        const entity = pickedObject.id;
+        if (entity.locationKey) {
+          // Εμφάνιση πληροφοριών και αυτόματη πτήση της κάμερας στο σημείο
+          showLocationInfo(entity.locationKey);
+          const target = locations[entity.locationKey];
+          viewer.camera.flyTo({
+            destination: Cesium.Cartesian3.fromDegrees(target.lon, target.lat, target.height),
+            orientation: { heading: Cesium.Math.toRadians(target.heading), pitch: Cesium.Math.toRadians(target.pitch), roll: 0.0 },
+            duration: 2.5
+          });
+          // Ενημερώνουμε και το dropdown μενού να δείχνει τη σωστή επιλογή
+          document.getElementById('locationSelect').value = entity.locationKey;
+        }
+      }
+    }, Cesium.ScreenSpaceEventType.LEFT_CLICK);
+
+    // 2. Λειτουργία όταν αλλάζει η επιλογή από το DROPDOWN μενού
     document.getElementById('locationSelect').addEventListener('change', function() {
-      const target = locations[this.value];
+      const value = this.value;
+      const target = locations[value];
       if (target) {
+        showLocationInfo(value);
         viewer.camera.flyTo({
           destination: Cesium.Cartesian3.fromDegrees(target.lon, target.lat, target.height),
-          orientation: {
-            heading: Cesium.Math.toRadians(target.heading),
-            pitch: Cesium.Math.toRadians(target.pitch),
-            roll: 0.0
-          },
+          orientation: { heading: Cesium.Math.toRadians(target.heading), pitch: Cesium.Math.toRadians(target.pitch), roll: 0.0 },
           duration: 3.5
         });
       }
     });
+
+    // 3. Λειτουργία για το κουμπί ΚΛΕΙΣΙΜΑΤΟΣ (X) του παραθύρου
+    document.getElementById('closeBtn').addEventListener('click', function() {
+      document.getElementById('customInfoBox').classList.remove('active');
+      document.getElementById('locationSelect').value = ""; // Επαναφορά μενού
+    });
+
   </script>
 </body>
 </html>
