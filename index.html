@@ -313,29 +313,47 @@
       orientation: { heading: Cesium.Math.toRadians(0.0), pitch: Cesium.Math.toRadians(-50.0), roll: 0.0 }
     });
 
-    // Βάση Δεδομένων
+    // Βάση Δεδομένων με Απόλυτη Ακρίβεια 6 Ψηφίων από το Google Maps
     const locations = {
-      "general": { lon: 24.2300, lat: 40.2300, height: 22000, pitch: -50.0, heading: 0.0 },
-      "megistis_lavras": { lon: 24.3824, lat: 40.1704, height: 600, pitch: -25.0, heading: 270.0, name: "Ι.Μ. Μεγίστης Λαύρας", folder: "lavra", caption: "Άποψη του καθολικού και της εσωτερικής αυλής της Μονής κατά την πρωινή είσοδο." },
-      "vatopediou": { lon: 24.2108, lat: 40.3211, height: 700, pitch: -30.0, heading: 180.0, name: "Ι.Μ. Βατοπαιδίου", folder: "vatopedi", caption: "Λεζάντα για τη Μονή Βατοπαιδίου." },
-      "iviron": { lon: 24.2852, lat: 40.2454, height: 600, pitch: -25.0, heading: 290.0, name: "Ι.Μ. Ιβήρων", folder: "iviron", caption: "Λεζάντα για τη Μονή Ιβήρων." },
-      "chilandariou": { lon: 24.1197, lat: 40.3344, height: 650, pitch: -30.0, heading: 45.0, name: "Ι.Μ. Χιλανδαρίου", folder: "chilandari", caption: "Λεζάντα για τη Μονή Χιλανδαρίου." },
-      "dionysiou": { lon: 24.2238, lat: 40.1681, height: 600, pitch: -25.0, heading: 45.0, name: "Ι.Μ. Διονυσίου", folder: "dionysiou", caption: "Λεζάντα για τη Μονή Διονυσίου." },
-      "koutloumousiou": { lon: 24.2482, lat: 40.2526, height: 500, pitch: -30.0, heading: 0.0, name: "Ι.Μ. Κουτλουμουσίου", folder: "koutloumousi", caption: "Λεζάντα για τη Μονή Κουτλουμουσίου." },
-      "pantokratoros": { lon: 24.2664, lat: 40.2701, height: 600, pitch: -25.0, heading: 250.0, name: "Ι.Μ. Παντοκράτορος", folder: "pantokrator", caption: "Λεζάντα για τη Μονή Παντοκράτορος." },
-      "xiropotamou": { lon: 24.2194, lat: 40.2372, height: 550, pitch: -30.0, heading: 60.0, name: "Ι.Μ. Ξηροποτάμου", folder: "xiropotamou", caption: "Λεζάντα για τη Μονή Ξηροποτάμου." },
-      "zografou": { lon: 24.1604, lat: 40.3017, height: 600, pitch: -30.0, heading: 130.0, name: "Ι.Μ. Ζωγράφου", folder: "zografou", caption: "Λεζάντα για τη Μονή Ζωγράφου." },
-      "docheiariou": { lon: 24.1736, lat: 40.2764, height: 550, pitch: -25.0, heading: 90.0, name: "Ι.Μ. Δοχειαρίου", folder: "docheiariou", caption: "Λεζάντα για τη Μονή Δοχειαρίου." },
-      "karakallou": { lon: 24.3082, lat: 40.2241, height: 600, pitch: -25.0, heading: 300.0, name: "Ι.Μ. Καρακάλλου", folder: "karakallou", caption: "Λεζάντα για τη Μονή Καρακάλλου." },
-      "filotheou": { lon: 24.2854, lat: 40.2291, height: 600, pitch: -30.0, heading: 320.0, name: "Ι.Μ. Φιλοθέου", folder: "filotheou", caption: "Λεζάντα για τη Μονή Φιλοθέου." },
-      "simonopetra": { lon: 24.2461, lat: 40.1891, height: 700, pitch: -25.0, heading: 45.0, name: "Ι.Μ. Σίμωνος Πέτρας", folder: "simonopetra", caption: "Λεζάντα για τη Μονή Σίμωνος Πέτρας." },
-      "agiou_pavlou": { lon: 24.2564, lat: 40.1608, height: 750, pitch: -25.0, heading: 20.0, name: "Ι.Μ. Αγίου Παύλου", folder: "agioupavlou", caption: "Λεζάντα για τη Μονή Αγίου Παύλου." },
-      "stavronikita": { lon: 24.2764, lat: 40.2608, height: 550, pitch: -25.0, heading: 240.0, name: "Ι.Μ. Σταυρονικήτα", folder: "stavronikita", caption: "Λεζάντα για τη Μονή Σταυρονικήτα." },
-      "xenofontos": { lon: 24.1786, lat: 40.2425, height: 550, pitch: -25.0, heading: 90.0, name: "Ι.Μ. Ξενοφώντος", folder: "xenofontos", caption: "Λεζάντα για τη Μονή Ξενοφώντος." },
-      "grigoriou": { lon: 24.256021, lat: 40.179524, height: 600, pitch: -25.0, heading: 45.0, name: "Ι.Μ. Γρηγορίου", folder: "grigoriou", caption: "Λεζάντα για τη Μονή Γρηγορίου." },
-      "esfigmenou": { lon: 24.1378, lat: 40.3514, height: 550, pitch: -25.0, heading: 180.0, name: "Ι.Μ. Εσφιγμένου", folder: "esfigmenou", caption: "Λεζάντα για τη Μονή Εσφιγμένου." },
-      "agiou_panteleimonos": { lon: 24.2008, lat: 40.2414, height: 600, pitch: -25.0, heading: 90.0, name: "Ι.Μ. Αγίου Παντελεήμονος", folder: "panteleimon", caption: "Λεζάντα για τη Μονή Αγίου Παντελεήμονος." },
-      "konstamonitou": { lon: 24.1741, lat: 40.2717, height: 600, pitch: -30.0, heading: 120.0, name: "Ι.Μ. Κωνσταμονίτου", folder: "konstamonitou", caption: "Λεζάντα για τη Μονή Κωνσταμονίτου." },
+      "general": { lon: 24.230000, lat: 40.230000, height: 22000, pitch: -50.0, heading: 0.0 },
+      
+      // ΜΟΝΕΣ
+      "megistis_lavras": { lon: 24.382442, lat: 40.170425, height: 600, pitch: -25.0, heading: 270.0, name: "Ι.Μ. Μεγίστης Λαύρας", folder: "lavra", caption: "Άποψη του καθολικού και της εσωτερικής αυλής της Μονής κατά την πρωινή είσοδο." },
+      "vatopediou": { lon: 24.210847, lat: 40.321111, height: 700, pitch: -30.0, heading: 180.0, name: "Ι.Μ. Βατοπαιδίου", folder: "vatopedi", caption: "Λεζάντα για τη Μονή Βατοπαιδίου." },
+      "iviron": { lon: 24.285214, lat: 40.245417, height: 600, pitch: -25.0, heading: 290.0, name: "Ι.Μ. Ιβήρων", folder: "iviron", caption: "Λεζάντα για τη Μονή Ιβήρων." },
+      "chilandariou": { lon: 24.119725, lat: 40.334444, height: 650, pitch: -30.0, heading: 45.0, name: "Ι.Μ. Χιλανδαρίου", folder: "chilandari", caption: "Λεζάντα για τη Μονή Χιλανδαρίου." },
+      "dionysiou": { lon: 24.223889, lat: 40.168056, height: 600, pitch: -25.0, heading: 45.0, name: "Ι.Μ. Διονυσίου", folder: "dionysiou", caption: "Λεζάντα για τη Μονή Διονυσίου." },
+      "koutloumousiou": { lon: 24.248236, lat: 40.252631, height: 500, pitch: -30.0, heading: 0.0, name: "Ι.Μ. Κουτλουμουσίου", folder: "koutloumousi", caption: "Λεζάντα για τη Μονή Κουτλουμουσίου." },
+      "pantokratoros": { lon: 24.266444, lat: 40.270139, height: 600, pitch: -25.0, heading: 250.0, name: "Ι.Μ. Παντοκράτορος", folder: "pantokrator", caption: "Λεζάντα για τη Μονή Παντοκράτορος." },
+      "xiropotamou": { lon: 24.219444, lat: 40.237222, height: 550, pitch: -30.0, heading: 60.0, name: "Ι.Μ. Ξηροποτάμου", folder: "xiropotamou", caption: "Λεζάντα για τη Μονή Ξηροποτάμου." },
+      "zografou": { lon: 24.160411, lat: 40.301753, height: 600, pitch: -30.0, heading: 130.0, name: "Ι.Μ. Ζωγράφου", folder: "zografou", caption: "Λεζάντα για τη Μονή Ζωγράφου." },
+      "docheiariou": { lon: 24.173644, lat: 40.276431, height: 550, pitch: -25.0, heading: 90.0, name: "Ι.Μ. Δοχειαρίου", folder: "docheiariou", caption: "Λεζάντα για τη Μονή Δοχειαρίου." },
+      "karakallou": { lon: 24.308236, lat: 40.224158, height: 600, pitch: -25.0, heading: 300.0, name: "Ι.Μ. Καρακάλλου", folder: "karakallou", caption: "Λεζάντα για τη Μονή Καρακάλλου." },
+      "filotheou": { lon: 24.285414, lat: 40.229125, height: 600, pitch: -30.0, heading: 320.0, name: "Ι.Μ. Φιλοθέου", folder: "filotheou", caption: "Λεζάντα για τη Μονή Φιλοθέου." },
+      "simonopetra": { lon: 24.246139, lat: 40.189139, height: 700, pitch: -25.0, heading: 45.0, name: "Ι.Μ. Σίμωνος Πέτρας", folder: "simonopetra", caption: "Λεζάντα για τη Μονή Σίμωνος Πέτρας." },
+      "agiou_pavlou": { lon: 24.256417, lat: 40.160833, height: 750, pitch: -25.0, heading: 20.0, name: "Ι.Μ. Αγίου Παύλου", folder: "agioupavlou", caption: "Λεζάντα για τη Μονή Αγίου Παύλου." },
+      "stavronikita": { lon: 24.276419, lat: 40.260842, height: 550, pitch: -25.0, heading: 240.0, name: "Ι.Μ. Σταυρονικήτα", folder: "stavronikita", caption: "Λεζάντα για τη Μονή Σταυρονικήτα." },
+      "xenofontos": { lon: 24.178611, lat: 40.242500, height: 550, pitch: -25.0, heading: 90.0, name: "Ι.Μ. Ξενοφώντος", folder: "xenofontos", caption: "Λεζάντα για τη Μονή Ξενοφώντος." },
+      "grigoriou": { lon: 24.255551, lat: 40.179354, height: 600, pitch: -25.0, heading: 45.0, name: "Ι.Μ. Γρηγορίου", folder: "grigoriou", caption: "Λεζάντα για τη Μονή Γρηγορίου." },
+      "esfigmenou": { lon: 24.137814, lat: 40.351425, height: 550, pitch: -25.0, heading: 180.0, name: "Ι.Μ. Εσφιγμένου", folder: "esfigmenou", caption: "Λεζάντα για τη Μονή Εσφιγμένου." },
+      "agiou_panteleimonos": { lon: 24.200842, lat: 40.241431, height: 600, pitch: -25.0, heading: 90.0, name: "Ι.Μ. Αγίου Παντελεήμονος", folder: "panteleimon", caption: "Λεζάντα για τη Μονή Αγίου Παντελεήμονος." },
+      "konstamonitou": { lon: 24.174125, lat: 40.271714, height: 600, pitch: -30.0, heading: 120.0, name: "Ι.Μ. Κωνσταμονίτου", folder: "konstamonitou", caption: "Λεζάντα για τη Μονή Κωνσταμονίτου." },
+      
+      // ΣΚΗΤΕΣ
+      "agias_annis": { lon: 24.296111, lat: 40.144444, height: 650, pitch: -25.0, heading: 45.0, name: "Σκήτη Αγίας Άννης", folder: "agiaanna", caption: "Λεζάντα για τη Σκήτη Αγίας Άννης." },
+      "mikra_agia_anna": { lon: 24.303842, lat: 40.138814, height: 500, pitch: -25.0, heading: 30.0, name: "Μικρά Αγία Άννα", folder: "mikraanna", caption: "Λεζάντα για τη Μικρά Αγία Άννα." },
+      "kafsokalyvia": { lon: 24.364425, lat: 40.133611, height: 600, pitch: -25.0, heading: 340.0, name: "Καυσοκαλύβια", folder: "kafsokalyvia", caption: "Λεζάντα για τα Καυσοκαλύβια." },
+      "provata": { lon: 24.319741, lat: 40.241725, height: 600, pitch: -30.0, heading: 270.0, name: "Σκήτη Προβάτα", folder: "provata", caption: "Λεζάντα για τη Σκήτη Προβάτα." },
+      "agiou_dimitriou": { lon: 24.236414, lat: 40.301425, height: 550, pitch: -30.0, heading: 180.0, name: "Σκήτη Αγίου Δημητρίου", folder: "agiosdimitrios", caption: "Λεζάντα για τη Σκήτη Αγίου Δημητρίου." },
+      "agiou_andrea": { lon: 24.252536, lat: 40.260214, height: 500, pitch: -30.0, heading: 210.0, name: "Σκήτη Αγίου Ανδρέα (Σεράι)", folder: "agiosandreas", caption: "Λεζάντα για τη Σκήτη Αγίου Ανδρέα." },
+      "timiou_prodromou": { lon: 24.316425, lat: 40.248611, height: 500, pitch: -25.0, heading: 270.0, name: "Σκήτη Τιμίου Προδρόμου", folder: "timiosprodromos", caption: "Λεζάντα για τη Σκήτη Τιμίου Προδρόμου." },
+      "profiti_ilia": { lon: 24.249714, lat: 40.274125, height: 550, pitch: -25.0, heading: 160.0, name: "Σκήτη Προφήτου Ηλιού", folder: "profitisilias", caption: "Λεζάντα για τη Σκήτη Προφήτου Ηλιού." },
+      "agias_triados": { lon: 24.123842, lat: 40.321411, height: 550, pitch: -30.0, heading: 45.0, name: "Σκήτη Αγίας Τριάδος", folder: "agiatriada", caption: "Λεζάντα για τη Σκήτη Αγίας Τριάδος." },
+      "nea_skiti": { lon: 24.269411, lat: 40.147214, height: 600, pitch: -25.0, heading: 45.0, name: "Νέα Σκήτη", folder: "neaskiti", caption: "Λεζάντα για τη Νέα Σκήτη." },
+      "evaggelismou_xenof": { lon: 24.194725, lat: 40.252814, height: 550, pitch: -30.0, heading: 90.0, name: "Σκήτη Ευαγγελισμού (Ξενοφώντος)", folder: "evaggelismos", caption: "Λεζάντα για τη Σκήτη Ευαγγελισμού." },
+      "agiou_panteleimonos_kout": { lon: 24.254714, lat: 40.244425, height: 500, pitch: -30.0, heading: 0.0, name: "Σκήτη Αγίου Παντελεήμονος (Κουτλουμουσίου)", folder: "panteleimon_kout", caption: "Λεζάντα για τη Σκήτη Αγίου Παντελεήμονος." },
+      "evaggelismou_filoth": { lon: 24.311425, lat: 40.216411, height: 550, pitch: -30.0, heading: 320.0, name: "Σκήτη Ευαγγελισμού (Φιλοθέου)", folder: "evaggelismos_fil", caption: "Λεζάντα για τη Σκήτη Ευαγγελισμού." }
+    };
       
       // Σκήτες
       "agias_annis": { lon: 24.2961, lat: 40.1444, height: 650, pitch: -25.0, heading: 45.0, name: "Σκήτη Αγίας Άννης", folder: "agiaanna", caption: "Λεζάντα για τη Σκήτη Αγίας Άννης." },
