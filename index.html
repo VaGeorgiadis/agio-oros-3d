@@ -19,7 +19,7 @@
       font-family: 'Segoe UI', Arial, sans-serif;
     }
 
-    /* Στυλ για το Μενού Επιλογής */
+    /* ΚΕΝΤΡΙΚΟ ΜΕΝΟΥ (Πλοήγηση + Μουσική μαζί για να είναι ευκρινή) */
     #menuContainer {
       position: absolute;
       top: 20px;
@@ -30,8 +30,7 @@
       border-radius: 8px;
       box-shadow: 0px 4px 20px rgba(0,0,0,0.6);
       border: 1px solid #dfb76c;
-      max-height: 85vh;
-      overflow-y: auto;
+      width: 300px;
     }
 
     label {
@@ -45,7 +44,7 @@
     }
 
     #locationSelect {
-      width: 300px;
+      width: 100%;
       padding: 10px;
       border: 1px solid #555;
       border-radius: 4px;
@@ -54,6 +53,7 @@
       font-size: 14px;
       cursor: pointer;
       outline: none;
+      box-sizing: border-box;
     }
 
     #locationSelect:focus {
@@ -70,12 +70,27 @@
       background: #1a1a1a;
     }
 
-    /* ΤΟ ΝΕΟ CUSTOM ΠΑΡΑΘΥΡΟ ΠΛΗΡΟΦΟΡΙΩΝ (SIDEBAR) */
+    /* ΝΕΟ ΣΤΥΛ ΓΙΑ ΤΟΝ ΚΕΝΤΡΙΚΟ AUDIO PLAYER */
+    .audio-player-container {
+      background: #222;
+      padding: 10px;
+      border-radius: 6px;
+      margin-top: 15px; /* Απόσταση κάτω από το dropdown */
+      border-top: 1px solid #444;
+    }
+    
+    .audio-player-container audio {
+      width: 100%;
+      outline: none;
+      margin-top: 5px;
+    }
+
+    /* CUSTOM ΠΑΡΑΘΥΡΟ ΠΛΗΡΟΦΟΡΙΩΝ (SIDEBAR) - ΧΩΡΙΣ ΗΧΟ ΠΛΕΟΝ */
     #customInfoBox {
       position: absolute;
       top: 20px;
-      right: -550px; /* Κρυμμένο αρχικά έξω από την οθόνη */
-      width: 480px;  /* Πραγματικά μεγάλο μέγεθος! */
+      right: -550px;
+      width: 480px;
       max-height: calc(100% - 40px);
       background: rgba(20, 20, 20, 0.95);
       border: 1px solid #dfb76c;
@@ -86,11 +101,11 @@
       box-sizing: border-box;
       color: #fff;
       overflow-y: auto;
-      transition: right 0.4s ease; /* Ομαλό animation όταν ανοιγοκλείνει */
+      transition: right 0.4s ease;
     }
 
     #customInfoBox.active {
-      right: 20px; /* Εμφανίζεται στην οθόνη */
+      right: 20px;
     }
 
     #closeBtn {
@@ -114,6 +129,7 @@
       border-bottom: 1px solid #444;
       padding-bottom: 10px;
       font-size: 22px;
+      margin-bottom: 15px;
     }
 
     #infoImage {
@@ -121,7 +137,6 @@
       max-height: 350px;
       object-fit: contain;
       border-radius: 6px;
-      margin-top: 15px;
       box-shadow: 0 5px 15px rgba(0,0,0,0.5);
     }
 
@@ -185,6 +200,14 @@
         <option value="evaggelismou_filoth">Σκήτη Ευαγγελισμού (Φιλοθέου)</option>
       </optgroup>
     </select>
+
+    <div class="audio-player-container">
+      <label style="color: #aaa; font-size: 11px;">Μουσική Υπόκρουση</label>
+      <audio id="bgAudio" controls loop>
+        <source src="ixoi/psalmwdia.mp3" type="audio/mpeg">
+        Ο browser σας δεν υποστηρίζει ήχο.
+      </audio>
+    </div>
   </div>
 
   <div id="customInfoBox">
@@ -200,17 +223,15 @@
     // ⚠️ ΒΑΛΕ ΤΟ TOKEN ΣΟΥ ΑΝΑΜΕΣΑ ΣΤΑ ΕΙΣΑΓΩΓΙΚΑ ΚΑΤΩ:
     Cesium.Ion.defaultAccessToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiJhYzA1Y2NhMS1hYjhlLTRjZjUtODRmZS0zNjNhYTFmOTUwYjIiLCJpZCI6NDM5NDgxLCJpc3MiOiJodHRwczovL2FwaS5jZXNpdW0uY29tIiwiYXVkIjoidW5kZWZpbmVkX2RlZmF1bHQiLCJpYXQiOjE3ODA0MTI3Nzl9.TfMTqoDjne1KkA63XMF41szdDtICT4kHVaa9QthS70Q';
 
-    // Απενεργοποιούμε το infoBox και το selectionIndicator του Cesium για να μην μπερδεύονται
     const viewer = new Cesium.Viewer('cesiumContainer', {
       terrain: Cesium.Terrain.fromWorldTerrain(),
       animation: false,
       timeline: false,
       sceneModePicker: false,
-      infoBox: false,                 // ΚΛΕΙΝΟΥΜΕ το έτοιμο pop-up
-      selectionIndicator: false       // Κλείνουμε το πράσινο τετράγωνο επιλογής
+      infoBox: false,
+      selectionIndicator: false
     });
 
-    // Αρχική θέση κάμερας
     viewer.camera.setView({
       destination: Cesium.Cartesian3.fromDegrees(24.2300, 40.2300, 22000),
       orientation: { heading: Cesium.Math.toRadians(0.0), pitch: Cesium.Math.toRadians(-50.0), roll: 0.0 }
@@ -276,36 +297,35 @@
         name: loc.name
       });
 
-      // Αποθηκεύουμε το "κλειδί" της τοποθεσίας μέσα στην πινέζα για να ξέρουμε ποια είναι όταν την πατάμε
       entity.locationKey = key;
     }
 
-    // ΣΥΝΑΡΤΗΣΗ ΠΟΥ ΕΜΦΑΝΙΖΕΙ ΤΑ ΔΕΔΟΜΕΝΑ ΣΤΟ CUSTOM ΠΑΡΑΘΥΡΟ
+    // ΣΥΝΑΡΤΗΣΗ ΕΜΦΑΝΙΣΗΣ ΦΩΤΟΓΡΑΦΙΑΣ
     function showLocationInfo(key) {
       const data = locations[key];
+
       if (!data || key === "general") {
         document.getElementById('customInfoBox').classList.remove('active');
         return;
       }
 
-      // Γεμίζουμε τα στοιχεία του custom παραθύρου
+      // Γεμίζουμε τα στοιχεία του πλαϊνού παραθύρου
       document.getElementById('infoTitle').innerText = data.name;
       document.getElementById('infoImage').src = `fotografies/${data.folder}/${data.folder}_1.jpg`;
       document.getElementById('infoImage').alt = data.name;
       document.getElementById('infoCaption').innerText = data.caption;
 
-      // Εμφανίζουμε το παράθυρο (ανοίγει από δεξιά)
+      // Εμφάνιση παραθύρου
       document.getElementById('customInfoBox').classList.add('active');
     }
 
-    // 1. Λειτουργία όταν ο χρήστης πατάει πάνω σε μια ΠΙΝΕΖΑ
+    // 1. LEFT CLICK πάνω σε ΠΙΝΕΖΑ
     const handler = new Cesium.ScreenSpaceEventHandler(viewer.scene.canvas);
     handler.setInputAction(function(movement) {
       const pickedObject = viewer.scene.pick(movement.position);
       if (Cesium.defined(pickedObject) && Cesium.defined(pickedObject.id)) {
         const entity = pickedObject.id;
         if (entity.locationKey) {
-          // Εμφάνιση πληροφοριών και αυτόματη πτήση της κάμερας στο σημείο
           showLocationInfo(entity.locationKey);
           const target = locations[entity.locationKey];
           viewer.camera.flyTo({
@@ -313,13 +333,12 @@
             orientation: { heading: Cesium.Math.toRadians(target.heading), pitch: Cesium.Math.toRadians(target.pitch), roll: 0.0 },
             duration: 2.5
           });
-          // Ενημερώνουμε και το dropdown μενού να δείχνει τη σωστή επιλογή
           document.getElementById('locationSelect').value = entity.locationKey;
         }
       }
     }, Cesium.ScreenSpaceEventType.LEFT_CLICK);
 
-    // 2. Λειτουργία όταν αλλάζει η επιλογή από το DROPDOWN μενού
+    // 2. ΑΛΛΑΓΗ ΑΠΟ ΤΟ DROPDOWN ΜΕΝΟΥ
     document.getElementById('locationSelect').addEventListener('change', function() {
       const value = this.value;
       const target = locations[value];
@@ -333,10 +352,10 @@
       }
     });
 
-    // 3. Λειτουργία για το κουμπί ΚΛΕΙΣΙΜΑΤΟΣ (X) του παραθύρου
+    // 3. ΚΟΥΜΠΙ ΚΛΕΙΣΙΜΑΤΟΣ (X) ΣΤΟ SIDEBAR (Ο ήχος ΔΕΝ σταματάει πλέον)
     document.getElementById('closeBtn').addEventListener('click', function() {
       document.getElementById('customInfoBox').classList.remove('active');
-      document.getElementById('locationSelect').value = ""; // Επαναφορά μενού
+      document.getElementById('locationSelect').value = "";
     });
 
   </script>
