@@ -132,7 +132,7 @@
       padding-bottom: 10px;
       font-size: 22px;
       margin-bottom: 15px;
-      padding-right: 20px; /* Για να μην πέφτει πάνω στο X */
+      padding-right: 20px;
     }
 
     #infoImage {
@@ -155,12 +155,8 @@
       border-radius: 0 6px 6px 0;
     }
 
-    /* ================================================================= */
-    /* ΡΥΘΜΙΣΕΙΣ ΓΙΑ ΚΙΝΗΤΑ (Smartphones έως 768px πλάτος οθόνης)       */
-    /* ================================================================= */
+    /* ΡΥΘΜΙΣΕΙΣ ΓΙΑ ΚΙΝΗΤΑ */
     @media screen and (max-width: 768px) {
-      
-      /* Το μενού πάει πάνω, κεντρικά και πιάνει σχεδόν όλη την οθόνη */
       #menuContainer {
         top: 10px;
         left: 5%;
@@ -176,7 +172,7 @@
 
       #locationSelect {
         padding: 8px;
-        font-size: 15px; /* Μεγαλύτερη γραμματοσειρά για να μην κάνει auto-zoom το iPhone */
+        font-size: 15px;
       }
 
       .audio-player-container {
@@ -184,15 +180,14 @@
         padding: 5px;
       }
 
-      /* Το παράθυρο πληροφοριών βγαίνει από ΚΑΤΩ στα κινητά */
       #customInfoBox {
         top: auto;
         right: 0 !important;
-        bottom: -100%; /* Κρυμμένο κάτω από την οθόνη */
+        bottom: -100%;
         left: 0;
         width: 100%;
-        max-height: 50vh; /* Πιάνει το μισό ύψος της οθόνης του κινητού */
-        border-radius: 12px 12px 0 0; /* Στρογγυλεμένες γωνίες μόνο πάνω */
+        max-height: 50vh;
+        border-radius: 12px 12px 0 0;
         border-left: none;
         border-right: none;
         border-bottom: none;
@@ -200,7 +195,6 @@
         padding: 15px;
       }
 
-      /* Όταν ενεργοποιείται στο κινητό, ανεβαίνει μέχρι το κάτω μέρος */
       #customInfoBox.active {
         bottom: 0;
       }
@@ -212,7 +206,7 @@
       }
 
       #infoImage {
-        max-height: 200px; /* Μικραίνει η εικόνα για να χωράει στο κινητό */
+        max-height: 200px;
       }
 
       #infoCaption {
@@ -220,7 +214,6 @@
         padding: 10px;
       }
       
-      /* Μεγαλύτερο κουμπί κλεισίματος για το δάχτυλο */
       #closeBtn {
         top: 10px;
         right: 10px;
@@ -296,7 +289,6 @@
   <div id="cesiumContainer"></div>
 
   <script>
-    // ⚠️ ΒΑΛΕ ΤΟ TOKEN ΣΟΥ ΑΝΑΜΕΣΑ ΣΤΑ ΕΙΣΑΓΩΓΙΚΑ ΚΑΤΩ:
     Cesium.Ion.defaultAccessToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiJhYzA1Y2NhMS1hYjhlLTRjZjUtODRmZS0zNjNhYTFmOTUwYjIiLCJpZCI6NDM5NDgxLCJpc3MiOiJodHRwczovL2FwaS5jZXNpdW0uY29tIiwiYXVkIjoidW5kZWZpbmVkX2RlZmF1bHQiLCJpYXQiOjE3ODA0MTI3Nzl9.TfMTqoDjne1KkA63XMF41szdDtICT4kHVaa9QthS70Q';
 
     const viewer = new Cesium.Viewer('cesiumContainer', {
@@ -313,7 +305,7 @@
       orientation: { heading: Cesium.Math.toRadians(0.0), pitch: Cesium.Math.toRadians(-50.0), roll: 0.0 }
     });
 
-    // Βάση Δεδομένων με Απόλυτη Ακρίβεια 6 Ψηφίων από το Google Maps
+    // Η Βάση Δεδομένων διορθωμένη και ενοποιημένη
     const locations = {
       "general": { lon: 24.230000, lat: 40.230000, height: 22000, pitch: -50.0, heading: 0.0 },
       
@@ -353,23 +345,7 @@
       "evaggelismou_xenof": { lon: 24.194725, lat: 40.252814, height: 550, pitch: -30.0, heading: 90.0, name: "Σκήτη Ευαγγελισμού (Ξενοφώντος)", folder: "evaggelismos", caption: "Λεζάντα για τη Σκήτη Ευαγγελισμού." },
       "agiou_panteleimonos_kout": { lon: 24.254714, lat: 40.244425, height: 500, pitch: -30.0, heading: 0.0, name: "Σκήτη Αγίου Παντελεήμονος (Κουτλουμουσίου)", folder: "panteleimon_kout", caption: "Λεζάντα για τη Σκήτη Αγίου Παντελεήμονος." },
       "evaggelismou_filoth": { lon: 24.311425, lat: 40.216411, height: 550, pitch: -30.0, heading: 320.0, name: "Σκήτη Ευαγγελισμού (Φιλοθέου)", folder: "evaggelismos_fil", caption: "Λεζάντα για τη Σκήτη Ευαγγελισμού." }
-    };
-      
-      // Σκήτες
-      "agias_annis": { lon: 24.2961, lat: 40.1444, height: 650, pitch: -25.0, heading: 45.0, name: "Σκήτη Αγίας Άννης", folder: "agiaanna", caption: "Λεζάντα για τη Σκήτη Αγίας Άννης." },
-      "mikra_agia_anna": { lon: 24.3038, lat: 40.1388, height: 500, pitch: -25.0, heading: 30.0, name: "Μικρά Αγία Άννα", folder: "mikraanna", caption: "Λεζάντα για τη Μικρά Αγία Άννα." },
-      "kafsokalyvia": { lon: 24.3644, lat: 40.1336, height: 600, pitch: -25.0, heading: 340.0, name: "Καυσοκαλύβια", folder: "kafsokalyvia", caption: "Λεζάντα για τα Καυσοκαλύβια." },
-      "provata": { lon: 24.3197, lat: 40.2417, height: 600, pitch: -30.0, heading: 270.0, name: "Σκήτη Προβάτα", folder: "provata", caption: "Λεζάντα για τη Σκήτη Προβάτα." },
-      "agiou_dimitriou": { lon: 24.2364, lat: 40.3014, height: 550, pitch: -30.0, heading: 180.0, name: "Σκήτη Αγίου Δημητρίου", folder: "agiosdimitrios", caption: "Λεζάντα για τη Σκήτη Αγίου Δημητρίου." },
-      "agiou_andrea": { lon: 24.2525, lat: 40.2602, height: 500, pitch: -30.0, heading: 210.0, name: "Σκήτη Αγίου Ανδρέα (Σεράι)", folder: "agiosandreas", caption: "Λεζάντα για τη Σκήτη Αγίου Ανδρέα." },
-      "timiou_prodromou": { lon: 24.3164, lat: 40.2486, height: 500, pitch: -25.0, heading: 270.0, name: "Σκήτη Τιμίου Προδρόμου", folder: "timiosprodromos", caption: "Λεζάντα για τη Σκήτη Τιμίου Προδρόμου." },
-      "profiti_ilia": { lon: 24.2497, lat: 40.2741, height: 550, pitch: -25.0, heading: 160.0, name: "Σκήτη Προφήτου Ηλιού", folder: "profitisilias", caption: "Λεζάντα για τη Σκήτη Προφήτου Ηλιού." },
-      "agias_triados": { lon: 24.1238, lat: 40.3214, height: 550, pitch: -30.0, heading: 45.0, name: "Σκήτη Αγίας Τριάδος", folder: "agiatriada", caption: "Λεζάντα για τη Σκήτη Αγίας Τριάδος." },
-      "nea_skiti": { lon: 24.2694, lat: 40.1472, height: 600, pitch: -25.0, heading: 45.0, name: "Νέα Σκήτη", folder: "neaskiti", caption: "Λεζάντα για τη Νέα Σκήτη." },
-      "evaggelismou_xenof": { lon: 24.1947, lat: 40.2528, height: 550, pitch: -30.0, heading: 90.0, name: "Σκήτη Ευαγγελισμού (Ξενοφώντος)", folder: "evaggelismos", caption: "Λεζάντα για τη Σκήτη Ευαγγελισμού." },
-      "agiou_panteleimonos_kout": { lon: 24.2547, lat: 40.2444, height: 500, pitch: -30.0, heading: 0.0, name: "Σκήτη Αγίου Παντελεήμονος (Κουτλουμουσίου)", folder: "panteleimon_kout", caption: "Λεζάντα για τη Σκήτη Αγίου Παντελεήμονος." },
-      "evaggelismou_filoth": { lon: 24.3114, lat: 40.2164, height: 550, pitch: -30.0, heading: 320.0, name: "Σκήτη Ευαγγελισμού (Φιλοθέου)", folder: "evaggelismos_fil", caption: "Λεζάντα για τη Σκήτη Ευαγγελισμού." }
-    };
+    
 
     // Αυτόματη δημιουργία Πινεζών (Markers)
     for (const key in locations) {
