@@ -19,6 +19,27 @@
       font-family: 'Segoe UI', Arial, sans-serif;
     }
 
+    /* ΚΕΝΤΡΙΚΟΣ ΤΙΤΛΟΣ ΑΡΧΙΚΗΣ ΟΘΟΝΗΣ */
+    #mainAppTitle {
+      position: absolute;
+      top: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 999;
+      background: rgba(20, 20, 20, 0.85);
+      color: #dfb76c;
+      border: 1px solid #dfb76c;
+      padding: 12px 30px;
+      margin: 0;
+      font-size: 24px;
+      font-weight: bold;
+      letter-spacing: 1.5px;
+      border-radius: 8px;
+      box-shadow: 0px 4px 20px rgba(0,0,0,0.6);
+      text-align: center;
+      pointer-events: none; /* Ώστε να μην εμποδίζει το κλικ στον χάρτη από πίσω */
+    }
+
     /* ΚΟΥΜΠΙ ΓΙΑ ΑΝΟΙΓΜΑ ΤΟΥ ΜΕΝΟΥ (Trigger) */
     #menuToggleBtn {
       position: absolute;
@@ -219,6 +240,13 @@
 
     /* ΡΥΘΜΙΣΕΙΣ ΓΙΑ ΚΙΝΗΤΑ */
     @media screen and (max-width: 768px) {
+      #mainAppTitle {
+        font-size: 16px;
+        padding: 8px 15px;
+        top: 10px;
+        width: auto;
+        white-space: nowrap;
+      }
       #menuToggleBtn { top: 10px; left: 10px; padding: 8px 12px; font-size: 12px; }
       #menuContainer {
         top: 55px;
@@ -245,6 +273,10 @@
 </head>
 <body>
 
+  <!-- Κεντρικός Τίτλος Εφαρμογής -->
+  <h1 id="mainAppTitle">Οδοιπορικό στο Άγιο Όρος</h1>
+
+  <!-- Κουμπί που εμφανίζει το μενού -->
   <button id="menuToggleBtn" onclick="toggleMenu()">🗺️ Μενού Πλοήγησης</button>
 
   <div id="menuContainer">
@@ -326,6 +358,7 @@
   <div id="cesiumContainer"></div>
 
   <script>
+    // ΤΟ ΔΙΟΡΘΩΜΕΝΟ TOKEN (ΠΛΕΟΝ ΧΩΡΙΣ ΠΑΡΕΝΘΕΣΕΙΣ)
     Cesium.Ion.defaultAccessToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiJhYzA1Y2NhMS1hYjhlLTRjZjUtODRmZS0zNjNhYTFmOTUwYjIiLCJpZCI6NDM5NDgxLCJpc3MiOiJodHRwczovL2FwaS5jZXNpidW0uY29tIiwiYXVkIjoidW5kZWZpbmVkX2RlZmF1bHQiLCJpYXQiOjE3ODA0MTI3Nzl9.TfMTqoDjne1KkA63XMF41szdDtICT4kHVaa9QthS70Q';
 
     const viewer = new Cesium.Viewer('cesiumContainer', {
@@ -467,13 +500,13 @@
       document.getElementById('routeSelect').selectedIndex = -1;
     }
 
-    // Event Listeners για τις λίστες (Προστέθηκε το toggleMenu() για αυτόματη ελαχιστοποίηση)
+    // Event Listeners για τις λίστες
     document.getElementById('monasterySelect').addEventListener('change', function() {
       if(this.value) {
         showLocationInfo(this.value);
         flyToLocation(locations[this.value]);
         document.getElementById('skiteSelect').selectedIndex = -1;
-        toggleMenu(); // Κλείσιμο μενού μετά την επιλογή
+        toggleMenu(); 
       }
     });
 
@@ -482,7 +515,7 @@
         showLocationInfo(this.value);
         flyToLocation(locations[this.value]);
         document.getElementById('monasterySelect').selectedIndex = -1;
-        toggleMenu(); // Κλείσιμο μενού μετά την επιλογή
+        toggleMenu(); 
       }
     });
 
@@ -503,7 +536,6 @@
             document.getElementById('skiteSelect').value = entity.locationKey;
           }
           
-          // Αν το μενού ήταν ανοιχτό όταν πατήθηκε η πινέζα, το κλείνουμε
           const menu = document.getElementById('menuContainer');
           if (menu.classList.contains('active')) {
             toggleMenu();
