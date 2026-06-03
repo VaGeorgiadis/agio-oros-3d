@@ -276,7 +276,7 @@
   <div id="cesiumContainer"></div>
 
   <script>
-    Cesium.Ion.defaultAccessToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiJhYzA1Y2NhMS1hYjhlLTRjZjUtODRmZS0zNjNhYTFmOTUwYjIiLCJpZCI6NDM5NDgxLCJpc3MiOiJodHRwczovL2FwaS5jZXNpdW0uY29tIiwiYXVkIjoidW5kZWZpbmVkX2RlZmF1bHQiLCJpYXQiOjE3ODA0MTI3Nzl9.TfMTqoDjne1KkA63XMF41szdDtICT4kHVaa9QthS70Q';
+    Cesium.Ion.defaultAccessToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiJhYzA1Y2NhMS1hYjhlLTRjZjUtODRmZS0zNjNhYTFmOTUwYjIiLCJpZCI6NDM5NDgxLCJpc3MiOiJodHRwczovL2FwaS5jZXNpdW0uY29tIiwiYXVkIjoidW5kZWZpbmVkX2RlZmF1bHQpLCJpYXQiOjE3ODA0MTI3Nzl9.TfMTqoDjne1KkA63XMF41szdDtICT4kHVaa9QthS70Q';
 
     const viewer = new Cesium.Viewer('cesiumContainer', {
       terrain: Cesium.Terrain.fromWorldTerrain(),
@@ -287,7 +287,7 @@
       selectionIndicator: false
     });
 
-    // 1. ΔΙΟΡΘΩΣΗ: Απόλυτο κεντράρισμα στις νέες συντεταγμένες και υψόμετρο 35χλμ
+    // 1. Γενική Άποψη στις ακριβείς συντεταγμένες σου
     function flyToGeneral() {
       document.getElementById('customInfoBox').classList.remove('active');
       clearSelects();
@@ -298,7 +298,6 @@
       });
     }
 
-    // Αρχική φόρτωση χάρτη με τις νέες συντεταγμένες
     viewer.camera.setView({
       destination: Cesium.Cartesian3.fromDegrees(24.265333, 40.215050, 35000),
       orientation: { heading: Cesium.Math.toRadians(0.0), pitch: Cesium.Math.toRadians(-55.0), roll: 0.0 }
@@ -338,9 +337,9 @@
       "profiti_ilia": { lon: 24.252869, lat: 40.281049, height: 850, pitch: -35.0, heading: 160.0, name: "Σκήτη Προφήτου Ηλιού", folder: "profitisilias", caption: "Λεζάντα για τη Σκήτη Προφήτου Ηλιού." },
       "agias_triados": { lon: 24.340484, lat: 40.129433, height: 850, pitch: -35.0, heading: 45.0, name: "Σκήτη Αγίας Τριάδος", folder: "agiatriada", caption: "Λεζάντα για τη Σκήτη Αγίας Τριάδος." },
       "nea_skiti": { lon: 24.290025, lat: 40.145914, height: 900, pitch: -35.0, heading: 45.0, name: "Νέα Σκήτη", folder: "neaskiti", caption: "Λεζάντα για τη Νέα Σκήτη." },
-      "evaggelismou_xenof": { lon: 24.199926, lat: 40.252863, height: 550, pitch: -30.0, heading: 90.0, name: "Σκήτη Ευαγγελισμού (Ξενοφώντος)", folder: "evaggelismos", caption: "Λεζάντα για τη Σκήτη Ευαγγελισμού." },
-      "agiou_panteleimonos_kout": { lon: 24.258978, lat: 40.253387, height: 500, pitch: -30.0, heading: 0.0, name: "Σκήτη Αγίου Παντελεήμονος (Κουτλουμουσίου)", folder: "panteleimon_kout", caption: "Λεζάντα για τη Σκήτη Αγίου Παντελεήμονος." },
-      "evaggelismou_filoth": { lon: 24.199945, lat: 40.252755, height: 550, pitch: -30.0, heading: 320.0, name: "Σκήτη Ευαγγελισμού (Φιλοθέου)", folder: "evaggelismos_fil", caption: "Λεζάντα για τη Σκήτη Ευαγγελισμού." }
+      "evaggelismou_xenof": { lon: 24.199926, lat: 40.252863, height: 850, pitch: -35.0, heading: 90.0, name: "Σκήτη Ευαγγελισμού (Ξενοφώντος)", folder: "evaggelismos", caption: "Λεζάντα για τη Σκήτη Ευαγγελισμού." },
+      "agiou_panteleimonos_kout": { lon: 24.258978, lat: 40.253387, height: 800, pitch: -35.0, heading: 0.0, name: "Σκήτη Αγίου Παντελεήμονος (Κουτλουμουσίου)", folder: "panteleimon_kout", caption: "Λεζάντα για τη Σκήτη Αγίου Παντελεήμονος." },
+      "evaggelismou_filoth": { lon: 24.199945, lat: 40.252755, height: 850, pitch: -35.0, heading: 320.0, name: "Σκήτη Ευαγγελισμού (Φιλοθέου)", folder: "evaggelismos_fil", caption: "Λεζάντα για τη Σκήτη Ευαγγελισμού." }
     };
 
     // Δημιουργία Πινεζών
@@ -364,7 +363,27 @@
       entity.locationKey = key;
     }
 
-    
+    // 2. ΔΙΟΡΘΩΣΗ: Έξυπνη μετατόπιση της κάμερας προς τα ΑΡΙΣΤΕΡΑ (Δυτικά) κατά 0.005 μοίρες
+    // Έτσι η πινέζα πέφτει ακριβώς δίπλα από το infoBox και δεν κρύβεται!
+    function flyToLocation(target) {
+      const isMobile = window.innerWidth <= 768;
+      
+      // Στους υπολογιστές μετατοπίζουμε την κάμερα λίγο ανατολικά (lon + offset) 
+      // ώστε ο στόχος να εμφανιστεί πιο αριστερά στην οθόνη μας.
+      const adjustedLon = isMobile ? target.lon : target.lon + 0.0055;
+      const adjustedLat = isMobile ? target.lat - 0.0025 : target.lat; 
+
+      viewer.camera.flyTo({
+        destination: Cesium.Cartesian3.fromDegrees(adjustedLon, adjustedLat, target.height),
+        orientation: {
+          heading: Cesium.Math.toRadians(target.heading),
+          pitch: Cesium.Math.toRadians(target.pitch),
+          roll: 0.0
+        },
+        duration: 3.0
+      });
+    }
+
     function showLocationInfo(key) {
       const data = locations[key];
       if (!data) return;
@@ -376,7 +395,7 @@
       document.getElementById('customInfoBox').classList.add('active');
     }
 
-    // 3. ΔΙΟΡΘΩΣΗ: Λειτουργία για το Accordion Μενού
+    // Accordion λειτουργία
     function toggleAccordion(id) {
       const contents = document.getElementsByClassName('accordion-content');
       for (let i = 0; i < contents.length; i++) {
@@ -422,7 +441,7 @@
       if (Cesium.defined(pickedObject) && Cesium.defined(pickedObject.id)) {
         const entity = pickedObject.id;
         if (entity.locationKey) {
-          showLocationInfo(entity.locationKey);
+          showLocationInfo(entity.locationKey); // Εμφάνιση του infoBox κανονικά
           flyToLocation(locations[entity.locationKey]);
           
           clearSelects();
