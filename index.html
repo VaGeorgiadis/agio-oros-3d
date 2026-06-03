@@ -19,7 +19,7 @@
       font-family: 'Segoe UI', Arial, sans-serif;
     }
 
-    /* ΚΕΝΤΡΙΚΟ ΜΕΝΟΥ (Για υπολογιστές) */
+    /* ΚΕΝΤΡΙΚΟ ΜΕΝΟΥ (Accordion Style) */
     #menuContainer {
       position: absolute;
       top: 20px;
@@ -30,53 +30,72 @@
       border-radius: 8px;
       box-shadow: 0px 4px 20px rgba(0,0,0,0.6);
       border: 1px solid #dfb76c;
-      width: 300px;
+      width: 320px;
       box-sizing: border-box;
+      max-height: 90vh;
+      overflow-y: auto;
     }
 
-    label {
+    .menu-header {
       color: #dfb76c;
-      font-size: 13px;
+      font-size: 14px;
       font-weight: bold;
-      display: block;
-      margin-bottom: 8px;
       text-transform: uppercase;
       letter-spacing: 1px;
+      margin-bottom: 12px;
+      border-bottom: 1px solid #555;
+      padding-bottom: 5px;
     }
 
-    #locationSelect {
+    /* Στυλ για τα Κουμπιά του Accordion */
+    .accordion-btn {
+      width: 100%;
+      background: #222;
+      color: #dfb76c;
+      text-align: left;
+      padding: 10px;
+      font-size: 13px;
+      font-weight: bold;
+      border: 1px solid #444;
+      border-radius: 4px;
+      cursor: pointer;
+      margin-bottom: 5px;
+      outline: none;
+      transition: background 0.3s;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .accordion-btn:hover {
+      background: #2a2a2a;
+    }
+
+    /* Το εσωτερικό περιεχόμενο που ανοιγοκλείνει */
+    .accordion-content {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.3s ease-out;
+      margin-bottom: 5px;
+    }
+
+    .accordion-content select {
       width: 100%;
       padding: 10px;
       border: 1px solid #555;
-      border-radius: 4px;
-      background: #1a1a1a;
+      background: #111;
       color: #fff;
-      font-size: 14px;
+      font-size: 13px;
       cursor: pointer;
       outline: none;
       box-sizing: border-box;
     }
 
-    #locationSelect:focus {
-      border-color: #dfb76c;
-    }
-
-    optgroup {
-      background: #222;
-      color: #dfb76c;
-    }
-
-    option {
-      color: #fff;
-      background: #1a1a1a;
-    }
-
     /* AUDIO PLAYER */
     .audio-player-container {
-      background: #222;
-      padding: 10px;
+      background: #1a1a1a;
+      padding: 8px;
       border-radius: 6px;
-      margin-top: 15px;
+      margin-top: 10px;
       border-top: 1px solid #444;
     }
     
@@ -118,7 +137,6 @@
       color: #aaa;
       font-size: 24px;
       cursor: pointer;
-      padding: 5px;
     }
 
     #closeBtn:hover {
@@ -132,7 +150,6 @@
       padding-bottom: 10px;
       font-size: 22px;
       margin-bottom: 15px;
-      padding-right: 20px;
     }
 
     #infoImage {
@@ -162,24 +179,8 @@
         left: 5%;
         width: 90%;
         padding: 10px;
-        box-shadow: 0px 2px 10px rgba(0,0,0,0.5);
       }
-
-      label {
-        font-size: 11px;
-        margin-bottom: 4px;
-      }
-
-      #locationSelect {
-        padding: 8px;
-        font-size: 15px;
-      }
-
-      .audio-player-container {
-        margin-top: 8px;
-        padding: 5px;
-      }
-
+      .accordion-btn { padding: 8px; font-size: 12px; }
       #customInfoBox {
         top: auto;
         right: 0 !important;
@@ -188,49 +189,23 @@
         width: 100%;
         max-height: 50vh;
         border-radius: 12px 12px 0 0;
-        border-left: none;
-        border-right: none;
-        border-bottom: none;
-        box-shadow: 0px -5px 20px rgba(0,0,0,0.6);
         padding: 15px;
       }
-
-      #customInfoBox.active {
-        bottom: 0;
-      }
-
-      #infoTitle {
-        font-size: 18px;
-        margin-top: 5px;
-        margin-bottom: 10px;
-      }
-
-      #infoImage {
-        max-height: 200px;
-      }
-
-      #infoCaption {
-        font-size: 13px;
-        padding: 10px;
-      }
-      
-      #closeBtn {
-        top: 10px;
-        right: 10px;
-        font-size: 28px;
-      }
+      #customInfoBox.active { bottom: 0; }
+      #infoImage { max-height: 180px; }
     }
   </style>
 </head>
 <body>
 
   <div id="menuContainer">
-    <label for="locationSelect">Πλοήγηση στο Άγιο Όρος</label>
-    <select id="locationSelect">
-      <option value="" disabled selected>Επιλέξτε προορισμό...</option>
-      <option value="general">-- Γενική Άποψη Χερσονήσου --</option>
-      
-      <optgroup label="ΙΕΡΕΣ ΜΟΝΕΣ">
+    <div class="menu-header">Πλοήγηση Αγίου Όρους</div>
+    
+    <button class="accordion-btn" onclick="flyToGeneral()">🗺️ Γενική Άποψη</button>
+    
+    <button class="accordion-btn" onclick="toggleAccordion('monasteries-content')">🏰 Ιερές Μονές <span>▼</span></button>
+    <div id="monasteries-content" class="accordion-content">
+      <select id="monasterySelect" size="8">
         <option value="megistis_lavras">Ι.Μ. Μεγίστης Λαύρας</option>
         <option value="vatopediou">Ι.Μ. Βατοπαιδίου</option>
         <option value="iviron">Ι.Μ. Ιβήρων</option>
@@ -251,9 +226,12 @@
         <option value="esfigmenou">Ι.Μ. Εσφιγμένου</option>
         <option value="agiou_panteleimonos">Ι.Μ. Αγίου Παντελεήμονος</option>
         <option value="konstamonitou">Ι.Μ. Κωνσταμονίτου</option>
-      </optgroup>
+      </select>
+    </div>
 
-      <optgroup label="ΣΚΗΤΕΣ">
+    <button class="accordion-btn" onclick="toggleAccordion('skites-content')">⛪ Ιερές Σκήτες <span>▼</span></button>
+    <div id="skites-content" class="accordion-content">
+      <select id="skiteSelect" size="6">
         <option value="agias_annis">Σκήτη Αγίας Άννης</option>
         <option value="mikra_agia_anna">Μικρά Αγία Άννα</option>
         <option value="kafsokalyvia">Καυσοκαλύβια</option>
@@ -267,8 +245,17 @@
         <option value="evaggelismou_xenof">Σκήτη Ευαγγελισμού (Ξενοφώντος)</option>
         <option value="agiou_panteleimonos_kout">Σκήτη Αγίου Παντελεήμονος (Κουτλουμουσίου)</option>
         <option value="evaggelismou_filoth">Σκήτη Ευαγγελισμού (Φιλοθέου)</option>
-      </optgroup>
-    </select>
+      </select>
+    </div>
+
+    <button class="accordion-btn" onclick="toggleAccordion('routes-content')">🥾 Διαδρομές Αποστολών <span>▼</span></button>
+    <div id="routes-content" class="accordion-content">
+      <select id="routeSelect" size="3">
+        <option value="" disabled selected>-- Επιλέξτε Διαδρομή --</option>
+        <option value="route1">Προσεχώς: Διαδρομή 1</option>
+        <option value="route2">Προσεχώς: Διαδρομή 2</option>
+      </select>
+    </div>
 
     <div class="audio-player-container">
       <label style="color: #aaa; font-size: 11px;">Μουσική Υπόκρουση</label>
@@ -300,56 +287,65 @@
       selectionIndicator: false
     });
 
+    // 1. ΔΙΟΡΘΩΣΗ: Απόλυτο κεντράρισμα και αυξημένο υψόμετρο για όλη τη χερσόνησο
+    function flyToGeneral() {
+      document.getElementById('customInfoBox').classList.remove('active');
+      clearSelects();
+      viewer.camera.flyTo({
+        destination: Cesium.Cartesian3.fromDegrees(24.250000, 40.245000, 35000), // Υψόμετρο 35χλμ, κέντρο χερσονήσου
+        orientation: { heading: Cesium.Math.toRadians(0.0), pitch: Cesium.Math.toRadians(-55.0), roll: 0.0 },
+        duration: 3.0
+      });
+    }
+
+    // Εκτέλεση της αρχικής θέας κατά τη φόρτωση
     viewer.camera.setView({
-      destination: Cesium.Cartesian3.fromDegrees(24.2300, 40.2300, 22000),
-      orientation: { heading: Cesium.Math.toRadians(0.0), pitch: Cesium.Math.toRadians(-50.0), roll: 0.0 }
+      destination: Cesium.Cartesian3.fromDegrees(24.250000, 40.245000, 35000),
+      orientation: { heading: Cesium.Math.toRadians(0.0), pitch: Cesium.Math.toRadians(-55.0), roll: 0.0 }
     });
 
+    // Βάση Δεδομένων
     const locations = {
-      "general": { lon: 24.230000, lat: 40.230000, height: 22000, pitch: -50.0, heading: 0.0 },
-      
-      // ΜΟΝΕΣ
-      "megistis_lavras": { lon: 24.382442, lat: 40.170425, height: 600, pitch: -25.0, heading: 270.0, name: "Ι.Μ. Μεγίστης Λαύρας", folder: "lavra", caption: "Άποψη του καθολικού και της εσωτερικής αυλής της Μονής κατά την πρωινή είσοδο." },
-      "vatopediou": { lon: 24.211683, lat: 40.314461, height: 700, pitch: -30.0, heading: 180.0, name: "Ι.Μ. Βατοπαιδίου", folder: "vatopedi", caption: "Λεζάντα για τη Μονή Βατοπαιδίου." },
-      "iviron": { lon: 24.285214, lat: 40.245509, height: 600, pitch: -25.0, heading: 290.0, name: "Ι.Μ. Ιβήρων", folder: "iviron", caption: "Λεζάντα για τη Μονή Ιβήρων." },
-      "chilandariou": { lon: 24.119725, lat: 40.334444, height: 650, pitch: -30.0, heading: 45.0, name: "Ι.Μ. Χιλανδαρίου", folder: "chilandari", caption: "Λεζάντα για τη Μονή Χιλανδαρίου." },
-      "dionysiou": { lon: 24.120892, lat: 40.339915, height: 600, pitch: -25.0, heading: 45.0, name: "Ι.Μ. Διονυσίου", folder: "dionysiou", caption: "Λεζάντα για τη Μονή Διονυσίου." },
-      "koutloumousiou": { lon: 24.247848, lat: 40.253131, height: 500, pitch: -30.0, heading: 0.0, name: "Ι.Μ. Κουτλουμουσίου", folder: "koutloumousi", caption: "Λεζάντα για τη Μονή Κουτλουμουσίου." },
-      "pantokratoros": { lon: 24.266973, lat: 40.283756, height: 600, pitch: -25.0, heading: 250.0, name: "Ι.Μ. Παντοκράτορος", folder: "pantokrator", caption: "Λεζάντα για τη Μονή Παντοκράτορος." },
-      "xiropotamou": { lon: 24.221407, lat: 40.228475, height: 550, pitch: -30.0, heading: 60.0, name: "Ι.Μ. Ξηροποτάμου", folder: "xiropotamou", caption: "Λεζάντα για τη Μονή Ξηροποτάμου." },
-      "zografou": { lon: 24.160158, lat: 40.305918, height: 600, pitch: -30.0, heading: 130.0, name: "Ι.Μ. Ζωγράφου", folder: "zografou", caption: "Λεζάντα για τη Μονή Ζωγράφου." },
-      "docheiariou": { lon: 24.172795, lat: 40.266663, height: 550, pitch: -25.0, heading: 90.0, name: "Ι.Μ. Δοχειαρίου", folder: "docheiariou", caption: "Λεζάντα για τη Μονή Δοχειαρίου." },
-      "karakallou": { lon: 24.309524, lat: 40.223783, height: 600, pitch: -25.0, heading: 300.0, name: "Ι.Μ. Καρακάλλου", folder: "karakallou", caption: "Λεζάντα για τη Μονή Καρακάλλου." },
-      "filotheou": { lon: 24.291167, lat: 40.225622, height: 600, pitch: -30.0, heading: 320.0, name: "Ι.Μ. Φιλοθέου", folder: "filotheou", caption: "Λεζάντα για τη Μονή Φιλοθέου." },
-      "simonopetra": { lon: 24.246928, lat: 40.190439, height: 700, pitch: -25.0, heading: 45.0, name: "Ι.Μ. Σίμωνος Πέτρας", folder: "simonopetra", caption: "Λεζάντα για τη Μονή Σίμωνος Πέτρας." },
-      "agiou_pavlou": { lon: 24.290316, lat: 40.161028, height: 750, pitch: -25.0, heading: 20.0, name: "Ι.Μ. Αγίου Παύλου", folder: "agioupavlou", caption: "Λεζάντα για τη Μονή Αγίου Παύλου." },
-      "stavronikita": { lon: 24.277503, lat: 40.268082, height: 550, pitch: -25.0, heading: 240.0, name: "Ι.Μ. Σταυρονικήτα", folder: "stavronikita", caption: "Λεζάντα για τη Μονή Σταυρονικήτα." },
-      "xenofontos": { lon: 24.178640, lat: 40.258746, height: 550, pitch: -25.0, heading: 90.0, name: "Ι.Μ. Ξενοφώντος", folder: "xenofontos", caption: "Λεζάντα για τη Μονή Ξενοφώντος." },
-      "grigoriou": { lon: 24.256003, lat: 40.179493, height: 600, pitch: -25.0, heading: 45.0, name: "Ι.Μ. Γρηγορίου", folder: "grigoriou", caption: "Λεζάντα για τη Μονή Γρηγορίου." },
-      "esfigmenou": { lon: 24.138272, lat: 40.352738, height: 550, pitch: -25.0, heading: 180.0, name: "Ι.Μ. Εσφιγμένου", folder: "esfigmenou", caption: "Λεζάντα για τη Μονή Εσφιγμένου." },
-      "agiou_panteleimonos": { lon: 24.201429, lat: 40.237967, height: 600, pitch: -25.0, heading: 90.0, name: "Ι.Μ. Αγίου Παντελεήμονος", folder: "panteleimon", caption: "Λεζάντα για τη Μονή Αγίου Παντελεήμονος." },
-      "konstamonitou": { lon: 24.174802, lat: 40.288677, height: 600, pitch: -30.0, heading: 120.0, name: "Ι.Μ. Κωνσταμονίτου", folder: "konstamonitou", caption: "Λεζάντα για τη Μονή Κωνσταμονίτου." },
+      "megistis_lavras": { lon: 24.382442, lat: 40.170425, height: 900, pitch: -35.0, heading: 270.0, name: "Ι.Μ. Μεγίστης Λαύρας", folder: "lavra", caption: "Άποψη του καθολικού και της εσωτερικής αυλής της Μονής κατά την πρωινή είσοδο." },
+      "vatopediou": { lon: 24.211683, lat: 40.314461, height: 900, pitch: -35.0, heading: 180.0, name: "Ι.Μ. Βατοπαιδίου", folder: "vatopedi", caption: "Λεζάντα για τη Μονή Βατοπαιδίου." },
+      "iviron": { lon: 24.285214, lat: 40.245509, height: 900, pitch: -35.0, heading: 290.0, name: "Ι.Μ. Ιβήρων", folder: "iviron", caption: "Λεζάντα για τη Μονή Ιβήρων." },
+      "chilandariou": { lon: 24.119725, lat: 40.334444, height: 950, pitch: -35.0, heading: 45.0, name: "Ι.Μ. Χιλανδαρίου", folder: "chilandari", caption: "Λεζάντα για τη Μονή Χιλανδαρίου." },
+      "dionysiou": { lon: 24.120892, lat: 40.339915, height: 900, pitch: -35.0, heading: 45.0, name: "Ι.Μ. Διονυσίου", folder: "dionysiou", caption: "Λεζάντα για τη Μονή Διονυσίου." },
+      "koutloumousiou": { lon: 24.247848, lat: 40.253131, height: 800, pitch: -35.0, heading: 0.0, name: "Ι.Μ. Κουτλουμουσίου", folder: "koutloumousi", caption: "Λεζάντα για τη Μονή Κουτλουμουσίου." },
+      "pantokratoros": { lon: 24.266973, lat: 40.283756, height: 900, pitch: -35.0, heading: 250.0, name: "Ι.Μ. Παντοκράτορος", folder: "pantokrator", caption: "Λεζάντα για τη Μονή Παντοκράτορος." },
+      "xiropotamou": { lon: 24.221407, lat: 40.228475, height: 850, pitch: -35.0, heading: 60.0, name: "Ι.Μ. Ξηροποτάμου", folder: "xiropotamou", caption: "Λεζάντα για τη Μονή Ξηροποτάμου." },
+      "zografou": { lon: 24.160158, lat: 40.305918, height: 900, pitch: -35.0, heading: 130.0, name: "Ι.Μ. Ζωγράφου", folder: "zografou", caption: "Λεζάντα για τη Μονή Ζωγράφου." },
+      "docheiariou": { lon: 24.172795, lat: 40.266663, height: 850, pitch: -35.0, heading: 90.0, name: "Ι.Μ. Δοχειαρίου", folder: "docheiariou", caption: "Λεζάντα για τη Μονή Δοχειαρίου." },
+      "karakallou": { lon: 24.309524, lat: 40.223783, height: 900, pitch: -35.0, heading: 300.0, name: "Ι.Μ. Καρακάλλου", folder: "karakallou", caption: "Λεζάντα για τη Μονή Καρακάλλου." },
+      "filotheou": { lon: 24.291167, lat: 40.225622, height: 900, pitch: -35.0, heading: 320.0, name: "Ι.Μ. Φιλοθέου", folder: "filotheou", caption: "Λεζάντα για τη Μονή Φιλοθέου." },
+      "simonopetra": { lon: 24.246928, lat: 40.190439, height: 950, pitch: -35.0, heading: 45.0, name: "Ι.Μ. Σίμωνος Πέτρας", folder: "simonopetra", caption: "Λεζάντα για τη Μονή Σίμωνος Πέτρας." },
+      "agiou_pavlou": { lon: 24.290316, lat: 40.161028, height: 950, pitch: -35.0, heading: 20.0, name: "Ι.Μ. Αγίου Παύλου", folder: "agioupavlou", caption: "Λεζάντα για τη Μονή Αγίου Παύλου." },
+      "stavronikita": { lon: 24.277503, lat: 40.268082, height: 850, pitch: -35.0, heading: 240.0, name: "Ι.Μ. Σταυρονικήτα", folder: "stavronikita", caption: "Λεζάντα για τη Μονή Σταυρονικήτα." },
+      "xenofontos": { lon: 24.178640, lat: 40.258746, height: 850, pitch: -35.0, heading: 90.0, name: "Ι.Μ. Ξενοφώντος", folder: "xenofontos", caption: "Λεζάντα για τη Μονή Ξενοφώντος." },
+      "grigoriou": { lon: 24.256003, lat: 40.179493, height: 900, pitch: -35.0, heading: 45.0, name: "Ι.Μ. Γρηγορίου", folder: "grigoriou", caption: "Λεζάντα για τη Μονή Γρηγορίου." },
+      "esfigmenou": { lon: 24.138272, lat: 40.352738, height: 850, pitch: -35.0, heading: 180.0, name: "Ι.Μ. Εσφιγμένου", folder: "esfigmenou", caption: "Λεζάντα για τη Μονή Εσφιγμένου." },
+      "agiou_panteleimonos": { lon: 24.201429, lat: 40.237967, height: 900, pitch: -35.0, heading: 90.0, name: "Ι.Μ. Αγίου Παντελεήμονος", folder: "panteleimon", caption: "Λεζάντα για τη Μονή Αγίου Παντελεήμονος." },
+      "konstamonitou": { lon: 24.174802, lat: 40.288677, height: 900, pitch: -35.0, heading: 120.0, name: "Ι.Μ. Κωνσταμονίτου", folder: "konstamonitou", caption: "Λεζάντα για τη Μονή Κωνσταμονίτου." },
       
       // ΣΚΗΤΕΣ
-      "agias_annis": { lon: 24.296918, lat: 40.140421, height: 650, pitch: -25.0, heading: 45.0, name: "Σκήτη Αγίας Άννης", folder: "agiaanna", caption: "Λεζάντα για τη Σκήτη Αγίας Άννης." },
-      "mikra_agia_anna": { lon: 24.291801, lat: 40.138597, height: 500, pitch: -25.0, heading: 30.0, name: "Μικρά Αγία Άννα", folder: "mikraanna", caption: "Λεζάντα για τη Μικρά Αγία Άννα." },
-      "kafsokalyvia": { lon: 24.340173, lat: 40.130303, height: 600, pitch: -25.0, heading: 340.0, name: "Καυσοκαλύβια", folder: "kafsokalyvia", caption: "Λεζάντα για τα Καυσοκαλύβια." },
-      "provata": { lon: 24.314574, lat: 40.217606, height: 600, pitch: -30.0, heading: 270.0, name: "Σκήτη Προβάτα", folder: "provata", caption: "Λεζάντα για τη Σκήτη Προβάτα." },
-      "agiou_dimitriou": { lon: 24.219473, lat: 40.302712, height: 550, pitch: -30.0, heading: 180.0, name: "Σκήτη Αγίου Δημητρίου", folder: "agiosdimitrios", caption: "Λεζάντα για τη Σκήτη Αγίου Δημητρίου." },
-      "agiou_andrea": { lon: 24.244579, lat: 40.262255, height: 500, pitch: -30.0, heading: 210.0, name: "Σκήτη Αγίου Ανδρέα (Σεράι)", folder: "agiosandreas", caption: "Λεζάντα για τη Σκήτη Αγίου Ανδρέα." },
-      "timiou_prodromou": { lon: 24.277335, lat: 40.239258, height: 500, pitch: -25.0, heading: 270.0, name: "Σκήτη Τιμίου Προδρόμου", folder: "timiosprodromos", caption: "Λεζάντα για τη Σκήτη Τιμίου Προδρόμου." },
-      "profiti_ilia": { lon: 24.252869, lat: 40.281049, height: 550, pitch: -25.0, heading: 160.0, name: "Σκήτη Προφήτου Ηλιού", folder: "profitisilias", caption: "Λεζάντα για τη Σκήτη Προφήτου Ηλιού." },
-      "agias_triados": { lon: 24.340484, lat: 40.129433, height: 550, pitch: -30.0, heading: 45.0, name: "Σκήτη Αγίας Τριάδος", folder: "agiatriada", caption: "Λεζάντα για τη Σκήτη Αγίας Τριάδος." },
-      "nea_skiti": { lon: 24.290025, lat: 40.145914, height: 600, pitch: -25.0, heading: 45.0, name: "Νέα Σκήτη", folder: "neaskiti", caption: "Λεζάντα για τη Νέα Σκήτη." },
-      "evaggelismou_xenof": { lon: 24.199926, lat: 40.252863, height: 550, pitch: -30.0, heading: 90.0, name: "Σκήτη Ευαγγελισμού (Ξενοφώντος)", folder: "evaggelismos", caption: "Λεζάντα για τη Σκήτη Ευαγγελισμού." },
-      "agiou_panteleimonos_kout": { lon: 24.258978, lat: 40.253387, height: 500, pitch: -30.0, heading: 0.0, name: "Σκήτη Αγίου Παντελεήμονος (Κουτλουμουσίου)", folder: "panteleimon_kout", caption: "Λεζάντα για τη Σκήτη Αγίου Παντελεήμονος." },
-      "evaggelismou_filoth": { lon: 24.199945, lat: 40.252755, height: 550, pitch: -30.0, heading: 320.0, name: "Σκήτη Ευαγγελισμού (Φιλοθέου)", folder: "evaggelismos_fil", caption: "Λεζάντα για τη Σκήτη Ευαγγελισμού." }
+      "agias_annis": { lon: 24.296918, lat: 40.140421, height: 900, pitch: -35.0, heading: 45.0, name: "Σκήτη Αγίας Άννης", folder: "agiaanna", caption: "Λεζάντα για τη Σκήτη Αγίας Άννης." },
+      "mikra_agia_anna": { lon: 24.291801, lat: 40.138597, height: 800, pitch: -35.0, heading: 30.0, name: "Μικρά Αγία Άννα", folder: "mikraanna", caption: "Λεζάντα για τη Μικρά Αγία Άννα." },
+      "kafsokalyvia": { lon: 24.340173, lat: 40.130303, height: 900, pitch: -35.0, heading: 340.0, name: "Καυσοκαλύβια", folder: "kafsokalyvia", caption: "Λεζάντα για τα Καυσοκαλύβια." },
+      "provata": { lon: 24.314574, lat: 40.217606, height: 900, pitch: -35.0, heading: 270.0, name: "Σκήτη Προβάτα", folder: "provata", caption: "Λεζάντα για τη Σκήτη Προβάτα." },
+      "agiou_dimitriou": { lon: 24.219473, lat: 40.302712, height: 850, pitch: -35.0, heading: 180.0, name: "Σκήτη Αγίου Δημητρίου", folder: "agiosdimitrios", caption: "Λεζάντα για τη Σκήτη Αγίου Δημητρίου." },
+      "agiou_andrea": { lon: 24.244579, lat: 40.262255, height: 800, pitch: -35.0, heading: 210.0, name: "Σκήτη Αγίου Ανδρέα (Σεράι)", folder: "agiosandreas", caption: "Λεζάντα για τη Σκήτη Αγίου Ανδρέα." },
+      "timiou_prodromou": { lon: 24.277335, lat: 40.239258, height: 800, pitch: -35.0, heading: 270.0, name: "Σκήτη Τιμίου Προδρόμου", folder: "timiosprodromos", caption: "Λεζάντα για τη Σκήτη Τιμίου Προδρόμου." },
+      "profiti_ilia": { lon: 24.252869, lat: 40.281049, height: 850, pitch: -35.0, heading: 160.0, name: "Σκήτη Προφήτου Ηλιού", folder: "profitisilias", caption: "Λεζάντα για τη Σκήτη Προφήτου Ηλιού." },
+      "agias_triados": { lon: 24.340484, lat: 40.129433, height: 850, pitch: -35.0, heading: 45.0, name: "Σκήτη Αγίας Τριάδος", folder: "agiatriada", caption: "Λεζάντα για τη Σκήτη Αγίας Τριάδος." },
+      "nea_skiti": { lon: 24.290025, lat: 40.145914, height: 900, pitch: -35.0, heading: 45.0, name: "Νέα Σκήτη", folder: "neaskiti", caption: "Λεζάντα για τη Νέα Σκήτη." },
+      "evaggelismou_xenof": { lon: 24.199926, lat: 40.252863, height: 850, pitch: -35.0, heading: 90.0, name: "Σκήτη Ευαγγελισμού (Ξενοφώντος)", folder: "evaggelismos", caption: "Λεζάντα για τη Σκήτη Ευαγγελισμού." },
+      "agiou_panteleimonos_kout": { lon: 24.258978, lat: 40.253387, height: 800, pitch: -35.0, heading: 0.0, name: "Σκήτη Αγίου Παντελεήμονος (Κουτλουμουσίου)", folder: "panteleimon_kout", caption: "Λεζάντα για τη Σκήτη Αγίου Παντελεήμονος." },
+      "evaggelismou_filoth": { lon: 24.199945, lat: 40.252755, height: 850, pitch: -35.0, heading: 320.0, name: "Σκήτη Ευαγγελισμού (Φιλοθέου)", folder: "evaggelismos_fil", caption: "Λεζάντα για τη Σκήτη Ευαγγελισμού." }
     };
 
-    // Αυτόματη δημιουργία Πινεζών (Markers)
+    // Δημιουργία Πινεζών κανονικά
     for (const key in locations) {
       if (key === "general") continue;
-      
       const loc = locations[key];
       const isSkiti = loc.name.includes("Σκήτη") || loc.name.includes("Μικρά") || loc.name.includes("Καυσοκαλύβια");
       const markerColor = isSkiti ? Cesium.Color.DODGERBLUE : Cesium.Color.RED;
@@ -365,28 +361,78 @@
         },
         name: loc.name
       });
-
       entity.locationKey = key;
     }
 
-    // ΣΥΝΑΡΤΗΣΗ ΕΜΦΑΝΙΣΗΣ ΦΩΤΟΓΡΑΦΙΑΣ
+    // 2. ΔΙΟΡΘΩΣΗ: Σωστή πτήση κάμερας με αντισταθμισμένο offset για τέλειο κεντράρισμα
+    function flyToLocation(target) {
+      // Υπολογισμός offset για να μην πηγαίνει η κάμερα πιο βόρεια λόγω της κλίσης (pitch)
+      const pitchRad = Cesium.Math.toRadians(target.pitch);
+      const offsetFactor = Math.cos(Math.abs(pitchRad)) * (target.height / 111000); 
+      const adjustedLat = target.lat - (offsetFactor * 0.4); // Διορθώνει τη μετατόπιση προς τα πάνω
+
+      viewer.camera.flyTo({
+        destination: Cesium.Cartesian3.fromDegrees(target.lon, adjustedLat, target.height),
+        orientation: {
+          heading: Cesium.Math.toRadians(target.heading),
+          pitch: pitchRad,
+          roll: 0.0
+        },
+        duration: 3.0
+      });
+    }
+
     function showLocationInfo(key) {
       const data = locations[key];
-
-      if (!data || key === "general") {
-        document.getElementById('customInfoBox').classList.remove('active');
-        return;
-      }
+      if (!data) return;
 
       document.getElementById('infoTitle').innerText = data.name;
       document.getElementById('infoImage').src = `fotografies/${data.folder}/${data.folder}_1.jpg`;
       document.getElementById('infoImage').alt = data.name;
       document.getElementById('infoCaption').innerText = data.caption;
-
       document.getElementById('customInfoBox').classList.add('active');
     }
 
-    // 1. LEFT CLICK πάνω σε ΠΙΝΕΖΑ
+    // 3. ΔΙΟΡΘΩΣΗ: Λειτουργία για το Accordion Μενού
+    function toggleAccordion(id) {
+      const contents = document.getElementsByClassName('accordion-content');
+      for (let i = 0; i < contents.length; i++) {
+        if (contents[i].id !== id) {
+          contents[i].style.maxHeight = null; // Κλείσιμο των άλλων
+        }
+      }
+      const current = document.getElementById(id);
+      if (current.style.maxHeight) {
+        current.style.maxHeight = null;
+      } else {
+        current.style.maxHeight = current.scrollHeight + "px"; // Άνοιγμα
+      }
+    }
+
+    function clearSelects() {
+      document.getElementById('monasterySelect').selectedIndex = -1;
+      document.getElementById('skiteSelect').selectedIndex = -1;
+      document.getElementById('routeSelect').selectedIndex = -1;
+    }
+
+    // Event Listeners για τις λίστες
+    document.getElementById('monasterySelect').addEventListener('change', function() {
+      if(this.value) {
+        showLocationInfo(this.value);
+        flyToLocation(locations[this.value]);
+        document.getElementById('skiteSelect').selectedIndex = -1;
+      }
+    });
+
+    document.getElementById('skiteSelect').addEventListener('change', function() {
+      if(this.value) {
+        showLocationInfo(this.value);
+        flyToLocation(locations[this.value]);
+        document.getElementById('monasterySelect').selectedIndex = -1;
+      }
+    });
+
+    // LEFT CLICK πάνω σε ΠΙΝΕΖΑ
     const handler = new Cesium.ScreenSpaceEventHandler(viewer.scene.canvas);
     handler.setInputAction(function(movement) {
       const pickedObject = viewer.scene.pick(movement.position);
@@ -394,37 +440,19 @@
         const entity = pickedObject.id;
         if (entity.locationKey) {
           showLocationInfo(entity.locationKey);
-          const target = locations[entity.locationKey];
-          viewer.camera.flyTo({
-            destination: Cesium.Cartesian3.fromDegrees(target.lon, target.lat, target.height),
-            orientation: { heading: Cesium.Math.toRadians(target.heading), pitch: Cesium.Math.toRadians(target.pitch), roll: 0.0 },
-            duration: 2.5
-          });
-          document.getElementById('locationSelect').value = entity.locationKey;
+          flyToLocation(locations[entity.locationKey]);
+          
+          clearSelects();
+          // Επιλογή της σωστής τιμής στο ανάλογο μενού
+          if (document.querySelector(`#monasterySelect option[value="${entity.locationKey}"]`)) {
+            document.getElementById('monasterySelect').value = entity.locationKey;
+          } else if (document.querySelector(`#skiteSelect option[value="${entity.locationKey}"]`)) {
+            document.getElementById('skiteSelect').value = entity.locationKey;
+          }
         }
       }
     }, Cesium.ScreenSpaceEventType.LEFT_CLICK);
 
-    // 2. ΑΛΛΑΓΗ ΑΠΟ ΤΟ DROPDOWN ΜΕΝΟΥ
-    document.getElementById('locationSelect').addEventListener('change', function() {
-      const value = this.value;
-      const target = locations[value];
-      if (target) {
-        showLocationInfo(value);
-        viewer.camera.flyTo({
-          destination: Cesium.Cartesian3.fromDegrees(target.lon, target.lat, target.height),
-          orientation: { heading: Cesium.Math.toRadians(target.heading), pitch: Cesium.Math.toRadians(target.pitch), roll: 0.0 },
-          duration: 3.5
-        });
-      }
-    });
-
-    // 3. ΚΟΥΜΠΙ ΚΛΕΙΣΙΜΑΤΟΣ (X)
+    // ΚΟΥΜΠΙ ΚΛΕΙΣΙΜΑΤΟΣ (X)
     document.getElementById('closeBtn').addEventListener('click', function() {
       document.getElementById('customInfoBox').classList.remove('active');
-      document.getElementById('locationSelect').value = "";
-    });
-
-  </script>
-</body>
-</html>
