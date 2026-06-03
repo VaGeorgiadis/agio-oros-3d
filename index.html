@@ -364,23 +364,7 @@
       entity.locationKey = key;
     }
 
-    // 2. ΔΙΟΡΘΩΣΗ: Σωστή πτήση κάμερας με αντισταθμισμένο offset για τέλειο κεντράρισμα στα επιμέρους σημεία
-    function flyToLocation(target) {
-      const pitchRad = Cesium.Math.toRadians(target.pitch);
-      const offsetFactor = Math.cos(Math.abs(pitchRad)) * (target.height / 111000); 
-      const adjustedLat = target.lat - (offsetFactor * 0.4); 
-
-      viewer.camera.flyTo({
-        destination: Cesium.Cartesian3.fromDegrees(target.lon, adjustedLat, target.height),
-        orientation: {
-          heading: Cesium.Math.toRadians(target.heading),
-          pitch: pitchRad,
-          roll: 0.0
-        },
-        duration: 3.0
-      });
-    }
-
+    
     function showLocationInfo(key) {
       const data = locations[key];
       if (!data) return;
