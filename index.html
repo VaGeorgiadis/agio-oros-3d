@@ -287,20 +287,20 @@
       selectionIndicator: false
     });
 
-    // 1. ΔΙΟΡΘΩΣΗ: Απόλυτο κεντράρισμα και αυξημένο υψόμετρο για όλη τη χερσόνησο
+    // 1. ΔΙΟΡΘΩΣΗ: Απόλυτο κεντράρισμα στις νέες συντεταγμένες και υψόμετρο 35χλμ
     function flyToGeneral() {
       document.getElementById('customInfoBox').classList.remove('active');
       clearSelects();
       viewer.camera.flyTo({
-        destination: Cesium.Cartesian3.fromDegrees(24.250000, 40.245000, 35000), // Υψόμετρο 35χλμ, κέντρο χερσονήσου
+        destination: Cesium.Cartesian3.fromDegrees(24.265333, 40.215050, 35000), 
         orientation: { heading: Cesium.Math.toRadians(0.0), pitch: Cesium.Math.toRadians(-55.0), roll: 0.0 },
         duration: 3.0
       });
     }
 
-    // Εκτέλεση της αρχικής θέας κατά τη φόρτωση
+    // Αρχική φόρτωση χάρτη με τις νέες συντεταγμένες
     viewer.camera.setView({
-      destination: Cesium.Cartesian3.fromDegrees(24.250000, 40.245000, 35000),
+      destination: Cesium.Cartesian3.fromDegrees(24.265333, 40.215050, 35000),
       orientation: { heading: Cesium.Math.toRadians(0.0), pitch: Cesium.Math.toRadians(-55.0), roll: 0.0 }
     });
 
@@ -338,12 +338,12 @@
       "profiti_ilia": { lon: 24.252869, lat: 40.281049, height: 850, pitch: -35.0, heading: 160.0, name: "Σκήτη Προφήτου Ηλιού", folder: "profitisilias", caption: "Λεζάντα για τη Σκήτη Προφήτου Ηλιού." },
       "agias_triados": { lon: 24.340484, lat: 40.129433, height: 850, pitch: -35.0, heading: 45.0, name: "Σκήτη Αγίας Τριάδος", folder: "agiatriada", caption: "Λεζάντα για τη Σκήτη Αγίας Τριάδος." },
       "nea_skiti": { lon: 24.290025, lat: 40.145914, height: 900, pitch: -35.0, heading: 45.0, name: "Νέα Σκήτη", folder: "neaskiti", caption: "Λεζάντα για τη Νέα Σκήτη." },
-      "evaggelismou_xenof": { lon: 24.199926, lat: 40.252863, height: 850, pitch: -35.0, heading: 90.0, name: "Σκήτη Ευαγγελισμού (Ξενοφώντος)", folder: "evaggelismos", caption: "Λεζάντα για τη Σκήτη Ευαγγελισμού." },
-      "agiou_panteleimonos_kout": { lon: 24.258978, lat: 40.253387, height: 800, pitch: -35.0, heading: 0.0, name: "Σκήτη Αγίου Παντελεήμονος (Κουτλουμουσίου)", folder: "panteleimon_kout", caption: "Λεζάντα για τη Σκήτη Αγίου Παντελεήμονος." },
-      "evaggelismou_filoth": { lon: 24.199945, lat: 40.252755, height: 850, pitch: -35.0, heading: 320.0, name: "Σκήτη Ευαγγελισμού (Φιλοθέου)", folder: "evaggelismos_fil", caption: "Λεζάντα για τη Σκήτη Ευαγγελισμού." }
+      "evaggelismou_xenof": { lon: 24.199926, lat: 40.252863, height: 550, pitch: -30.0, heading: 90.0, name: "Σκήτη Ευαγγελισμού (Ξενοφώντος)", folder: "evaggelismos", caption: "Λεζάντα για τη Σκήτη Ευαγγελισμού." },
+      "agiou_panteleimonos_kout": { lon: 24.258978, lat: 40.253387, height: 500, pitch: -30.0, heading: 0.0, name: "Σκήτη Αγίου Παντελεήμονος (Κουτλουμουσίου)", folder: "panteleimon_kout", caption: "Λεζάντα για τη Σκήτη Αγίου Παντελεήμονος." },
+      "evaggelismou_filoth": { lon: 24.199945, lat: 40.252755, height: 550, pitch: -30.0, heading: 320.0, name: "Σκήτη Ευαγγελισμού (Φιλοθέου)", folder: "evaggelismos_fil", caption: "Λεζάντα για τη Σκήτη Ευαγγελισμού." }
     };
 
-    // Δημιουργία Πινεζών κανονικά
+    // Δημιουργία Πινεζών
     for (const key in locations) {
       if (key === "general") continue;
       const loc = locations[key];
@@ -364,12 +364,11 @@
       entity.locationKey = key;
     }
 
-    // 2. ΔΙΟΡΘΩΣΗ: Σωστή πτήση κάμερας με αντισταθμισμένο offset για τέλειο κεντράρισμα
+    // 2. ΔΙΟΡΘΩΣΗ: Σωστή πτήση κάμερας με αντισταθμισμένο offset για τέλειο κεντράρισμα στα επιμέρους σημεία
     function flyToLocation(target) {
-      // Υπολογισμός offset για να μην πηγαίνει η κάμερα πιο βόρεια λόγω της κλίσης (pitch)
       const pitchRad = Cesium.Math.toRadians(target.pitch);
       const offsetFactor = Math.cos(Math.abs(pitchRad)) * (target.height / 111000); 
-      const adjustedLat = target.lat - (offsetFactor * 0.4); // Διορθώνει τη μετατόπιση προς τα πάνω
+      const adjustedLat = target.lat - (offsetFactor * 0.4); 
 
       viewer.camera.flyTo({
         destination: Cesium.Cartesian3.fromDegrees(target.lon, adjustedLat, target.height),
@@ -398,14 +397,14 @@
       const contents = document.getElementsByClassName('accordion-content');
       for (let i = 0; i < contents.length; i++) {
         if (contents[i].id !== id) {
-          contents[i].style.maxHeight = null; // Κλείσιμο των άλλων
+          contents[i].style.maxHeight = null; 
         }
       }
       const current = document.getElementById(id);
       if (current.style.maxHeight) {
         current.style.maxHeight = null;
       } else {
-        current.style.maxHeight = current.scrollHeight + "px"; // Άνοιγμα
+        current.style.maxHeight = current.scrollHeight + "px"; 
       }
     }
 
@@ -443,7 +442,6 @@
           flyToLocation(locations[entity.locationKey]);
           
           clearSelects();
-          // Επιλογή της σωστής τιμής στο ανάλογο μενού
           if (document.querySelector(`#monasterySelect option[value="${entity.locationKey}"]`)) {
             document.getElementById('monasterySelect').value = entity.locationKey;
           } else if (document.querySelector(`#skiteSelect option[value="${entity.locationKey}"]`)) {
