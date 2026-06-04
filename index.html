@@ -19,7 +19,7 @@
       font-family: 'Segoe UI', Arial, sans-serif;
     }
 
-    /* ΚΕΝΤΡΙΚΟΣ ΤΙΤΛΟΣ ΑΡΧΙΚΗΣ ΟΘΟΝΗΣ */
+    /* ΚΕΝΤΡΙΚΟΣ ΤΙΤΛΟΣ ΑΡΧΙΚΗΣ ΟΘΟΝΗΣ (Desktop) */
     #mainAppTitle {
       position: absolute;
       top: 20px;
@@ -37,10 +37,10 @@
       border-radius: 8px;
       box-shadow: 0px 4px 20px rgba(0,0,0,0.6);
       text-align: center;
-      pointer-events: none; /* Ώστε να μην εμποδίζει το κλικ στον χάρτη από πίσω */
+      pointer-events: none;
     }
 
-    /* ΚΟΥΜΠΙ ΓΙΑ ΑΝΟΙΓΜΑ ΤΟΥ ΜΕΝΟΥ (Trigger) */
+    /* ΚΟΥΜΠΙ ΓΙΑ ΑΝΟΙΓΜΑ ΤΟΥ ΜΕΝΟΥ (Desktop) */
     #menuToggleBtn {
       position: absolute;
       top: 20px;
@@ -66,7 +66,7 @@
     #menuContainer {
       position: absolute;
       top: 20px;
-      left: -350px; /* Ξεκινάει κρυμμένο έξω από την οθόνη */
+      left: -350px;
       z-index: 1000;
       background: rgba(30, 30, 30, 0.95);
       padding: 15px;
@@ -77,10 +77,9 @@
       box-sizing: border-box;
       max-height: 90vh;
       overflow-y: auto;
-      transition: left 0.4s ease; /* Ομαλή κίνηση εμφάνισης */
+      transition: left 0.4s ease;
     }
 
-    /* Όταν το μενού είναι ενεργό, έρχεται στη θέση του */
     #menuContainer.active {
       left: 20px;
     }
@@ -94,10 +93,9 @@
       margin-bottom: 12px;
       border-bottom: 1px solid #555;
       padding-bottom: 5px;
-      padding-right: 25px; /* Χώρος για το κουμπί κλεισίματος */
+      padding-right: 25px;
     }
 
-    /* Κουμπί κλεισίματος μέσα στο μενού */
     #closeMenuBtn {
       position: absolute;
       top: 10px;
@@ -113,7 +111,6 @@
       color: #dfb76c;
     }
 
-    /* Στυλ για τα Κουμπιά του Accordion */
     .accordion-btn {
       width: 100%;
       background: #222;
@@ -136,7 +133,6 @@
       background: #2a2a2a;
     }
 
-    /* Το εσωτερικό περιεχόμενο που ανοιγοκλείνει */
     .accordion-content {
       max-height: 0;
       overflow: hidden;
@@ -156,7 +152,6 @@
       box-sizing: border-box;
     }
 
-    /* AUDIO PLAYER */
     .audio-player-container {
       background: #1a1a1a;
       padding: 8px;
@@ -171,7 +166,6 @@
       margin-top: 5px;
     }
 
-    /* ΠΑΡΑΘΥΡΟ ΠΛΗΡΟΦΟΡΙΩΝ (Sidebar για υπολογιστές) */
     #customInfoBox {
       position: absolute;
       top: 20px;
@@ -238,24 +232,58 @@
       border-radius: 0 6px 6px 0;
     }
 
-    /* ΡΥΘΜΙΣΕΙΣ ΓΙΑ ΚΙΝΗΤΑ */
+    /* ΡΥΘΜΙΣΕΙΣ ΓΙΑ ΚΙΝΗΤΑ (Responsive) */
     @media screen and (max-width: 768px) {
+      /* Δημιουργούμε ένα καθαρό layout στην κορυφή χωρίς absolute επικαλύψεις */
       #mainAppTitle {
-        font-size: 16px;
-        padding: 8px 15px;
-        top: 10px;
-        width: auto;
-        white-space: nowrap;
+        position: relative;
+        top: 0;
+        left: 0;
+        transform: none;
+        font-size: 18px;
+        padding: 8px 10px;
+        margin: 10px auto 5px auto;
+        width: 90%;
+        box-sizing: border-box;
+        border-bottom: none;
+        border-radius: 6px 6px 0 0;
+        background: rgba(20, 20, 20, 0.95);
       }
-      #menuToggleBtn { top: 10px; left: 10px; padding: 8px 12px; font-size: 12px; }
+
+      #menuToggleBtn {
+        position: relative;
+        top: 0;
+        left: 0;
+        display: block;
+        width: 90%;
+        margin: 0 auto 10px auto;
+        padding: 10px;
+        font-size: 13px;
+        text-align: center;
+        border-radius: 0 0 6px 6px;
+        border-top: none; /* Ενώνεται όμορφα με τον τίτλο */
+        background: rgba(30, 30, 30, 0.95);
+        box-shadow: 0px 4px 10px rgba(0,0,0,0.4);
+      }
+
+      /* Το αναδυόμενο μενού ξεκινά πλέον ακριβώς κάτω από τα κουμπιά */
       #menuContainer {
-        top: 75px;
+        top: 105px;
         left: -100%;
         width: 90%;
-        padding: 10px;
+        padding: 12px;
+        max-height: 75vh;
       }
-      #menuContainer.active { left: 5%; }
-      .accordion-btn { padding: 8px; font-size: 12px; }
+      
+      #menuContainer.active {
+        left: 5%;
+      }
+
+      .accordion-btn {
+        padding: 10px;
+        font-size: 13px;
+      }
+
       #customInfoBox {
         top: auto;
         right: 0 !important;
@@ -266,17 +294,21 @@
         border-radius: 12px 12px 0 0;
         padding: 15px;
       }
-      #customInfoBox.active { bottom: 0; }
-      #infoImage { max-height: 180px; }
+      
+      #customInfoBox.active {
+        bottom: 0;
+      }
+      
+      #infoImage {
+        max-height: 160px;
+      }
     }
   </style>
 </head>
 <body>
 
-  <!-- Κεντρικός Τίτλος Εφαρμογής -->
   <h1 id="mainAppTitle">Οδοιπορικό στο Άγιο Όρος</h1>
 
-  <!-- Κουμπί που εμφανίζει το μενού -->
   <button id="menuToggleBtn" onclick="toggleMenu()">🗺️ Μενού Πλοήγησης</button>
 
   <div id="menuContainer">
@@ -358,7 +390,6 @@
   <div id="cesiumContainer"></div>
 
   <script>
-    // ΤΟ ΔΙΟΡΘΩΜΕΝΟ TOKEN (ΠΛΕΟΝ ΧΩΡΙΣ ΠΑΡΕΝΘΕΣΕΙΣ)
     Cesium.Ion.defaultAccessToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiJhYzA1Y2NhMS1hYjhlLTRjZjUtODRmZS0zNjNhYTFmOTUwYjIiLCJpZCI6NDM5NDgxLCJpc3MiOiJodHRwczovL2FwaS5jZXNpdW0uY29tIiwiYXVkIjoidW5kZWZpbmVkX2RlZmF1bHQiLCJpYXQiOjE3ODA0MTI3Nzl9.TfMTqoDjne1KkA63XMF41szdDtICT4kHVaa9QthS70Q';
 
     const viewer = new Cesium.Viewer('cesiumContainer', {
@@ -370,7 +401,6 @@
       selectionIndicator: false
     });
 
-    // Συνάρτηση για το ανοιγοκλείσιμο (ελαχιστοποίηση) του κεντρικού μενού
     function toggleMenu() {
       const menu = document.getElementById('menuContainer');
       menu.classList.toggle('active');
@@ -391,7 +421,6 @@
       orientation: { heading: Cesium.Math.toRadians(0.0), pitch: Cesium.Math.toRadians(-55.0), roll: 0.0 }
     });
 
-    // Βάση Δεδομένων
     const locations = {
       "megistis_lavras": { lon: 24.382442, lat: 40.170425, height: 900, pitch: -35.0, heading: 270.0, name: "Ι.Μ. Μεγίστης Λαύρας", folder: "lavra", caption: "Άποψη του καθολικού και της εσωτερικής αυλής της Μονής κατά την πρωινή είσοδο." },
       "vatopediou": { lon: 24.211683, lat: 40.314461, height: 900, pitch: -35.0, heading: 180.0, name: "Ι.Μ. Βατοπαιδίου", folder: "vatopedi", caption: "Λεζάντα για τη Μονή Βατοπαιδίου." },
@@ -414,7 +443,6 @@
       "agiou_panteleimonos": { lon: 24.201429, lat: 40.237967, height: 900, pitch: -35.0, heading: 90.0, name: "Ι.Μ. Αγίου Παντελεήμονος", folder: "panteleimon", caption: "Λεζάντα για τη Μονή Αγίου Παντελεήμονος." },
       "konstamonitou": { lon: 24.174802, lat: 40.288677, height: 900, pitch: -35.0, heading: 120.0, name: "Ι.Μ. Κωνσταμονίτου", folder: "konstamonitou", caption: "Λεζάντα για τη Μονή Κωνσταμονίτου." },
       
-      // ΣΚΗΤΕΣ
       "agias_annis": { lon: 24.296918, lat: 40.140421, height: 900, pitch: -35.0, heading: 45.0, name: "Σκήτη Αγίας Άννης", folder: "agiaanna", caption: "Λεζάντα για τη Σκήτη Αγίας Άννης." },
       "mikra_agia_anna": { lon: 24.291801, lat: 40.138597, height: 800, pitch: -35.0, heading: 30.0, name: "Μικρά Αγία Άννα", folder: "mikraanna", caption: "Λεζάντα για τη Μικρά Αγία Άννα." },
       "kafsokalyvia": { lon: 24.340173, lat: 40.130303, height: 900, pitch: -35.0, heading: 340.0, name: "Καυσοκαλύβια", folder: "kafsokalyvia", caption: "Λεζάντα για τα Καυσοκαλύβια." },
@@ -430,9 +458,7 @@
       "evaggelismou_filoth": { lon: 24.199945, lat: 40.252755, height: 550, pitch: -30.0, heading: 320.0, name: "Σκήτη Ευαγγελισμού (Φιλοθέου)", folder: "evaggelismos_fil", caption: "Λεζάντα για τη Σκήτη Ευαγγελισμού." }
     };
 
-    // Δημιουργία Πινεζών
     for (const key in locations) {
-      if (key === "general") continue;
       const loc = locations[key];
       const isSkiti = loc.name.includes("Σκήτη") || loc.name.includes("Μικρά") || loc.name.includes("Καυσοκαλύβια");
       const markerColor = isSkiti ? Cesium.Color.DODGERBLUE : Cesium.Color.RED;
@@ -478,7 +504,6 @@
       document.getElementById('customInfoBox').classList.add('active');
     }
 
-    // Λειτουργία για το Accordion Μενού
     function toggleAccordion(id) {
       const contents = document.getElementsByClassName('accordion-content');
       for (let i = 0; i < contents.length; i++) {
@@ -500,7 +525,6 @@
       document.getElementById('routeSelect').selectedIndex = -1;
     }
 
-    // Event Listeners για τις λίστες
     document.getElementById('monasterySelect').addEventListener('change', function() {
       if(this.value) {
         showLocationInfo(this.value);
@@ -519,7 +543,6 @@
       }
     });
 
-    // LEFT CLICK πάνω σε ΠΙΝΕΖΑ
     const handler = new Cesium.ScreenSpaceEventHandler(viewer.scene.canvas);
     handler.setInputAction(function(movement) {
       const pickedObject = viewer.scene.pick(movement.position);
@@ -544,7 +567,6 @@
       }
     }, Cesium.ScreenSpaceEventType.LEFT_CLICK);
 
-    // ΚΟΥΜΠΙ ΚΛΕΙΣΙΜΑΤΟΣ ΔΕΞΙΟΥ ΠΑΡΑΘΥΡΟΥ ΠΛΗΡΟΦΟΡΙΩΝ (X)
     document.getElementById('closeBtn').addEventListener('click', function() {
       document.getElementById('customInfoBox').classList.remove('active');
       clearSelects();
