@@ -234,7 +234,6 @@
 
     /* ΡΥΘΜΙΣΕΙΣ ΓΙΑ ΚΙΝΗΤΑ (Responsive) */
     @media screen and (max-width: 768px) {
-      /* Δημιουργούμε ένα καθαρό layout στην κορυφή χωρίς absolute επικαλύψεις */
       #mainAppTitle {
         position: relative;
         top: 0;
@@ -261,12 +260,11 @@
         font-size: 13px;
         text-align: center;
         border-radius: 0 0 6px 6px;
-        border-top: none; /* Ενώνεται όμορφα με τον τίτλο */
+        border-top: none;
         background: rgba(30, 30, 30, 0.95);
         box-shadow: 0px 4px 10px rgba(0,0,0,0.4);
       }
 
-      /* Το αναδυόμενο μενού ξεκινά πλέον ακριβώς κάτω από τα κουμπιά */
       #menuContainer {
         top: 105px;
         left: -100%;
@@ -406,19 +404,29 @@
       menu.classList.toggle('active');
     }
 
+    // ΝΕΑ ΠΡΟΣΑΡΜΟΣΜΕΝΗ ΓΕΝΙΚΗ ΑΠΟΨΗ ΒΑΣΕΙ ΤΟΥ SCREENSHOT
     function flyToGeneral() {
       document.getElementById('customInfoBox').classList.remove('active');
       clearSelects();
       viewer.camera.flyTo({
-        destination: Cesium.Cartesian3.fromDegrees(24.265333, 40.215050, 35000), 
-        orientation: { heading: Cesium.Math.toRadians(0.0), pitch: Cesium.Math.toRadians(-55.0), roll: 0.0 },
+        destination: Cesium.Cartesian3.fromDegrees(24.320000, 40.090000, 14000), 
+        orientation: { 
+          heading: Cesium.Math.toRadians(338.0), 
+          pitch: Cesium.Math.toRadians(-22.0), 
+          roll: 0.0 
+        },
         duration: 3.0
       });
     }
 
+    // ΑΡΧΙΚΗ ΠΡΟΒΟΛΗ ΚΑΤΑ ΤΗΝ ΕΙΣΟΔΟ ΣΤΗ ΣΕΛΙΔΑ
     viewer.camera.setView({
-      destination: Cesium.Cartesian3.fromDegrees(24.265333, 40.215050, 35000),
-      orientation: { heading: Cesium.Math.toRadians(0.0), pitch: Cesium.Math.toRadians(-55.0), roll: 0.0 }
+      destination: Cesium.Cartesian3.fromDegrees(24.320000, 40.090000, 14000),
+      orientation: { 
+        heading: Cesium.Math.toRadians(338.0), 
+        pitch: Cesium.Math.toRadians(-22.0), 
+        roll: 0.0 
+      }
     });
 
     const locations = {
@@ -458,7 +466,6 @@
       "evaggelismou_filoth": { lon: 24.199945, lat: 40.252755, height: 550, pitch: -30.0, heading: 320.0, name: "Σκήτη Ευαγγελισμού (Φιλοθέου)", folder: "evaggelismos_fil", caption: "Λεζάντα για τη Σκήτη Ευαγγελισμού." }
     };
 
-    // Δημιουργία Πινεζών και Ετικετών (Labels)
     for (const key in locations) {
       const loc = locations[key];
       const isSkiti = loc.name.includes("Σκήτη") || loc.name.includes("Μικρά") || loc.name.includes("Καυσοκαλύβια");
@@ -466,7 +473,6 @@
 
       const entity = viewer.entities.add({
         position: Cesium.Cartesian3.fromDegrees(loc.lon, loc.lat, 0), 
-        // Η πινέζα (τελεία)
         point: {
           pixelSize: 12,
           color: markerColor,
@@ -474,7 +480,6 @@
           outlineWidth: 2,
           heightReference: Cesium.HeightReference.CLAMP_TO_GROUND 
         },
-        // Το όνομα πάνω από την πινέζα
         label: {
           text: loc.name,
           font: '13px "Segoe UI", Arial, sans-serif',
@@ -483,15 +488,12 @@
           fillColor: Cesium.Color.WHITE,
           outlineColor: Cesium.Color.BLACK,
           outlineWidth: 3,
-          // Background πλαίσιο για να διαβάζεται εύκολα πάνω από τη δορυφορική εικόνα
           showBackground: true,
           backgroundColor: new Cesium.Color(0.08, 0.08, 0.08, 0.75),
           backgroundPadding: new Cesium.Cartesian2(6, 4),
-          // Στοίχιση ώστε να εμφανίζεται ακριβώς πάνω από το point
           verticalOrigin: Cesium.VerticalOrigin.BOTTOM,
-          pixelOffset: new Cesium.Cartesian2(0, -10), // Μετατόπιση 10 pixels πιο πάνω
+          pixelOffset: new Cesium.Cartesian2(0, -10),
           heightReference: Cesium.HeightReference.CLAMP_TO_GROUND,
-          // Απόσταση στην οποία αρχίζει να κρύβεται το κείμενο για να μην μπουκώνει ο χάρτης από μακριά
           distanceDisplayCondition: new Cesium.DistanceDisplayCondition(0.0, 60000.0) 
         },
         name: loc.name
