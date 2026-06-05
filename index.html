@@ -19,6 +19,23 @@
       font-family: 'Segoe UI', Arial, sans-serif;
     }
 
+    /* ΑΡΧΙΚΗ ΟΘΟΝΗ ΥΠΟΔΟΧΗΣ (SPLASH SCREEN) */
+    #splashScreen {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: #0d131a url('intro.jpg') no-repeat center center;
+      background-size: cover;
+      z-index: 99999;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      opacity: 1;
+      transition: opacity 1.5s ease-in-out; /* Ομαλό σβήσιμο 1.5 δευτερολέπτου */
+    }
+
     /* ΚΕΝΤΡΙΚΟΣ ΤΙΤΛΟΣ ΑΡΧΙΚΗΣ ΟΘΟΝΗΣ (Desktop) */
     #mainAppTitle {
       position: absolute;
@@ -60,6 +77,28 @@
 
     #menuToggleBtn:hover {
       background: #2a2a2a;
+    }
+
+    /* ΝΕΟ ΑΥΤΟΝΟΜΟ ΚΟΥΜΠΙ ΕΠΑΝΑΦΟΡΑΣ ΜΕ ΤΟ INTROSMALL.JPG */
+    #homeFlyBtn {
+      position: absolute;
+      top: 75px;
+      left: 20px;
+      z-index: 999;
+      width: 50px;
+      height: 50px;
+      background: #111 url('introsmall.jpg') no-repeat center center;
+      background-size: cover;
+      border: 1px solid #dfb76c;
+      border-radius: 6px;
+      cursor: pointer;
+      box-shadow: 0px 4px 15px rgba(0,0,0,0.5);
+      transition: transform 0.2s, border-color 0.3s;
+    }
+
+    #homeFlyBtn:hover {
+      transform: scale(1.05);
+      border-color: #fff;
     }
 
     /* ΚΕΝΤΡΙΚΟ ΜΕΝΟΥ (Αναδυόμενο / Slide-out) */
@@ -224,15 +263,14 @@
       border: 1px solid #333;
     }
 
-    /* ΚΑΘΕΤΗ ΚΥΛΙΟΜΕΝΗ ΜΠΑΡΑ ΦΩΤΟΓΡΑΦΙΩΝ */
     .scroll-gallery {
       width: 100%;
       height: 100%;
       display: flex;
-      flex-direction: column; /* Στοίχιση από πάνω προς τα κάτω */
-      overflow-y: auto;      /* Ενεργοποίηση κάθετης κύλισης */
+      flex-direction: column;
+      overflow-y: auto;
       overflow-x: hidden;
-      gap: 10px;              /* Απόσταση μεταξύ των φωτογραφιών */
+      gap: 10px;
       padding: 10px;
       box-sizing: border-box;
     }
@@ -345,11 +383,17 @@
         background: rgba(20, 20, 20, 0.95);
       }
       #menuToggleBtn {
-        position: relative; top: 0; left: 0; display: block; width: 90%; margin: 0 auto 10px auto;
-        padding: 10px; font-size: 13px; text-align: center; border-radius: 0 0 6px 6px; border-top: none;
-        background: rgba(30, 30, 30, 0.95); box-shadow: 0px 4px 10px rgba(0,0,0,0.4);
+        position: relative; top: 0; left: 0; display: block; width: 90%; margin: 0 auto 5px auto;
+        padding: 10px; font-size: 13px; text-align: center; border-radius: 0; border-top: none;
+        background: rgba(30, 30, 30, 0.95); box-shadow: none;
       }
-      #menuContainer { top: 105px; left: -100%; width: 90%; padding: 12px; max-height: 75vh; }
+      /* Στα κινητά μεταφέρουμε το homeFlyBtn δίπλα ή μέσα στο layout */
+      #homeFlyBtn {
+        position: relative; top: 0; left: 0; display: block; width: 90%; margin: 0 auto 10px auto;
+        height: 40px; border-radius: 0 0 6px 6px; border-top: none;
+        background-position: center center;
+      }
+      #menuContainer { top: 155px; left: -100%; width: 90%; padding: 12px; max-height: 65vh; }
       #menuContainer.active { left: 5%; }
       .accordion-btn { padding: 10px; font-size: 13px; }
       #customInfoBox { top: auto; right: 0 !important; bottom: -100%; left: 0; width: 100%; max-height: 65vh; border-radius: 12px 12px 0 0; padding: 15px; }
@@ -363,15 +407,16 @@
 </head>
 <body>
 
+  <div id="splashScreen"></div>
+
   <h1 id="mainAppTitle">Οδοιπορικό στο Άγιο Όρος</h1>
 
   <button id="menuToggleBtn" onclick="toggleMenu()">🗺️ Μενού Πλοήγησης</button>
+  <button id="homeFlyBtn" onclick="flyToGeneral()" title="Επιστροφή στην Αρχική Άποψη"></button>
 
   <div id="menuContainer">
     <button id="closeMenuBtn" onclick="toggleMenu()">&times;</button>
     <div class="menu-header">Πλοήγηση Αγίου Όρους</div>
-    
-    <button class="accordion-btn" onclick="flyToGeneral(); toggleMenu();">🗺️ Γενική Άποψη</button>
     
     <button class="accordion-btn" onclick="toggleAccordion('monasteries-content')">🏰 Ιερές Μονές <span>▼</span></button>
     <div id="monasteries-content" class="accordion-content">
@@ -442,7 +487,6 @@
     
     <div class="display-container">
       <div id="galleryLayer" class="scroll-gallery"></div>
-      
       <div id="textLayer" class="text-content-box">Φόρτωση κειμένου...</div>
     </div>
     
@@ -473,6 +517,23 @@
       selectionIndicator: false
     });
 
+    // ΑΥΤΟΜΑΤΟΣ ΧΕΙΡΙΣΜΟΣ ΤΗΣ SPLASH SCREEN ΚΑΤΑ ΤΗΝ ΕΙΣΟΔΟ
+    window.addEventListener('DOMContentLoaded', () => {
+      const splash = document.getElementById('splashScreen');
+      
+      // Ορίζουμε 3 δευτερόλεπτα (3000ms) αναμονής στην εικόνα intro.jpg
+      setTimeout(() => {
+        splash.style.opacity = '0';
+        
+        // Αφού σβήσει το εφέ, αφαιρούμε εντελώς το div για να μην εμποδίζει τα κλικ
+        setTimeout(() => {
+          splash.style.display = 'none';
+          // Ξεκινάει η ομαλή πτήση στην αρχική άποψη
+          flyToGeneral();
+        }, 1500);
+      }, 3000);
+    });
+
     function toggleMenu() {
       const menu = document.getElementById('menuContainer');
       menu.classList.toggle('active');
@@ -484,13 +545,14 @@
       viewer.camera.flyTo({
         destination: Cesium.Cartesian3.fromDegrees(24.320000, 40.090000, 14000), 
         orientation: { heading: Cesium.Math.toRadians(338.0), pitch: Cesium.Math.toRadians(-22.0), roll: 0.0 },
-        duration: 3.0
+        duration: 3.5
       });
     }
 
+    // Αρχική θέση κάμερας (στατική πίσω από το Splash Screen)
     viewer.camera.setView({
-      destination: Cesium.Cartesian3.fromDegrees(24.320000, 40.090000, 14000),
-      orientation: { heading: Cesium.Math.toRadians(338.0), pitch: Cesium.Math.toRadians(-22.0), roll: 0.0 }
+      destination: Cesium.Cartesian3.fromDegrees(24.320000, 40.090000, 25000),
+      orientation: { heading: Cesium.Math.toRadians(338.0), pitch: Cesium.Math.toRadians(-35.0), roll: 0.0 }
     });
 
     const locations = {
@@ -503,7 +565,7 @@
       "pantokratoros": { lon: 24.266387, lat: 40.283611, height: 900, pitch: -60.0, heading: 250.0, name: "Ι.Μ. Παντοκράτορος", folder: "padokratoros" },
       "xiropotamou": { lon: 24.221407, lat: 40.228528, height: 900, pitch: -60.0, heading: 60.0, name: "Ι.Μ. Ξηροποτάμου", folder: "xiropotamou" },
       "zografou": { lon: 24.160179, lat: 40.306106, height: 900, pitch: -60.0, heading: 130.0, name: "Ι.Μ. Ζωγράφου", folder: "zografou" },
-      "docheiariou": { lon: 24.172795, lat: 40.266663, height: 850, pitch: -35.0, heading: 90.0, name: "Ι.Μ. Δοχειαρίου", folder: "doh" },
+      "docheiariou": { lon: 24.172520, lat: 40.266710, height: 900, pitch: -60.0, heading: 90.0, name: "Ι.Μ. Δοχειαρίου", folder: "doh" },
       "karakallou": { lon: 24.308786, lat: 40.223605, height: 900, pitch: -60.0, heading: 300.0, name: "Ι.Μ. Καρακάλλου", folder: "karakallou" },
       "filotheou": { lon: 24.291150, lat: 40.225778, height: 900, pitch: -60.0, heading: 320.0, name: "Ι.Μ. Φιλοθέου", folder: "filoth" },
       "simonopetra": { lon: 24.247329, lat: 40.190529, height: 900, pitch: -60.0, heading: 45.0, name: "Ι.Μ. Σίμωνος Πέτρας", folder: "petra" },
@@ -587,11 +649,10 @@
       document.getElementById('infoTitle').innerText = data.name;
 
       const galleryContainer = document.getElementById('galleryLayer');
-      galleryContainer.innerHTML = ""; // Καθαρισμός παλιών εικόνων
+      galleryContainer.innerHTML = ""; 
 
       let imgIndex = 1;
       
-      // ΚΑΘΕΤΗ ΔΥΝΑΜΙΚΗ ΦΟΡΤΩΣΗ ΕΙΚΟΝΩΝ ΜΙΑ ΚΑΤΩ ΑΠΟ ΤΗΝ ΑΛΛΗ
       function tryLoadNextImage() {
         if (imgIndex > 30) return; 
 
@@ -608,7 +669,7 @@
           galleryContainer.appendChild(newImg);
           
           imgIndex++;
-          tryLoadNextImage(); // Φορτώνει την επόμενη από κάτω
+          tryLoadNextImage(); 
         };
 
         tempImg.onerror = function() {
@@ -617,8 +678,6 @@
       }
 
       tryLoadNextImage();
-
-      // Επαναφορά της κύλισης στην κορυφή
       galleryContainer.scrollTop = 0;
 
       switchTab('media');
