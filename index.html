@@ -16,7 +16,7 @@
       padding: 0;
       overflow: hidden;
       background-color: #000;
-      font-family: 'Segoe UI', Arial, sans-serif;
+      font-family: 'Times New Roman', Georgia, 'Segoe UI', Arial, sans-serif;
     }
 
     /* ΑΡΧΙΚΗ ΟΘΟΝΗ ΥΠΟΔΟΧΗΣ (SPLASH SCREEN) */
@@ -484,7 +484,7 @@
       <label style="color: #aaa; font-size: 11px;">Μουσική Υπόκρουση</label>
       <audio id="bgAudio" controls loop>
         <source src="ixoi/psalmwdia.mp3" type="audio/mpeg">
-        Ο browser soaps δεν υποστηρίζει ήχο.
+        Ο browser σας δεν υποστηρίζει ήχο.
       </audio>
     </div>
   </div>
@@ -597,7 +597,6 @@
       "evaggelismou_filoth": { lon: 24.199945, lat: 40.252755, height: 900, pitch: -60.0, heading: 320.0, name: "Σκήτη Ευαγγελισμού (Φιλοθέου)", folder: "evagelfiloth" }
     };
 
-    // ΕΙΚΟΝΙΔΙΑ ΣΕ ΜΟΡΦΗ DATA URL (SVG) ΓΙΑ ΑΜΕΣΗ ΦΟΡΤΩΣΗ ΧΩΡΙΣ ΕΞΩΤΕΡΙΚΑ ΑΡΧΕΙΑ
     const monasterySvg = 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="%23dfb76c" stroke="%23000" stroke-width="1" d="M12 2l-1 2h2l-1-2zm0 4c-3.5 0-6 2.5-6 6h12c0-3.5-2.5-6-6-6zm-5 8v6h10v-6H7zm3 6h-1v-3h2v3h-1z"/></svg>';
     const skiteSvg = 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="%23ffffff" stroke="%23dfb76c" stroke-width="1.5" d="M12 3L4 9v11h16V9l-8-6zm2 14h-4v-4h4v4z"/></svg>';
 
@@ -608,28 +607,27 @@
 
       const entity = viewer.entities.add({
         position: Cesium.Cartesian3.fromDegrees(loc.lon, loc.lat, 0), 
-        // ΑΝΤΙΚΑΤΑΣΤΑΣΗ POINT ΜΕ BILLBOARD (ΕΙΚΟΝΙΔΙΟ)
         billboard: {
           image: iconImage,
           width: 28,
           height: 28,
           heightReference: Cesium.HeightReference.CLAMP_TO_GROUND,
-          verticalOrigin: Cesium.VerticalOrigin.BOTTOM, // Ευθυγράμμιση ώστε η βάση να πατάει στο έδαφος
+          verticalOrigin: Cesium.VerticalOrigin.BOTTOM, 
           pixelOffset: new Cesium.Cartesian2(0, 0)
         },
         label: {
           text: loc.name,
-          font: '13px "Segoe UI", Arial, sans-serif',
-          fontWeight: 'bold',
+          // ΠΡΟΣΑΡΜΟΓΗ: Premium Serif Γραμματοσειρά με βυζαντινό/παραδοσιακό ύφος
+          font: 'bold 15px "Times New Roman", Georgia, serif',
           style: Cesium.LabelStyle.FILL_AND_OUTLINE,
           fillColor: Cesium.Color.WHITE,
           outlineColor: Cesium.Color.BLACK,
-          outlineWidth: 3,
+          outlineWidth: 4, // Αυξημένο πάχος περιγράμματος για μέγιστη αντίθεση
           showBackground: true,
-          backgroundColor: new Cesium.Color(0.08, 0.08, 0.08, 0.75),
-          backgroundPadding: new Cesium.Cartesian2(6, 4),
+          backgroundColor: new Cesium.Color(0.05, 0.05, 0.05, 0.85), // Πιο συμπαγές φόντο
+          backgroundPadding: new Cesium.Cartesian2(10, 6), // Μεγαλύτερο περιθώριο
           verticalOrigin: Cesium.VerticalOrigin.BOTTOM,
-          pixelOffset: new Cesium.Cartesian2(0, -32), // Μετατόπιση της ετικέτας πιο πάνω από το εικονίδιο
+          pixelOffset: new Cesium.Cartesian2(0, -35), 
           heightReference: Cesium.HeightReference.CLAMP_TO_GROUND,
           distanceDisplayCondition: new Cesium.DistanceDisplayCondition(0.0, 60000.0) 
         },
