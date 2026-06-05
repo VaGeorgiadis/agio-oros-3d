@@ -29,8 +29,11 @@
       background: #0d131a url('intro.jpg') no-repeat center center;
       background-size: cover;
       z-index: 99999;
+      display: flex;
+      justify-content: center;
+      align-items: center;
       opacity: 1;
-      transition: opacity 1.5s ease-in-out;
+      transition: opacity 1.5s ease-in-out; /* Ομαλό σβήσιμο 1.5 δευτερολέπτου */
     }
 
     /* ΚΕΝΤΡΙΚΟΣ ΤΙΤΛΟΣ ΑΡΧΙΚΗΣ ΟΘΟΝΗΣ (Desktop) */
@@ -76,7 +79,7 @@
       background: #2a2a2a;
     }
 
-    /* ΑΥΤΟΝΟΜΟ ΚΟΥΜΠΙ ΕΠΑΝΑΦΟΡΑΣ ΜΕ ΤΟ INTROSMALL.JPG */
+    /* ΝΕΟ ΑΥΤΟΝΟΜΟ ΚΟΥΜΠΙ ΕΠΑΝΑΦΟΡΑΣ ΜΕ ΤΟ INTROSMALL.JPG */
     #homeFlyBtn {
       position: absolute;
       top: 75px;
@@ -252,70 +255,47 @@
     .display-container {
       position: relative;
       width: 100%;
-      height: 360px;
+      height: 350px;
       background: #111;
       border-radius: 6px;
       overflow: hidden;
       box-shadow: 0 5px 15px rgba(0,0,0,0.5);
       border: 1px solid #333;
+    }
+
+    .scroll-gallery {
+      width: 100%;
+      height: 100%;
       display: flex;
       flex-direction: column;
-    }
-
-    #galleryLayer {
-      width: 100%;
-      flex: 1;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      background: #050505;
-      position: relative;
-    }
-
-    #infoImage {
-      max-width: 100%;
-      max-height: 280px;
-      object-fit: contain;
-      display: block;
-      cursor: zoom-in;
-    }
-
-    .thumbnail-carousel {
-      width: 100%;
-      height: 70px;
-      background: #151515;
-      border-top: 1px solid #222;
-      display: flex;
-      gap: 8px;
-      padding: 8px;
+      overflow-y: auto;
+      overflow-x: hidden;
+      gap: 10px;
+      padding: 10px;
       box-sizing: border-box;
-      overflow-x: auto;
-      overflow-y: hidden;
     }
 
-    .thumbnail-carousel::-webkit-scrollbar {
-      height: 4px;
+    .scroll-gallery::-webkit-scrollbar {
+      width: 6px;
     }
-    .thumbnail-carousel::-webkit-scrollbar-thumb {
+    .scroll-gallery::-webkit-scrollbar-thumb {
       background: #dfb76c;
-      border-radius: 4px;
+      border-radius: 10px;
+    }
+    .scroll-gallery::-webkit-scrollbar-track {
+      background: #222;
     }
 
-    .thumbnail-carousel img {
-      width: 54px;
-      height: 54px;
-      object-fit: cover;
-      cursor: pointer;
+    .scroll-gallery img {
+      width: 100%;
+      height: auto;
+      max-height: 330px;
+      object-fit: contain;
+      cursor: zoom-in;
+      display: block;
       border-radius: 4px;
-      border: 1px solid #444;
-      transition: all 0.2s;
-      opacity: 0.6;
-    }
-
-    .thumbnail-carousel img:hover, .thumbnail-carousel img.active {
-      opacity: 1;
-      border-color: #dfb76c;
-      transform: scale(1.02);
+      border: 1px solid #222;
+      background: #050505;
     }
 
     .text-content-box {
@@ -370,7 +350,7 @@
       border-color: #dfb76c;
     }
 
-    /* LIGHTBOX */
+    /* LIGHTBOX (ΜΕΓΕΘΥΝΣΗ) */
     #imageLightbox {
       display: none;
       position: fixed;
@@ -395,11 +375,6 @@
     }
 
     @media screen and (max-width: 768px) {
-      /* ΑΝΑΓΚΑΣΤΙΚΗ ΠΡΟΣΑΡΜΟΓΗ ΤΟΥ INTRO ΣΤΟ ΠΛΑΘΟΣ ΤΟΥ ΚΙΝΗΤΟΥ */
-      #splashScreen {
-        background-size: 100% auto; /* Προσαρμόζει το πλάτος στο 100% της οθόνης */
-        background-color: #0c1219;  /* Συμπληρώνει με το χρώμα του φόντου πάνω/κάτω αν χρειαστεί */
-      }
       #mainAppTitle {
         position: relative;
         top: 0; left: 0; transform: none;
@@ -412,19 +387,19 @@
         padding: 10px; font-size: 13px; text-align: center; border-radius: 0; border-top: none;
         background: rgba(30, 30, 30, 0.95); box-shadow: none;
       }
+      /* Στα κινητά μεταφέρουμε το homeFlyBtn δίπλα ή μέσα στο layout */
       #homeFlyBtn {
         position: relative; top: 0; left: 0; display: block; width: 90%; margin: 0 auto 10px auto;
         height: 40px; border-radius: 0 0 6px 6px; border-top: none;
+        background-position: center center;
       }
       #menuContainer { top: 155px; left: -100%; width: 90%; padding: 12px; max-height: 65vh; }
       #menuContainer.active { left: 5%; }
       .accordion-btn { padding: 10px; font-size: 13px; }
       #customInfoBox { top: auto; right: 0 !important; bottom: -100%; left: 0; width: 100%; max-height: 65vh; border-radius: 12px 12px 0 0; padding: 15px; }
       #customInfoBox.active { bottom: 0; }
-      .display-container { height: 240px; }
-      #infoImage { max-height: 160px; }
-      .thumbnail-carousel { height: 60px; padding: 4px; }
-      .thumbnail-carousel img { width: 44px; height: 44px; }
+      .display-container { height: 180px; }
+      .scroll-gallery img { max-height: 160px; }
       .text-content-box { font-size: 13px; padding: 12px; }
       .tab-btn { padding: 8px; font-size: 12px; }
     }
@@ -511,10 +486,330 @@
     <h2 id="infoTitle">Όνομα...</h2>
     
     <div class="display-container">
-      <div id="galleryLayer">
-        <img id="infoImage" src="" alt="" onclick="openLightbox(this)" />
-      </div>
+      <div id="galleryLayer" class="scroll-gallery"></div>
+      <div id="textLayer" class="text-content-box">Φόρτωση κειμένου...</div>
+    </div>
+    
+    <p id="infoCaption">Λεζάντα...</p>
+
+    <div class="info-tabs">
+      <button id="tabMedia" class="tab-btn active" onclick="switchTab('media')">🖼️ Φωτογραφίες</button>
+      <button id="tabIstoria" class="tab-btn" onclick="switchTab('istoria')">📜 Ιστορία</button>
+      <button id="tabParadosi" class="tab-btn" onclick="switchTab('paradosi')">⛪ Παράδοση</button>
+    </div>
+  </div>
+
+  <div id="imageLightbox" onclick="closeLightbox()">
+    <img id="lightboxImg" src="" alt="Μεγέθυνση" />
+  </div>
+
+  <div id="cesiumContainer"></div>
+
+  <script>
+    Cesium.Ion.defaultAccessToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiJhYzA1Y2NhMS1hYjhlLTRjZjUtODRmZS0zNjNhYTFmOTUwYjIiLCJpZCI6NDM5NDgxLCJpc3MiOiJodHRwczovL2FwaS5jZXNpdW0uY29tIiwiYXVkIjoidW5kZWZpbmVkX2RlZmF1bHQiLCJpYXQiOjE3ODA0MTI3Nzl9.TfMTqoDjne1KkA63XMF41szdDtICT4kHVaa9QthS70Q';
+
+    const viewer = new Cesium.Viewer('cesiumContainer', {
+      terrain: Cesium.Terrain.fromWorldTerrain(),
+      animation: false,
+      timeline: false,
+      sceneModePicker: false,
+      infoBox: false,
+      selectionIndicator: false
+    });
+
+    // ΑΥΤΟΜΑΤΟΣ ΧΕΙΡΙΣΜΟΣ ΤΗΣ SPLASH SCREEN ΚΑΤΑ ΤΗΝ ΕΙΣΟΔΟ
+    window.addEventListener('DOMContentLoaded', () => {
+      const splash = document.getElementById('splashScreen');
       
-      <div id="thumbnailContainer" class="thumbnail-carousel"></div>
+      // Ορίζουμε 3 δευτερόλεπτα (3000ms) αναμονής στην εικόνα intro.jpg
+      setTimeout(() => {
+        splash.style.opacity = '0';
+        
+        // Αφού σβήσει το εφέ, αφαιρούμε εντελώς το div για να μην εμποδίζει τα κλικ
+        setTimeout(() => {
+          splash.style.display = 'none';
+          // Ξεκινάει η ομαλή πτήση στην αρχική άποψη
+          flyToGeneral();
+        }, 1500);
+      }, 3000);
+    });
+
+    function toggleMenu() {
+      const menu = document.getElementById('menuContainer');
+      menu.classList.toggle('active');
+    }
+
+    function flyToGeneral() {
+      document.getElementById('customInfoBox').classList.remove('active');
+      clearSelects();
+      viewer.camera.flyTo({
+        destination: Cesium.Cartesian3.fromDegrees(24.320000, 40.090000, 14000), 
+        orientation: { heading: Cesium.Math.toRadians(338.0), pitch: Cesium.Math.toRadians(-22.0), roll: 0.0 },
+        duration: 3.5
+      });
+    }
+
+    // Αρχική θέση κάμερας (στατική πίσω από το Splash Screen)
+    viewer.camera.setView({
+      destination: Cesium.Cartesian3.fromDegrees(24.320000, 40.090000, 25000),
+      orientation: { heading: Cesium.Math.toRadians(338.0), pitch: Cesium.Math.toRadians(-35.0), roll: 0.0 }
+    });
+
+    const locations = {
+      "megistis_lavras": { lon: 24.382442, lat: 40.170425, height: 900, pitch: -60.0, heading: 340.0, name: "Ι.Μ. Μεγίστης Λαύρας", folder: "lavra" },
+      "vatopediou": { lon: 24.212023, lat: 40.314502, height: 900, pitch: -60.0, heading: 180.0, name: "Ι.Μ. Βατοπαιδίου", folder: "vatopedi" },
+      "iviron": { lon: 24.285096, lat: 40.245582, height: 900, pitch: -60.0, heading: 290.0, name: "Ι.Μ. Ιβήρων", folder: "iviron" },
+      "chilandariou": { lon: 24.119725, lat: 40.334444, height: 900, pitch: -60.0, heading: 45.0, name: "Ι.Μ. Χιλανδαρίου", folder: "hiliantari" },
+      "dionysiou": { lon: 24.120507, lat: 40.340256, height: 900, pitch: -60.0, heading: 45.0, name: "Ι.Μ. Διονυσίου", folder: "dion" },
+      "koutloumousiou": { lon: 24.247580, lat: 40.253324, height: 900, pitch: -60.0, heading: 0.0, name: "Ι.Μ. Κουτλουμουσίου", folder: "koutlou" },
+      "pantokratoros": { lon: 24.266387, lat: 40.283611, height: 900, pitch: -60.0, heading: 250.0, name: "Ι.Μ. Παντοκράτορος", folder: "padokratoros" },
+      "xiropotamou": { lon: 24.221407, lat: 40.228528, height: 900, pitch: -60.0, heading: 60.0, name: "Ι.Μ. Ξηροποτάμου", folder: "xiropotamou" },
+      "zografou": { lon: 24.160179, lat: 40.306106, height: 900, pitch: -60.0, heading: 130.0, name: "Ι.Μ. Ζωγράφου", folder: "zografou" },
+      "docheiariou": { lon: 24.172520, lat: 40.266710, height: 900, pitch: -60.0, heading: 90.0, name: "Ι.Μ. Δοχειαρίου", folder: "doh" },
+      "karakallou": { lon: 24.308786, lat: 40.223605, height: 900, pitch: -60.0, heading: 300.0, name: "Ι.Μ. Καρακάλλου", folder: "karakallou" },
+      "filotheou": { lon: 24.291150, lat: 40.225778, height: 900, pitch: -60.0, heading: 320.0, name: "Ι.Μ. Φιλοθέου", folder: "filoth" },
+      "simonopetra": { lon: 24.247329, lat: 40.190529, height: 900, pitch: -60.0, heading: 45.0, name: "Ι.Μ. Σίμωνος Πέτρας", folder: "petra" },
+      "agiou_pavlou": { lon: 24.290312, lat: 40.160358, height: 900, pitch: -60.0, heading: 20.0, name: "Ι.Μ. Αγίου Παύλου", folder: "pavlou" },
+      "stavronikita": { lon: 24.276963, lat: 40.267846, height: 900, pitch: -60.0, heading: 240.0, name: "Ι.Μ. Σταυρονικήτα", folder: "stavronikita" },
+      "xenofontos": { lon: 24.178726, lat: 40.258651, height: 900, pitch: -60.0, heading: 90.0, name: "Ι.Μ. Ξενοφώντος", folder: "xenofodos" },
+      "grigoriou": { lon: 24.255946, lat: 40.179635, height: 900, pitch: -60.0, heading: 45.0, name: "Ι.Μ. Γρηγορίου", folder: "grigoriou" },
+      "esfigmenou": { lon: 24.138106, lat: 40.352487, height: 900, pitch: -60.0, heading: 180.0, name: "Ι.Μ. Εσφιγμένου", folder: "esfigmenou" },
+      "agiou_panteleimonos": { lon: 24.201154, lat: 40.237667, height: 900, pitch: -60.0, heading: 90.0, name: "Ι.Μ. Αγίου Παντελεήμονος", folder: "pantel" },
+      "konstamonitou": { lon: 24.174820, lat: 40.288587, height: 900, pitch: -60.0, heading: 120.0, name: "Ι.Μ. Κωνσταμονίτου", folder: "konstamonitou" },
       
-      <div id="textLayer" class="text-content-box">Φόρτωση κειμένου...
+      "agias_annis": { lon: 24.296918, lat: 40.140421, height: 900, pitch: -60.0, heading: 45.0, name: "Σκήτη Αγίας Άννης", folder: "anna" },
+      "mikra_agia_anna": { lon: 24.291801, lat: 40.138597, height: 900, pitch: -60.0, heading: 30.0, name: "Μικρά Αγία Άννα", folder: "mikraanna" },
+      "kafsokalyvia": { lon: 24.340173, lat: 40.130303, height: 900, pitch: -60.0, heading: 340.0, name: "Καυσοκαλύβια", folder: "Kafsolalivia" },
+      "provata": { lon: 24.314574, lat: 40.217606, height: 900, pitch: -60.0, heading: 270.0, name: "Σκήτη Προβάτα", folder: "provata" },
+      "agiou_dimitriou": { lon: 24.219473, lat: 40.302712, height: 900, pitch: -60.0, heading: 180.0, name: "Σκήτη Αγίου Δημητρίου", folder: "agioudimitriou" },
+      "agiou_andrea": { lon: 24.244579, lat: 40.262255, height: 900, pitch: -60.0, heading: 210.0, name: "Σκήτη Αγίου Ανδρέα (Σεράι)", folder: "andrea" },
+      "timiou_prodromou": { lon: 24.277335, lat: 40.239258, height: 900, pitch: -60.0, heading: 270.0, name: "Σκήτη Τιμίου Προδρόμου", folder: "prodrom" },
+      "profiti_ilia": { lon: 24.252869, lat: 40.281049, height: 900, pitch: -60.0, heading: 160.0, name: "Σκήτη Προφήτου Ηλιού", folder: "profitiilia" },
+      "agias_triados": { lon: 24.340484, lat: 40.129433, height: 900, pitch: -60.0, heading: 45.0, name: "Σκήτη Αγίας Τριάδος", folder: "triados" },
+      "nea_skiti": { lon: 24.290025, lat: 40.145914, height: 900, pitch: -60.0, heading: 45.0, name: "Νέα Σκήτη", folder: "neaskiti" },
+      "evaggelismou_xenof": { lon: 24.199926, lat: 40.252863, height: 900, pitch: -60.0, heading: 90.0, name: "Σκήτη Ευαγγελισμού (Ξενοφώντος)", folder: "evagelxenof" },
+      "agiou_panteleimonos_kout": { lon: 24.258978, lat: 40.253387, height: 900, pitch: -60.0, heading: 0.0, name: "Σκήτη Αγίου Παντελεήμονος (Κουτλουμουσίου)", folder: "skitipantel" },
+      "evaggelismou_filoth": { lon: 24.199945, lat: 40.252755, height: 900, pitch: -60.0, heading: 320.0, name: "Σκήτη Ευαγγελισμού (Φιλοθέου)", folder: "evagelfiloth" }
+    };
+
+    for (const key in locations) {
+      const loc = locations[key];
+      const isSkiti = loc.name.includes("Σκήτη") || loc.name.includes("Μικρά") || loc.name.includes("Καυσοκαλύβια");
+      const markerColor = isSkiti ? Cesium.Color.DODGERBLUE : Cesium.Color.RED;
+
+      const entity = viewer.entities.add({
+        position: Cesium.Cartesian3.fromDegrees(loc.lon, loc.lat, 0), 
+        point: {
+          pixelSize: 12,
+          color: markerColor,
+          outlineColor: Cesium.Color.WHITE,
+          outlineWidth: 2,
+          heightReference: Cesium.HeightReference.CLAMP_TO_GROUND 
+        },
+        label: {
+          text: loc.name,
+          font: '13px "Segoe UI", Arial, sans-serif',
+          fontWeight: 'bold',
+          style: Cesium.LabelStyle.FILL_AND_OUTLINE,
+          fillColor: Cesium.Color.WHITE,
+          outlineColor: Cesium.Color.BLACK,
+          outlineWidth: 3,
+          showBackground: true,
+          backgroundColor: new Cesium.Color(0.08, 0.08, 0.08, 0.75),
+          backgroundPadding: new Cesium.Cartesian2(6, 4),
+          verticalOrigin: Cesium.VerticalOrigin.BOTTOM,
+          pixelOffset: new Cesium.Cartesian2(0, -10),
+          heightReference: Cesium.HeightReference.CLAMP_TO_GROUND,
+          distanceDisplayCondition: new Cesium.DistanceDisplayCondition(0.0, 60000.0) 
+        },
+        name: loc.name
+      });
+      entity.locationKey = key;
+    }
+
+    function flyToLocation(target) {
+      const targetCenter = Cesium.Cartesian3.fromDegrees(target.lon, target.lat);
+      const boundingSphere = new Cesium.BoundingSphere(targetCenter, 0.0);
+      const headingRad = Cesium.Math.toRadians(target.heading);
+      const pitchRad = Cesium.Math.toRadians(target.pitch);
+
+      viewer.camera.flyToBoundingSphere(boundingSphere, {
+        offset: new Cesium.HeadingPitchRange(headingRad, pitchRad, target.height),
+        duration: 3.0
+      });
+    }
+
+    let currentFolder = "";
+
+    function showLocationInfo(key) {
+      const data = locations[key];
+      if (!data) return;
+
+      currentFolder = data.folder;
+      document.getElementById('infoTitle').innerText = data.name;
+
+      const galleryContainer = document.getElementById('galleryLayer');
+      galleryContainer.innerHTML = ""; 
+
+      let imgIndex = 1;
+      
+      function tryLoadNextImage() {
+        if (imgIndex > 30) return; 
+
+        const imgSrc = `fotografies/${currentFolder}/${currentFolder}_${imgIndex}.jpg`;
+        const tempImg = new Image();
+        tempImg.src = imgSrc;
+
+        tempImg.onload = function() {
+          const newImg = document.createElement('img');
+          newImg.src = imgSrc;
+          newImg.alt = `${data.name} - Εικόνα ${imgIndex}`;
+          newImg.onclick = function() { openLightbox(this); };
+          
+          galleryContainer.appendChild(newImg);
+          
+          imgIndex++;
+          tryLoadNextImage(); 
+        };
+
+        tempImg.onerror = function() {
+          console.log(`Φορτώθηκαν επιτυχώς ${imgIndex - 1} φωτογραφίες.`);
+        };
+      }
+
+      tryLoadNextImage();
+      galleryContainer.scrollTop = 0;
+
+      switchTab('media');
+      document.getElementById('customInfoBox').classList.add('active');
+    }
+
+    function switchTab(type) {
+      const tabMedia = document.getElementById('tabMedia');
+      const tabIstoria = document.getElementById('tabIstoria');
+      const tabParadosi = document.getElementById('tabParadosi');
+      
+      const galleryLayer = document.getElementById('galleryLayer');
+      const textLayer = document.getElementById('textLayer');
+      const captionElement = document.getElementById('infoCaption');
+
+      tabMedia.classList.remove('active');
+      tabIstoria.classList.remove('active');
+      tabParadosi.classList.remove('active');
+
+      if (type === 'media') {
+        tabMedia.classList.add('active');
+        galleryLayer.style.display = 'flex'; 
+        textLayer.style.display = 'none';    
+        captionElement.innerText = "Κυλίστε κάθετα για να δείτε όλες τις φωτογραφίες";
+      } 
+      else {
+        if (type === 'istoria') tabIstoria.classList.add('active');
+        if (type === 'paradosi') tabParadosi.classList.add('active');
+        
+        galleryLayer.style.display = 'none'; 
+        textLayer.style.display = 'block';   
+        textLayer.innerText = "Φόρτωση κειμένου...";
+        captionElement.innerText = (type === 'istoria') ? "Ιστορικό Σημείωμα" : "Ιερά Παράδοση & Κειμήλια";
+
+        if (!currentFolder) return;
+
+        const textFileUrl = `keimena/${currentFolder}/${type}.txt`;
+        fetch(textFileUrl)
+          .then(response => {
+            if (!response.ok) throw new Error();
+            return response.text();
+          })
+          .then(text => {
+            textLayer.innerHTML = text.replace(/\n/g, "<br>");
+          })
+          .catch(() => {
+            if (type === 'istoria') {
+              textLayer.innerHTML = `Εδώ θα εμφανίζονται τα <b>ιστορικά στοιχεία</b> για την τοποθεσία: <i>${document.getElementById('infoTitle').innerText}</i>.`;
+            } else {
+              textLayer.innerHTML = `Εδώ θα εμφανίζονται οι <b>ιερές παραδόσεις</b> για την τοποθεσία: <i>${document.getElementById('infoTitle').innerText}</i>.`;
+            }
+          });
+      }
+    }
+
+    function openLightbox(imgElement) {
+      if (!imgElement || !imgElement.src) return;
+      document.getElementById('lightboxImg').src = imgElement.src;
+      document.getElementById('imageLightbox').style.display = 'flex';
+    }
+
+    function closeLightbox() {
+      document.getElementById('imageLightbox').style.display = 'none';
+    }
+
+    function toggleAccordion(id) {
+      const contents = document.getElementsByClassName('accordion-content');
+      for (let i = 0; i < contents.length; i++) {
+        if (contents[i].id !== id) {
+          contents[i].style.maxHeight = null; 
+        }
+      }
+      const current = document.getElementById(id);
+      if (current.style.maxHeight) {
+        current.style.maxHeight = null;
+      } else {
+        current.style.maxHeight = current.scrollHeight + "px"; 
+      }
+    }
+
+    function clearSelects() {
+      document.getElementById('monasterySelect').selectedIndex = -1;
+      document.getElementById('skiteSelect').selectedIndex = -1;
+      document.getElementById('routeSelect').selectedIndex = -1;
+    }
+
+    document.getElementById('monasterySelect').addEventListener('change', function() {
+      if(this.value) {
+        showLocationInfo(this.value);
+        flyToLocation(locations[this.value]);
+        document.getElementById('skiteSelect').selectedIndex = -1;
+        toggleMenu(); 
+      }
+    });
+
+    document.getElementById('skiteSelect').addEventListener('change', function() {
+      if(this.value) {
+        showLocationInfo(this.value);
+        flyToLocation(locations[this.value]);
+        document.getElementById('monasterySelect').selectedIndex = -1;
+        toggleMenu(); 
+      }
+    });
+
+    const handler = new Cesium.ScreenSpaceEventHandler(viewer.scene.canvas);
+    handler.setInputAction(function(movement) {
+      const pickedObject = viewer.scene.pick(movement.position);
+      if (Cesium.defined(pickedObject) && Cesium.defined(pickedObject.id)) {
+        const entity = pickedObject.id;
+        if (entity.locationKey) {
+          showLocationInfo(entity.locationKey);
+          flyToLocation(locations[entity.locationKey]);
+          
+          clearSelects();
+          if (document.querySelector(`#monasterySelect option[value="${entity.locationKey}"]`)) {
+            document.getElementById('monasterySelect').value = entity.locationKey;
+          } else if (document.querySelector(`#skiteSelect option[value="${entity.locationKey}"]`)) {
+            document.getElementById('skiteSelect').value = entity.locationKey;
+          }
+          
+          const menu = document.getElementById('menuContainer');
+          if (menu.classList.contains('active')) {
+            toggleMenu();
+          }
+        }
+      }
+    }, Cesium.ScreenSpaceEventType.LEFT_CLICK);
+
+    document.getElementById('closeBtn').addEventListener('click', function() {
+      document.getElementById('customInfoBox').classList.remove('active');
+      clearSelects();
+    });
+  </script>
+</body>
+</html>
