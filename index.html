@@ -19,7 +19,7 @@
       font-family: 'Segoe UI', Arial, sans-serif;
     }
 
-    /* ΑΡΧΙΚΗ ΟΘΟΝΗ ΥΠΟΔΟΧΗΣ (SPLASH SCREEN) ΜΕ FADE-IN */
+    /* ΑΡΧΙΚΗ ΟΘΟΝΗ ΥΠΟΔΟΧΗΣ (SPLASH SCREEN) */
     #splashScreen {
       position: fixed;
       top: 0;
@@ -29,14 +29,8 @@
       background: #0d131a url('intro.jpg') no-repeat center center;
       background-size: cover;
       z-index: 99999;
-      opacity: 0;
-      animation: fadeInSplash 1.5s ease-in-out forwards;
+      opacity: 1;
       transition: opacity 1.5s ease-in-out;
-    }
-
-    @keyframes fadeInSplash {
-      from { opacity: 0; }
-      to { opacity: 1; }
     }
 
     /* ΚΕΝΤΡΙΚΟΣ ΤΙΤΛΟΣ ΑΡΧΙΚΗΣ ΟΘΟΝΗΣ (Desktop) */
@@ -255,7 +249,6 @@
       margin-bottom: 15px;
     }
 
-    /* ΠΛΑΙΣΙΟ ΠΡΟΒΟΛΗΣ ΜΕ ΕΝΣΩΜΑΤΩΜΕΝΟ CAROUSEL ΚΑΤΩ */
     .display-container {
       position: relative;
       width: 100%;
@@ -287,7 +280,6 @@
       cursor: zoom-in;
     }
 
-    /* ΟΡΙΖΟΝΤΙΑ ΜΠΑΡΑ ΜΙΚΡΟΓΡΑΦΙΩΝ (THUMBNAILS) ΚΑΤΩ ΑΠΟ ΤΗ ΦΩΤΟΓΡΑΦΙΑ */
     .thumbnail-carousel {
       width: 100%;
       height: 70px;
@@ -378,7 +370,7 @@
       border-color: #dfb76c;
     }
 
-    /* LIGHTBOX (ΜΕΓΕΘΥΝΣΗ) */
+    /* LIGHTBOX */
     #imageLightbox {
       display: none;
       position: fixed;
@@ -403,6 +395,11 @@
     }
 
     @media screen and (max-width: 768px) {
+      /* ΑΝΑΓΚΑΣΤΙΚΗ ΠΡΟΣΑΡΜΟΓΗ ΤΟΥ INTRO ΣΤΟ ΠΛΑΘΟΣ ΤΟΥ ΚΙΝΗΤΟΥ */
+      #splashScreen {
+        background-size: 100% auto; /* Προσαρμόζει το πλάτος στο 100% της οθόνης */
+        background-color: #0c1219;  /* Συμπληρώνει με το χρώμα του φόντου πάνω/κάτω αν χρειαστεί */
+      }
       #mainAppTitle {
         position: relative;
         top: 0; left: 0; transform: none;
@@ -520,12 +517,4 @@
       
       <div id="thumbnailContainer" class="thumbnail-carousel"></div>
       
-      <div id="textLayer" class="text-content-box">Φόρτωση κειμένου...</div>
-    </div>
-    
-    <p id="infoCaption">Λεζάντα...</p>
-
-    <div class="info-tabs">
-      <button id="tabMedia" class="tab-btn active" onclick="switchTab('media')">🖼️ Φωτογραφίες</button>
-      <button id="tabIstoria" class="tab-btn" onclick="switchTab('istoria')">📜 Ιστορία</button>
-      <button id="tabParadosi" class="tab-btn" onclick="switchTab('parados
+      <div id="textLayer" class="text-content-box">Φόρτωση κειμένου...
