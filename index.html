@@ -224,19 +224,21 @@
       border: 1px solid #333;
     }
 
-    /* ΟΡΙΖΟΝΤΙΑ ΚΥΛΙΟΜΕΝΗ ΤΑΙΝΙΑ */
+    /* ΚΑΘΕΤΗ ΚΥΛΙΟΜΕΝΗ ΜΠΑΡΑ ΦΩΤΟΓΡΑΦΙΩΝ */
     .scroll-gallery {
       width: 100%;
       height: 100%;
       display: flex;
-      overflow-x: auto;
-      overflow-y: hidden;
-      scroll-snap-type: x mandatory;
-      scroll-behavior: smooth;
+      flex-direction: column; /* Στοίχιση από πάνω προς τα κάτω */
+      overflow-y: auto;      /* Ενεργοποίηση κάθετης κύλισης */
+      overflow-x: hidden;
+      gap: 10px;              /* Απόσταση μεταξύ των φωτογραφιών */
+      padding: 10px;
+      box-sizing: border-box;
     }
 
     .scroll-gallery::-webkit-scrollbar {
-      height: 6px;
+      width: 6px;
     }
     .scroll-gallery::-webkit-scrollbar-thumb {
       background: #dfb76c;
@@ -248,12 +250,14 @@
 
     .scroll-gallery img {
       width: 100%;
-      height: 100%;
+      height: auto;
+      max-height: 330px;
       object-fit: contain;
-      flex-shrink: 0;
-      scroll-snap-align: start;
       cursor: zoom-in;
       display: block;
+      border-radius: 4px;
+      border: 1px solid #222;
+      background: #050505;
     }
 
     .text-content-box {
@@ -351,6 +355,7 @@
       #customInfoBox { top: auto; right: 0 !important; bottom: -100%; left: 0; width: 100%; max-height: 65vh; border-radius: 12px 12px 0 0; padding: 15px; }
       #customInfoBox.active { bottom: 0; }
       .display-container { height: 180px; }
+      .scroll-gallery img { max-height: 160px; }
       .text-content-box { font-size: 13px; padding: 12px; }
       .tab-btn { padding: 8px; font-size: 12px; }
     }
@@ -436,7 +441,6 @@
     <h2 id="infoTitle">Όνομα...</h2>
     
     <div class="display-container">
-      <!-- ΤΟ SLIDER ΕΙΝΑΙ ΠΛΕΟΝ ΑΔΕΙΟ ΚΑΙ ΓΕΜΙΖΕΙ ΑΥΤΟΜΑΤΑ ΑΠΟ ΤΗ JS -->
       <div id="galleryLayer" class="scroll-gallery"></div>
       
       <div id="textLayer" class="text-content-box">Φόρτωση κειμένου...</div>
@@ -499,7 +503,7 @@
       "pantokratoros": { lon: 24.266387, lat: 40.283611, height: 900, pitch: -60.0, heading: 250.0, name: "Ι.Μ. Παντοκράτορος", folder: "padokratoros" },
       "xiropotamou": { lon: 24.221407, lat: 40.228528, height: 900, pitch: -60.0, heading: 60.0, name: "Ι.Μ. Ξηροποτάμου", folder: "xiropotamou" },
       "zografou": { lon: 24.160179, lat: 40.306106, height: 900, pitch: -60.0, heading: 130.0, name: "Ι.Μ. Ζωγράφου", folder: "zografou" },
-      "docheiariou": { lon: 24.172520, lat: 40.266710, height: 900, pitch: -60.0, heading: 90.0, name: "Ι.Μ. Δοχειαρίου", folder: "doh" },
+      "docheiariou": { lon: 24.172795, lat: 40.266663, height: 850, pitch: -35.0, heading: 90.0, name: "Ι.Μ. Δοχειαρίου", folder: "doh" },
       "karakallou": { lon: 24.308786, lat: 40.223605, height: 900, pitch: -60.0, heading: 300.0, name: "Ι.Μ. Καρακάλλου", folder: "karakallou" },
       "filotheou": { lon: 24.291150, lat: 40.225778, height: 900, pitch: -60.0, heading: 320.0, name: "Ι.Μ. Φιλοθέου", folder: "filoth" },
       "simonopetra": { lon: 24.247329, lat: 40.190529, height: 900, pitch: -60.0, heading: 45.0, name: "Ι.Μ. Σίμωνος Πέτρας", folder: "petra" },
@@ -583,20 +587,19 @@
       document.getElementById('infoTitle').innerText = data.name;
 
       const galleryContainer = document.getElementById('galleryLayer');
-      galleryContainer.innerHTML = ""; // Καθαρίζουμε τις προηγούμενες εικόνες
+      galleryContainer.innerHTML = ""; // Καθαρισμός παλιών εικόνων
 
-      // ΔΥΝΑΜΙΚΗ ΑΝΙΧΝΕΥΣΗ ΚΑΙ ΦΟΡΤΩΣΗ ΟΣΩΝ ΕΙΚΟΝΩΝ ΥΠΑΡΧΟΥΝ (ΑΠΟ 1 ΕΩΣ ΜΕΓΙΣΤΟ 30)
       let imgIndex = 1;
       
+      // ΚΑΘΕΤΗ ΔΥΝΑΜΙΚΗ ΦΟΡΤΩΣΗ ΕΙΚΟΝΩΝ ΜΙΑ ΚΑΤΩ ΑΠΟ ΤΗΝ ΑΛΛΗ
       function tryLoadNextImage() {
-        if (imgIndex > 30) return; // Ασφάλεια για να μην κολλήσει σε ατέρμονο βρόχο
+        if (imgIndex > 30) return; 
 
         const imgSrc = `fotografies/${currentFolder}/${currentFolder}_${imgIndex}.jpg`;
         const tempImg = new Image();
         tempImg.src = imgSrc;
 
         tempImg.onload = function() {
-          // Αν η εικόνα υπάρχει, δημιουργούμε το αντίστοιχο HTML στοιχείο
           const newImg = document.createElement('img');
           newImg.src = imgSrc;
           newImg.alt = `${data.name} - Εικόνα ${imgIndex}`;
@@ -605,19 +608,18 @@
           galleryContainer.appendChild(newImg);
           
           imgIndex++;
-          tryLoadNextImage(); // Προσπάθεια για την επόμενη εικόνα
+          tryLoadNextImage(); // Φορτώνει την επόμενη από κάτω
         };
 
         tempImg.onerror = function() {
-          // Μόλις χτυπήσει Error 404 (δηλαδή τελείωσαν οι εικόνες του φακέλου), σταματάει η διαδικασία
           console.log(`Φορτώθηκαν επιτυχώς ${imgIndex - 1} φωτογραφίες.`);
         };
       }
 
-      tryLoadNextImage(); // Εκκίνηση της δυναμικής φόρτωσης
+      tryLoadNextImage();
 
-      // Επαναφορά του slider στην αρχή
-      galleryContainer.scrollLeft = 0;
+      // Επαναφορά της κύλισης στην κορυφή
+      galleryContainer.scrollTop = 0;
 
       switchTab('media');
       document.getElementById('customInfoBox').classList.add('active');
@@ -640,7 +642,7 @@
         tabMedia.classList.add('active');
         galleryLayer.style.display = 'flex'; 
         textLayer.style.display = 'none';    
-        captionElement.innerText = "Σύρετε οριζόντια για περισσότερες φωτογραφίες";
+        captionElement.innerText = "Κυλίστε κάθετα για να δείτε όλες τις φωτογραφίες";
       } 
       else {
         if (type === 'istoria') tabIstoria.classList.add('active');
