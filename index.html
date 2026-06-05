@@ -213,11 +213,10 @@
       margin-bottom: 15px;
     }
 
-    /* ΚΟΙΝΟΣ ΠΕΡΙΕΚΤΗΣ ΓΙΑ ΦΩΤΟΓΡΑΦΙΑ Ή ΚΕΙΜΕΝΟ */
     .display-container {
       position: relative;
       width: 100%;
-      height: 350px; /* Σταθερό ύψος για να μην αλλάζει μέγεθος το παράθυρο */
+      height: 350px;
       background: #111;
       border-radius: 6px;
       overflow: hidden;
@@ -236,6 +235,7 @@
       height: 100%;
       object-fit: contain;
       display: block;
+      cursor: zoom-in; /* Δείχνει ότι η εικόνα μεγεθύνεται */
     }
 
     .gallery-nav {
@@ -262,7 +262,6 @@
     #prevImgBtn { left: 10px; }
     #nextImgBtn { right: 10px; }
 
-    /* ΠΛΑΙΣΙΟ ΚΕΙΜΕΝΟΥ ΠΟΥ ΑΝΤΙΚΑΘΙΣΤΑ ΤΗ ΦΩΤΟΓΡΑΦΙΑ */
     .text-content-box {
       width: 100%;
       height: 100%;
@@ -273,7 +272,7 @@
       color: #eee;
       overflow-y: auto;
       background: rgba(15, 15, 15, 0.95);
-      display: none; /* Ξεκινάει κρυμμένο, εμφανίζεται μόνο όταν πατηθεί Tab */
+      display: none;
     }
 
     #infoCaption {
@@ -285,7 +284,6 @@
       text-align: center;
     }
 
-    /* ΜΕΝΟΥ ΕΠΙΛΟΓΩΝ (TABS) */
     .info-tabs {
       display: flex;
       margin-top: 15px;
@@ -314,6 +312,30 @@
       background: #dfb76c;
       color: #000;
       border-color: #dfb76c;
+    }
+
+    /* CSS ΓΙΑ ΤΟ ΞΕΧΩΡΙΣΤΟ ΠΑΡΑΘΥΡΟ ΜΕΓΕΘΥΝΣΗΣ (LIGHTBOX) */
+    #imageLightbox {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.9);
+      z-index: 9999;
+      justify-content: center;
+      align-items: center;
+      cursor: zoom-out; /* Δείχνει ότι κλείνει με κλικ */
+    }
+
+    #lightboxImg {
+      max-width: 90%;
+      max-height: 90%;
+      object-fit: contain;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.8);
+      border: 1px solid #444;
+      border-radius: 4px;
     }
 
     /* ΡΥΘΜΙΣΕΙΣ ΓΙΑ ΚΙΝΗΤΑ (Responsive) */
@@ -459,15 +481,14 @@
     <h2 id="infoTitle">Όνομα...</h2>
     
     <div class="display-container">
-      
       <div id="galleryLayer" class="image-container">
         <button id="prevImgBtn" class="gallery-nav" onclick="changeImage(-1)">◀</button>
-        <img id="infoImage" src="" alt="" />
+        <!-- Προσθήκη onclick συμβάντος για μεγέθυνση -->
+        <img id="infoImage" src="" alt="" onclick="openLightbox()" />
         <button id="nextImgBtn" class="gallery-nav" onclick="changeImage(1)">▶</button>
       </div>
       
       <div id="textLayer" class="text-content-box">Φόρτωση κειμένου...</div>
-      
     </div>
     
     <p id="infoCaption">Λεζάντα...</p>
@@ -477,6 +498,11 @@
       <button id="tabIstoria" class="tab-btn" onclick="switchTab('istoria')">📜 Ιστορία</button>
       <button id="tabParadosi" class="tab-btn" onclick="switchTab('paradosi')">⛪ Παράδοση</button>
     </div>
+  </div>
+
+  <!-- ΞΕΧΩΡΙΣΤΟ ΠΑΡΑΘΥΡΟ LIGHTBOX (Κλείνει κάνοντας κλικ οπουδήποτε) -->
+  <div id="imageLightbox" onclick="closeLightbox()">
+    <img id="lightboxImg" src="" alt="Μεγέθυνση" />
   </div>
 
   <div id="cesiumContainer"></div>
@@ -523,7 +549,7 @@
       "pantokratoros": { lon: 24.266387, lat: 40.283611, height: 900, pitch: -60.0, heading: 250.0, name: "Ι.Μ. Παντοκράτορος", folder: "padokratoros" },
       "xiropotamou": { lon: 24.221407, lat: 40.228528, height: 900, pitch: -60.0, heading: 60.0, name: "Ι.Μ. Ξηροποτάμου", folder: "xiropotamou" },
       "zografou": { lon: 24.160179, lat: 40.306106, height: 900, pitch: -60.0, heading: 130.0, name: "Ι.Μ. Ζωγράφου", folder: "zografou" },
-      "docheiariou": { lon: 24.172795, lat: 40.266663, height: 850, pitch: -35.0, heading: 90.0, name: "Ι.Μ. Δοχειαρίου", folder: "doh" },
+      "docheiariou": { lon: 24.172520, lat: 40.266710, height: 900, pitch: -60.0, heading: 90.0, name: "Ι.Μ. Δοχειαρίου", folder: "doh" },
       "karakallou": { lon: 24.308786, lat: 40.223605, height: 900, pitch: -60.0, heading: 300.0, name: "Ι.Μ. Καρακάλλου", folder: "karakallou" },
       "filotheou": { lon: 24.291150, lat: 40.225778, height: 900, pitch: -60.0, heading: 320.0, name: "Ι.Μ. Φιλοθέου", folder: "filoth" },
       "simonopetra": { lon: 24.247329, lat: 40.190529, height: 900, pitch: -60.0, heading: 45.0, name: "Ι.Μ. Σίμωνος Πέτρας", folder: "petra" },
@@ -613,13 +639,11 @@
       imgElement.src = `fotografies/${currentFolder}/${currentFolder}_${currentImgIndex}.jpg`;
       imgElement.alt = data.name;
 
-      // Επαναφορά της προβολής στις "Φωτογραφίες" κατά την επιλογή νέας μονής
       switchTab('media');
 
       document.getElementById('customInfoBox').classList.add('active');
     }
 
-    // ΕΞΥΠΝΗ ΕΝΑΛΛΑΓΗΣ ΠΑΡΑΘΥΡΟΥ (PHOTO OR TEXT)
     function switchTab(type) {
       const tabMedia = document.getElementById('tabMedia');
       const tabIstoria = document.getElementById('tabIstoria');
@@ -629,29 +653,27 @@
       const textLayer = document.getElementById('textLayer');
       const captionElement = document.getElementById('infoCaption');
 
-      // 1. Καθαρισμός και ορισμός ενεργού Tab κουμπιού
       tabMedia.classList.remove('active');
       tabIstoria.classList.remove('active');
       tabParadosi.classList.remove('active');
 
       if (type === 'media') {
         tabMedia.classList.add('active');
-        galleryLayer.style.display = 'block'; // Εμφάνιση φωτογραφίας
-        textLayer.style.display = 'none';    // Κρύψιμο κειμένου
+        galleryLayer.style.display = 'block'; 
+        textLayer.style.display = 'none';    
         captionElement.innerText = `Φωτογραφικό υλικό από την τοποθεσία ${document.getElementById('infoTitle').innerText} (Εικόνα ${currentImgIndex})`;
       } 
       else {
         if (type === 'istoria') tabIstoria.classList.add('active');
         if (type === 'paradosi') tabParadosi.classList.add('active');
         
-        galleryLayer.style.display = 'none'; // Κρύψιμο φωτογραφίας
-        textLayer.style.display = 'block';   // Εμφάνιση κειμένου
+        galleryLayer.style.display = 'none'; 
+        textLayer.style.display = 'block';   
         textLayer.innerText = "Φόρτωση κειμένου...";
         captionElement.innerText = (type === 'istoria') ? "Ιστορικό Σημείωμα" : "Ιερά Παράδοση & Κειμήλια";
 
         if (!currentFolder) return;
 
-        // Φόρτωση του αρχείου .txt από τον φάκελο keimena
         const textFileUrl = `keimena/${currentFolder}/${type}.txt`;
         fetch(textFileUrl)
           .then(response => {
@@ -662,7 +684,6 @@
             textLayer.innerHTML = text.replace(/\n/g, "<br>");
           })
           .catch(() => {
-            // Default κείμενο αν δεν υπάρχει ακόμη το αρχείο
             if (type === 'istoria') {
               textLayer.innerHTML = `Εδώ θα εμφανίζονται τα <b>ιστορικά στοιχεία</b> για την τοποθεσία: <i>${document.getElementById('infoTitle').innerText}</i>.`;
             } else {
@@ -672,11 +693,17 @@
       }
     }
 
+    // ΑΝΑΒΑΘΜΙΣΜΕΝΗ ΚΑΙ ΑΞΙΟΠΙΣΤΗ ΕΝΑΛΛΑΓΗ ΕΙΚΟΝΩΝ (ΜΕ ΑΥΤΟΜΑΤΟ ΚΥΚΛΟ / LOOP)
     function changeImage(direction) {
       if (!currentFolder) return;
 
       let nextIndex = currentImgIndex + direction;
-      if (nextIndex < 1) return; 
+      
+      // Αν ο χρήστης πατήσει πίσω ενώ βρίσκεται στην 1η εικόνα, τον πάμε στην 1 (ή μπορεί να μείνει σταθερό)
+      if (nextIndex < 1) {
+        nextIndex = 1;
+        return;
+      }
 
       const nextSrc = `fotografies/${currentFolder}/${currentFolder}_${nextIndex}.jpg`;
       
@@ -684,14 +711,35 @@
       testImg.src = nextSrc;
       
       testImg.onload = function() {
+        // Αν η εικόνα βρεθεί, τη φορτώνουμε κανονικά
         currentImgIndex = nextIndex;
         document.getElementById('infoImage').src = nextSrc;
         document.getElementById('infoCaption').innerText = `Φωτογραφικό υλικό από την τοποθεσία ${document.getElementById('infoTitle').innerText} (Εικόνα ${currentImgIndex})`;
       };
       
       testImg.onerror = function() {
-        console.log("Δεν βρέθηκαν άλλες φωτογραφίες.");
+        // Αν η επόμενη εικόνα ΔΕΝ υπάρχει (π.χ. πήγαμε στο lavra_3 και έχει μόνο 2), 
+        // τότε κάνουμε αυτόματα κύκλο και επιστρέφουμε στην εικόνα 1!
+        if (direction > 0) {
+          currentImgIndex = 1;
+          const resetSrc = `fotografies/${currentFolder}/${currentFolder}_1.jpg`;
+          document.getElementById('infoImage').src = resetSrc;
+          document.getElementById('infoCaption').innerText = `Φωτογραφικό υλικό από την τοποθεσία ${document.getElementById('infoTitle').innerText} (Εικόνα 1)`;
+        }
       };
+    }
+
+    // ΣΥΝΑΡΤΗΣΕΙΣ ΓΙΑ ΤΟ LIGHTBOX (ΜΕΓΕΘΥΝΣΗ)
+    function openLightbox() {
+      const currentSrc = document.getElementById('infoImage').src;
+      if (!currentSrc || currentSrc.includes('undefined')) return;
+      
+      document.getElementById('lightboxImg').src = currentSrc;
+      document.getElementById('imageLightbox').style.display = 'flex';
+    }
+
+    function closeLightbox() {
+      document.getElementById('imageLightbox').style.display = 'none';
     }
 
     function toggleAccordion(id) {
