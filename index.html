@@ -7,6 +7,9 @@
   
   <script src="https://cesium.com/downloads/cesiumjs/releases/1.115/Build/Cesium/Cesium.js"></script>
   <link href="https://cesium.com/downloads/cesiumjs/releases/1.115/Build/Cesium/Widgets/widgets.css" rel="stylesheet">
+  
+  <!-- Εισαγωγή premium βυζαντινού/κλασικού font από τη Google -->
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&display=swap" rel="stylesheet">
 
   <style>
     html, body, #cesiumContainer {
@@ -16,7 +19,29 @@
       padding: 0;
       overflow: hidden;
       background-color: #000;
-      font-family: 'Segoe UI', Arial, sans-serif;
+      font-family: 'Times New Roman', Georgia, serif;
+    }
+
+    /* CUSTOM HTML LABELS - ΥΨΗΛΗ ΕΥΚΡΙΝΕΙΑ ΧΩΡΙΣ ΠΙΞΕΛΙΑΣΜΑ */
+    .cesium-custom-label {
+      position: absolute;
+      z-index: 10;
+      background: rgba(15, 12, 8, 0.88); /* Σκούρο βυζαντινό φόντο */
+      color: #ffffff;
+      border: 1px solid #dfb76c;
+      padding: 6px 12px;
+      border-radius: 4px;
+      font-family: 'Cinzel', 'Times New Roman', Georgia, serif;
+      font-size: 14px;
+      font-weight: 600;
+      white-space: nowrap;
+      pointer-events: none; /* Επιτρέπει τα κλικ στον χάρτη από πίσω */
+      box-shadow: 0px 3px 10px rgba(0,0,0,0.8);
+      transform: translate(-50%, -140%); /* Κεντράρισμα ακριβώς πάνω από την πινέζα */
+      display: block;
+      letter-spacing: 0.5px;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
     }
 
     /* ΑΡΧΙΚΗ ΟΘΟΝΗ ΥΠΟΔΟΧΗΣ (SPLASH SCREEN) */
@@ -55,6 +80,7 @@
       box-shadow: 0px 4px 20px rgba(0,0,0,0.6);
       text-align: center;
       pointer-events: none;
+      font-family: 'Cinzel', 'Times New Roman', serif;
     }
 
     /* ΚΟΥΜΠΙ ΓΙΑ ΑΝΟΙΓΜΑ ΤΟΥ ΜΕΝΟΥ (Desktop) */
@@ -79,7 +105,6 @@
       background: #2a2a2a;
     }
 
-    /* ΝΕΟ ΑΥΤΟΝΟΜΟ ΚΟΥΜΠΙ ΕΠΑΝΑΦΟΡΑΣ ΜΕ ΤΟ INTROSMALL.JPG */
     #homeFlyBtn {
       position: absolute;
       top: 75px;
@@ -250,6 +275,7 @@
       padding-bottom: 10px;
       font-size: 22px;
       margin-bottom: 15px;
+      font-family: 'Cinzel', serif;
     }
 
     .display-container {
@@ -273,17 +299,6 @@
       gap: 10px;
       padding: 10px;
       box-sizing: border-box;
-    }
-
-    .scroll-gallery::-webkit-scrollbar {
-      width: 6px;
-    }
-    .scroll-gallery::-webkit-scrollbar-thumb {
-      background: #dfb76c;
-      border-radius: 10px;
-    }
-    .scroll-gallery::-webkit-scrollbar-track {
-      background: #222;
     }
 
     .scroll-gallery img {
@@ -311,46 +326,7 @@
       display: none;
     }
 
-    #infoCaption {
-      font-size: 13px;
-      font-style: italic;
-      color: #aaa;
-      margin-top: 8px;
-      margin-bottom: 0;
-      text-align: center;
-    }
-
-    .info-tabs {
-      display: flex;
-      margin-top: 15px;
-      gap: 5px;
-    }
-
-    .tab-btn {
-      flex: 1;
-      background: #1a1a1a;
-      color: #aaa;
-      border: 1px solid #444;
-      padding: 10px;
-      cursor: pointer;
-      font-weight: bold;
-      font-size: 13px;
-      transition: all 0.3s;
-      border-radius: 4px;
-    }
-
-    .tab-btn:hover {
-      color: #dfb76c;
-      background: #252525;
-    }
-
-    .tab-btn.active {
-      background: #dfb76c;
-      color: #000;
-      border-color: #dfb76c;
-    }
-
-    /* LIGHTBOX (ΜΕΓΕΘΥΝΣΗ) */
+    /* LIGHTBOX */
     #imageLightbox {
       display: none;
       position: fixed;
@@ -374,7 +350,7 @@
       border-radius: 4px;
     }
 
-    /* MOBILE LAYOUT & RESPONSIVENESS */
+    /* MOBILE LAYOUT */
     @media screen and (max-width: 768px) {
       #mainAppTitle {
         position: relative;
@@ -388,40 +364,30 @@
         padding: 10px; font-size: 13px; text-align: center; border-radius: 0 0 6px 6px;
         background: rgba(30, 30, 30, 0.95); box-shadow: none;
       }
-      
-      /* ΤΡΟΠΟΠΟΙΗΣΗ: Το introsmall γίνεται μικρό κυκλικό εικονίδιο πάνω αριστερά (θέση Geocoder) */
       #homeFlyBtn {
-        position: absolute; 
-        top: 15px; 
-        left: 15px; 
-        margin: 0;
-        width: 35px; 
-        height: 35px; 
-        border-radius: 50%; /* Κυκλικό σχήμα */
-        box-shadow: 0px 2px 10px rgba(0,0,0,0.5);
-        z-index: 1002; /* Πάνω από τα περισσότερα στοιχεία */
+        position: absolute; top: 15px; left: 15px; margin: 0;
+        width: 35px; height: 35px; border-radius: 50%;
+        box-shadow: 0px 2px 10px rgba(0,0,0,0.5); z-index: 1002;
       }
-      
       #menuContainer { top: 115px; left: -100%; width: 90%; padding: 12px; max-height: 65vh; }
       #menuContainer.active { left: 5%; }
-      .accordion-btn { padding: 10px; font-size: 13px; }
       #customInfoBox { top: auto; right: 0 !important; bottom: -100%; left: 0; width: 100%; max-height: 65vh; border-radius: 12px 12px 0 0; padding: 15px; }
       #customInfoBox.active { bottom: 0; }
       .display-container { height: 180px; }
-      .scroll-gallery img { max-height: 160px; }
-      .text-content-box { font-size: 13px; padding: 12px; }
-      .tab-btn { padding: 8px; font-size: 12px; }
+      .cesium-custom-label { font-size: 12px; padding: 4px 8px; }
     }
   </style>
 </head>
 <body>
 
   <div id="splashScreen"></div>
-
   <h1 id="mainAppTitle">Οδοιπορικό στο Άγιο Όρος</h1>
 
   <button id="menuToggleBtn" onclick="toggleMenu()">🗺️ Μενού Πλοήγησης</button>
   <button id="homeFlyBtn" onclick="flyToGeneral()" title="Επιστροφή στην Αρχική Άποψη"></button>
+
+  <!-- ΔΙΟΡΘΩΣΗ: Προσθήκη pointer-events:none ώστε να ΜΗΝ μπλοκάρονται τα κλικ του χάρτη -->
+  <div id="htmlLabelsContainer" style="position: absolute; top:0; left:0; width:100%; height:100%; pointer-events:none; z-index:10;"></div>
 
   <div id="menuContainer">
     <button id="closeMenuBtn" onclick="toggleMenu()">&times;</button>
@@ -485,7 +451,6 @@
       <label style="color: #aaa; font-size: 11px;">Μουσική Υπόκρουση</label>
       <audio id="bgAudio" controls loop>
         <source src="ixoi/psalmwdia.mp3" type="audio/mpeg">
-        Ο browser σας δεν υποστηρίζει ήχο.
       </audio>
     </div>
   </div>
@@ -493,14 +458,11 @@
   <div id="customInfoBox">
     <button id="closeBtn">&times;</button>
     <h2 id="infoTitle">Όνομα...</h2>
-    
     <div class="display-container">
       <div id="galleryLayer" class="scroll-gallery"></div>
       <div id="textLayer" class="text-content-box">Φόρτωση κειμένου...</div>
     </div>
-    
     <p id="infoCaption">Λεζάντα...</p>
-
     <div class="info-tabs">
       <button id="tabMedia" class="tab-btn active" onclick="switchTab('media')">🖼️ Φωτογραφίες</button>
       <button id="tabIstoria" class="tab-btn" onclick="switchTab('istoria')">📜 Ιστορία</button>
@@ -517,7 +479,6 @@
   <script>
     Cesium.Ion.defaultAccessToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiJhYzA1Y2NhMS1hYjhlLTRjZjUtODRmZS0zNjNhYTFmOTUwYjIiLCJpZCI6NDM5NDgxLCJpc3MiOiJodHRwczovL2FwaS5jZXNpdW0uY29tIiwiYXVkIjoidW5kZWZpbmVkX2RlZmF1bHQiLCJpYXQiOjE3ODA0MTI3Nzl9.TfMTqoDjne1KkA63XMF41szdDtICT4kHVaa9QthS70Q';
 
-    // ΑΦΑΙΡΕΣΗ DEFAULT ΕΙΚΟΝΙΔΙΩΝ: Κλείνουμε geocoder, navigationHelpButton, baseLayerPicker, homeButton
     const viewer = new Cesium.Viewer('cesiumContainer', {
       terrain: Cesium.Terrain.fromWorldTerrain(),
       animation: false,
@@ -525,19 +486,16 @@
       sceneModePicker: false,
       infoBox: false,
       selectionIndicator: false,
-      geocoder: false,                  // Μεγενθυντικός φακός
-      navigationHelpButton: false,      // Ερωτήσεις / Βοήθεια
-      baseLayerPicker: false,           // Επιλογή Χαρτών
-      homeButton: false                 // Αρχική εικόνα / Home
+      geocoder: false,
+      navigationHelpButton: false,
+      baseLayerPicker: false,
+      homeButton: false
     });
 
-    // ΑΥΤΟΜΑΤΟΣ ΧΕΙΡΙΣΜΟΣ ΤΗΣ SPLASH SCREEN ΚΑΤΑ ΤΗΝ ΕΙΣΟΔΟ
     window.addEventListener('DOMContentLoaded', () => {
       const splash = document.getElementById('splashScreen');
-      
       setTimeout(() => {
         splash.style.opacity = '0';
-        
         setTimeout(() => {
           splash.style.display = 'none';
           flyToGeneral();
@@ -558,6 +516,7 @@
         orientation: { heading: Cesium.Math.toRadians(338.0), pitch: Cesium.Math.toRadians(-22.0), roll: 0.0 },
         duration: 3.5
       });
+      forceLabelsUpdate(); // Ανανέωση των labels άμεσα κατά την επαναφορά
     }
 
     viewer.camera.setView({
@@ -602,39 +561,89 @@
       "evaggelismou_filoth": { lon: 24.199945, lat: 40.252755, height: 900, pitch: -60.0, heading: 320.0, name: "Σκήτη Ευαγγελισμού (Φιλοθέου)", folder: "evagelfiloth" }
     };
 
+    const monasterySvg = 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="%23dfb76c" stroke="%23000" stroke-width="1" d="M12 2l-1 2h2l-1-2zm0 4c-3.5 0-6 2.5-6 6h12c0-3.5-2.5-6-6-6zm-5 8v6h10v-6H7zm3 6h-1v-3h2v3h-1z"/></svg>';
+    const skiteSvg = 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="%23ffffff" stroke="%23dfb76c" stroke-width="1.5" d="M12 3L4 9v11h16V9l-8-6zm2 14h-4v-4h4v4z"/></svg>';
+
+    const htmlLabelsList = [];
+    const labelsContainer = document.getElementById('htmlLabelsContainer');
+
     for (const key in locations) {
       const loc = locations[key];
       const isSkiti = loc.name.includes("Σκήτη") || loc.name.includes("Μικρά") || loc.name.includes("Καυσοκαλύβια");
-      const markerColor = isSkiti ? Cesium.Color.DODGERBLUE : Cesium.Color.RED;
+      const iconImage = isSkiti ? skiteSvg : monasterySvg;
 
+      // 1. Δημιουργία της 3D Πινέζας (Billboard)
       const entity = viewer.entities.add({
         position: Cesium.Cartesian3.fromDegrees(loc.lon, loc.lat, 0), 
-        point: {
-          pixelSize: 12,
-          color: markerColor,
-          outlineColor: Cesium.Color.WHITE,
-          outlineWidth: 2,
-          heightReference: Cesium.HeightReference.CLAMP_TO_GROUND 
-        },
-        label: {
-          text: loc.name,
-          font: '13px "Segoe UI", Arial, sans-serif',
-          fontWeight: 'bold',
-          style: Cesium.LabelStyle.FILL_AND_OUTLINE,
-          fillColor: Cesium.Color.WHITE,
-          outlineColor: Cesium.Color.BLACK,
-          outlineWidth: 3,
-          showBackground: true,
-          backgroundColor: new Cesium.Color(0.08, 0.08, 0.08, 0.75),
-          backgroundPadding: new Cesium.Cartesian2(6, 4),
-          verticalOrigin: Cesium.VerticalOrigin.BOTTOM,
-          pixelOffset: new Cesium.Cartesian2(0, -10),
+        billboard: {
+          image: iconImage,
+          width: 28,
+          height: 28,
           heightReference: Cesium.HeightReference.CLAMP_TO_GROUND,
-          distanceDisplayCondition: new Cesium.DistanceDisplayCondition(0.0, 60000.0) 
+          verticalOrigin: Cesium.VerticalOrigin.BOTTOM
         },
         name: loc.name
       });
       entity.locationKey = key;
+
+      // 2. Δημιουργία του REAL HTML DOM LABEL
+      const labelDiv = document.createElement('div');
+      labelDiv.className = 'cesium-custom-label';
+      labelDiv.innerText = loc.name;
+      labelsContainer.appendChild(labelDiv);
+
+      // ΔΙΟΡΘΩΣΗ: Σύνδεση με το heightReference για να μην «θάβεται» στο 3D Terrain
+      htmlLabelsList.push({
+        element: labelDiv,
+        // Χρησιμοποιούμε τη γεωγραφική θέση της οντότητας
+        cartographic: Cesium.Cartographic.fromDegrees(loc.lon, loc.lat)
+      });
+    }
+
+    // ΣΥΝΑΡΤΗΣΗ ΥΠΟΛΟΓΙΣΜΟΥ ΘΕΣΗΣ LABELS
+    function updateLabelsPosition() {
+      const infoBoxActive = document.getElementById('customInfoBox').classList.contains('active');
+      
+      if (infoBoxActive) {
+        htmlLabelsList.forEach(item => item.element.style.display = 'none');
+        return;
+      }
+
+      htmlLabelsList.forEach(item => {
+        // ΔΙΟΡΘΩΣΗ: Υπολογισμός του ακριβούς υψομέτρου βάσει του 3D εδάφους του Cesium
+        const currentHeight = viewer.scene.globe.getHeight(item.cartographic) || 0;
+        const positionCartesian = Cesium.Cartesian3.fromDegrees(
+          Cesium.Math.toDegrees(item.cartographic.longitude),
+          Cesium.Math.toDegrees(item.cartographic.latitude),
+          currentHeight + 15 // Μικρό offset 15 μέτρων πάνω από το έδαφος
+        );
+
+        const canvasPosition = viewer.scene.cartesianToCanvasCoordinates(positionCartesian);
+        
+        if (Cesium.defined(canvasPosition)) {
+          const cameraPosition = viewer.camera.position;
+          const occluder = new Cesium.EllipsoidOccluder(Cesium.Ellipsoid.WGS84, cameraPosition);
+          const isVisible = occluder.isPointVisible(positionCartesian);
+
+          if (isVisible) {
+            item.element.style.display = 'block';
+            item.element.style.left = canvasPosition.x + 'px';
+            item.element.style.top = canvasPosition.y + 'px';
+          } else {
+            item.element.style.display = 'none';
+          }
+        } else {
+          item.element.style.display = 'none';
+        }
+      });
+    }
+
+    // ΑΥΤΟΜΑΤΟΣ ΣΥΓΧΡΟΝΙΣΜΟΣ HTML LABELS ΜΕ ΤΗΝ ΚΙΝΗΣΗ ΤΗΣ ΚΑΜΕΡΑΣ
+    viewer.scene.postRender.addEventListener(updateLabelsPosition);
+
+    // ΔΙΟΡΘΩΣΗ: Χειροκίνητο refresh για άμεση επαναφορά
+    function forceLabelsUpdate() {
+      setTimeout(updateLabelsPosition, 50);
     }
 
     function flyToLocation(target) {
@@ -675,15 +684,9 @@
           newImg.src = imgSrc;
           newImg.alt = `${data.name} - Εικόνα ${imgIndex}`;
           newImg.onclick = function() { openLightbox(this); };
-          
           galleryContainer.appendChild(newImg);
-          
           imgIndex++;
           tryLoadNextImage(); 
-        };
-
-        tempImg.onerror = function() {
-          console.log(`Φορτώθηκαν επιτυχώς ${imgIndex - 1} φωτογραφίες.`);
         };
       }
 
@@ -698,7 +701,6 @@
       const tabMedia = document.getElementById('tabMedia');
       const tabIstoria = document.getElementById('tabIstoria');
       const tabParadosi = document.getElementById('tabParadosi');
-      
       const galleryLayer = document.getElementById('galleryLayer');
       const textLayer = document.getElementById('textLayer');
       const captionElement = document.getElementById('infoCaption');
@@ -819,6 +821,7 @@
     document.getElementById('closeBtn').addEventListener('click', function() {
       document.getElementById('customInfoBox').classList.remove('active');
       clearSelects();
+      forceLabelsUpdate(); // ΔΙΟΡΘΩΣΗ: Επανεμφάνιση των labels αμέσως μόλις κλείσει το infoBox
     });
   </script>
 </body>
