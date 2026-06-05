@@ -600,7 +600,7 @@
       "evaggelismou_filoth": { lon: 24.199945, lat: 40.252755, height: 900, pitch: -60.0, heading: 320.0, name: "Σκήτη Ευαγγελισμού (Φιλοθέου)", folder: "evagelfiloth" }
     };
 
-   // ΣΥΝΑΡΤΗΣΗ ΔΗΜΙΟΥΡΓΙΑΣ PREMIUM ΧΡΥΣΟΥ ΠΛΑΙΣΙΟΥ (HIGH-DPI)
+    // ΣΥΝΑΡΤΗΣΗ ΔΗΜΙΟΥΡΓΙΑΣ PREMIUM ΧΡΥΣΟΥ ΠΛΑΙΣΙΟΥ (HIGH-DPI)
     function createGoldLabelCanvas(text) {
       const canvas = document.createElement('canvas');
       const ctx = canvas.getContext('2d');
@@ -626,6 +626,7 @@
       const h = fontSize + paddingY * 2;
       const radius = 6; 
       
+      // 1. Σχεδίαση Μαύρου Περιεχομένου (Φόντο)
       ctx.fillStyle = '#0a0a0a'; 
       ctx.beginPath();
       ctx.moveTo(x + radius, y);
@@ -640,10 +641,12 @@
       ctx.closePath();
       ctx.fill();
       
+      // 2. Σχεδίαση Χρυσού Πλαισίου (Περίγραμμα)
       ctx.strokeStyle = '#dfb76c'; 
       ctx.lineWidth = 3;           
       ctx.stroke();
       
+      // 3. Σχεδίαση Χρυσών Γραμμάτων
       ctx.fillStyle = '#dfb76c';   
       ctx.fillText(text, x + paddingX, y + paddingY);
       
