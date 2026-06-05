@@ -8,7 +8,6 @@
   <script src="https://cesium.com/downloads/cesiumjs/releases/1.115/Build/Cesium/Cesium.js"></script>
   <link href="https://cesium.com/downloads/cesiumjs/releases/1.115/Build/Cesium/Widgets/widgets.css" rel="stylesheet">
   
-  <!-- Εισαγωγή premium βυζαντινού/κλασικού font από τη Google -->
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&display=swap" rel="stylesheet">
 
   <style>
@@ -386,7 +385,6 @@
   <button id="menuToggleBtn" onclick="toggleMenu()">🗺️ Μενού Πλοήγησης</button>
   <button id="homeFlyBtn" onclick="flyToGeneral()" title="Επιστροφή στην Αρχική Άποψη"></button>
 
-  <!-- ΔΙΟΡΘΩΣΗ: Προσθήκη pointer-events:none ώστε να ΜΗΝ μπλοκάρονται τα κλικ του χάρτη -->
   <div id="htmlLabelsContainer" style="position: absolute; top:0; left:0; width:100%; height:100%; pointer-events:none; z-index:10;"></div>
 
   <div id="menuContainer">
@@ -430,7 +428,7 @@
         <option value="agiou_andrea">Σκήτη Αγίου Ανδρέα (Σεράι)</option>
         <option value="timiou_prodromou">Σκήτη Τιμίου Προδρόμου</option>
         <option value="profiti_ilia">Σκήτη Προφήτου Ηλιού</option>
-        <option value="agias_triados">Σκήτη Αγίας Τριάδος</option>
+        <option value="agias_triados">Σκήτη Αγίας Tριάδος</option>
         <option value="nea_skiti">Νέα Σκήτη</option>
         <option value="evaggelismou_xenof">Σκήτη Ευαγγελισμού (Ξενοφώντος)</option>
         <option value="agiou_panteleimonos_kout">Σκήτη Αγίου Παντελεήμονος (Κουτλουμουσίου)</option>
@@ -516,7 +514,7 @@
         orientation: { heading: Cesium.Math.toRadians(338.0), pitch: Cesium.Math.toRadians(-22.0), roll: 0.0 },
         duration: 3.5
       });
-      forceLabelsUpdate(); // Ανανέωση των labels άμεσα κατά την επαναφορά
+      forceLabelsUpdate();
     }
 
     viewer.camera.setView({
@@ -561,268 +559,4 @@
       "evaggelismou_filoth": { lon: 24.199945, lat: 40.252755, height: 900, pitch: -60.0, heading: 320.0, name: "Σκήτη Ευαγγελισμού (Φιλοθέου)", folder: "evagelfiloth" }
     };
 
-    const monasterySvg = 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="%23dfb76c" stroke="%23000" stroke-width="1" d="M12 2l-1 2h2l-1-2zm0 4c-3.5 0-6 2.5-6 6h12c0-3.5-2.5-6-6-6zm-5 8v6h10v-6H7zm3 6h-1v-3h2v3h-1z"/></svg>';
-    const skiteSvg = 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="%23ffffff" stroke="%23dfb76c" stroke-width="1.5" d="M12 3L4 9v11h16V9l-8-6zm2 14h-4v-4h4v4z"/></svg>';
-
-    const htmlLabelsList = [];
-    const labelsContainer = document.getElementById('htmlLabelsContainer');
-
-    for (const key in locations) {
-      const loc = locations[key];
-      const isSkiti = loc.name.includes("Σκήτη") || loc.name.includes("Μικρά") || loc.name.includes("Καυσοκαλύβια");
-      const iconImage = isSkiti ? skiteSvg : monasterySvg;
-
-      // 1. Δημιουργία της 3D Πινέζας (Billboard)
-      const entity = viewer.entities.add({
-        position: Cesium.Cartesian3.fromDegrees(loc.lon, loc.lat, 0), 
-        billboard: {
-          image: iconImage,
-          width: 28,
-          height: 28,
-          heightReference: Cesium.HeightReference.CLAMP_TO_GROUND,
-          verticalOrigin: Cesium.VerticalOrigin.BOTTOM
-        },
-        name: loc.name
-      });
-      entity.locationKey = key;
-
-      // 2. Δημιουργία του REAL HTML DOM LABEL
-      const labelDiv = document.createElement('div');
-      labelDiv.className = 'cesium-custom-label';
-      labelDiv.innerText = loc.name;
-      labelsContainer.appendChild(labelDiv);
-
-      // ΔΙΟΡΘΩΣΗ: Σύνδεση με το heightReference για να μην «θάβεται» στο 3D Terrain
-      htmlLabelsList.push({
-        element: labelDiv,
-        // Χρησιμοποιούμε τη γεωγραφική θέση της οντότητας
-        cartographic: Cesium.Cartographic.fromDegrees(loc.lon, loc.lat)
-      });
-    }
-
-    // ΣΥΝΑΡΤΗΣΗ ΥΠΟΛΟΓΙΣΜΟΥ ΘΕΣΗΣ LABELS
-    function updateLabelsPosition() {
-      const infoBoxActive = document.getElementById('customInfoBox').classList.contains('active');
-      
-      if (infoBoxActive) {
-        htmlLabelsList.forEach(item => item.element.style.display = 'none');
-        return;
-      }
-
-      htmlLabelsList.forEach(item => {
-        // ΔΙΟΡΘΩΣΗ: Υπολογισμός του ακριβούς υψομέτρου βάσει του 3D εδάφους του Cesium
-        const currentHeight = viewer.scene.globe.getHeight(item.cartographic) || 0;
-        const positionCartesian = Cesium.Cartesian3.fromDegrees(
-          Cesium.Math.toDegrees(item.cartographic.longitude),
-          Cesium.Math.toDegrees(item.cartographic.latitude),
-          currentHeight + 15 // Μικρό offset 15 μέτρων πάνω από το έδαφος
-        );
-
-        const canvasPosition = viewer.scene.cartesianToCanvasCoordinates(positionCartesian);
-        
-        if (Cesium.defined(canvasPosition)) {
-          const cameraPosition = viewer.camera.position;
-          const occluder = new Cesium.EllipsoidOccluder(Cesium.Ellipsoid.WGS84, cameraPosition);
-          const isVisible = occluder.isPointVisible(positionCartesian);
-
-          if (isVisible) {
-            item.element.style.display = 'block';
-            item.element.style.left = canvasPosition.x + 'px';
-            item.element.style.top = canvasPosition.y + 'px';
-          } else {
-            item.element.style.display = 'none';
-          }
-        } else {
-          item.element.style.display = 'none';
-        }
-      });
-    }
-
-    // ΑΥΤΟΜΑΤΟΣ ΣΥΓΧΡΟΝΙΣΜΟΣ HTML LABELS ΜΕ ΤΗΝ ΚΙΝΗΣΗ ΤΗΣ ΚΑΜΕΡΑΣ
-    viewer.scene.postRender.addEventListener(updateLabelsPosition);
-
-    // ΔΙΟΡΘΩΣΗ: Χειροκίνητο refresh για άμεση επαναφορά
-    function forceLabelsUpdate() {
-      setTimeout(updateLabelsPosition, 50);
-    }
-
-    function flyToLocation(target) {
-      const targetCenter = Cesium.Cartesian3.fromDegrees(target.lon, target.lat);
-      const boundingSphere = new Cesium.BoundingSphere(targetCenter, 0.0);
-      const headingRad = Cesium.Math.toRadians(target.heading);
-      const pitchRad = Cesium.Math.toRadians(target.pitch);
-
-      viewer.camera.flyToBoundingSphere(boundingSphere, {
-        offset: new Cesium.HeadingPitchRange(headingRad, pitchRad, target.height),
-        duration: 3.0
-      });
-    }
-
-    let currentFolder = "";
-
-    function showLocationInfo(key) {
-      const data = locations[key];
-      if (!data) return;
-
-      currentFolder = data.folder;
-      document.getElementById('infoTitle').innerText = data.name;
-
-      const galleryContainer = document.getElementById('galleryLayer');
-      galleryContainer.innerHTML = ""; 
-
-      let imgIndex = 1;
-      
-      function tryLoadNextImage() {
-        if (imgIndex > 30) return; 
-
-        const imgSrc = `fotografies/${currentFolder}/${currentFolder}_${imgIndex}.jpg`;
-        const tempImg = new Image();
-        tempImg.src = imgSrc;
-
-        tempImg.onload = function() {
-          const newImg = document.createElement('img');
-          newImg.src = imgSrc;
-          newImg.alt = `${data.name} - Εικόνα ${imgIndex}`;
-          newImg.onclick = function() { openLightbox(this); };
-          galleryContainer.appendChild(newImg);
-          imgIndex++;
-          tryLoadNextImage(); 
-        };
-      }
-
-      tryLoadNextImage();
-      galleryContainer.scrollTop = 0;
-
-      switchTab('media');
-      document.getElementById('customInfoBox').classList.add('active');
-    }
-
-    function switchTab(type) {
-      const tabMedia = document.getElementById('tabMedia');
-      const tabIstoria = document.getElementById('tabIstoria');
-      const tabParadosi = document.getElementById('tabParadosi');
-      const galleryLayer = document.getElementById('galleryLayer');
-      const textLayer = document.getElementById('textLayer');
-      const captionElement = document.getElementById('infoCaption');
-
-      tabMedia.classList.remove('active');
-      tabIstoria.classList.remove('active');
-      tabParadosi.classList.remove('active');
-
-      if (type === 'media') {
-        tabMedia.classList.add('active');
-        galleryLayer.style.display = 'flex'; 
-        textLayer.style.display = 'none';    
-        captionElement.innerText = "Κυλίστε κάθετα για να δείτε όλες τις φωτογραφίες";
-      } 
-      else {
-        if (type === 'istoria') tabIstoria.classList.add('active');
-        if (type === 'paradosi') tabParadosi.classList.add('active');
-        
-        galleryLayer.style.display = 'none'; 
-        textLayer.style.display = 'block';   
-        textLayer.innerText = "Φόρτωση κειμένου...";
-        captionElement.innerText = (type === 'istoria') ? "Ιστορικό Σημείωμα" : "Ιερά Παράδοση & Κειμήλια";
-
-        if (!currentFolder) return;
-
-        const textFileUrl = `keimena/${currentFolder}/${type}.txt`;
-        fetch(textFileUrl)
-          .then(response => {
-            if (!response.ok) throw new Error();
-            return response.text();
-          })
-          .then(text => {
-            textLayer.innerHTML = text.replace(/\n/g, "<br>");
-          })
-          .catch(() => {
-            if (type === 'istoria') {
-              textLayer.innerHTML = `Εδώ θα εμφανίζονται τα <b>ιστορικά στοιχεία</b> για την τοποθεσία: <i>${document.getElementById('infoTitle').innerText}</i>.`;
-            } else {
-              textLayer.innerHTML = `Εδώ θα εμφανίζονται οι <b>ιερές παραδόσεις</b> για την τοποθεσία: <i>${document.getElementById('infoTitle').innerText}</i>.`;
-            }
-          });
-      }
-    }
-
-    function openLightbox(imgElement) {
-      if (!imgElement || !imgElement.src) return;
-      document.getElementById('lightboxImg').src = imgElement.src;
-      document.getElementById('imageLightbox').style.display = 'flex';
-    }
-
-    function closeLightbox() {
-      document.getElementById('imageLightbox').style.display = 'none';
-    }
-
-    function toggleAccordion(id) {
-      const contents = document.getElementsByClassName('accordion-content');
-      for (let i = 0; i < contents.length; i++) {
-        if (contents[i].id !== id) {
-          contents[i].style.maxHeight = null; 
-        }
-      }
-      const current = document.getElementById(id);
-      if (current.style.maxHeight) {
-        current.style.maxHeight = null;
-      } else {
-        current.style.maxHeight = current.scrollHeight + "px"; 
-      }
-    }
-
-    function clearSelects() {
-      document.getElementById('monasterySelect').selectedIndex = -1;
-      document.getElementById('skiteSelect').selectedIndex = -1;
-      document.getElementById('routeSelect').selectedIndex = -1;
-    }
-
-    document.getElementById('monasterySelect').addEventListener('change', function() {
-      if(this.value) {
-        showLocationInfo(this.value);
-        flyToLocation(locations[this.value]);
-        document.getElementById('skiteSelect').selectedIndex = -1;
-        toggleMenu(); 
-      }
-    });
-
-    document.getElementById('skiteSelect').addEventListener('change', function() {
-      if(this.value) {
-        showLocationInfo(this.value);
-        flyToLocation(locations[this.value]);
-        document.getElementById('monasterySelect').selectedIndex = -1;
-        toggleMenu(); 
-      }
-    });
-
-    const handler = new Cesium.ScreenSpaceEventHandler(viewer.scene.canvas);
-    handler.setInputAction(function(movement) {
-      const pickedObject = viewer.scene.pick(movement.position);
-      if (Cesium.defined(pickedObject) && Cesium.defined(pickedObject.id)) {
-        const entity = pickedObject.id;
-        if (entity.locationKey) {
-          showLocationInfo(entity.locationKey);
-          flyToLocation(locations[entity.locationKey]);
-          
-          clearSelects();
-          if (document.querySelector(`#monasterySelect option[value="${entity.locationKey}"]`)) {
-            document.getElementById('monasterySelect').value = entity.locationKey;
-          } else if (document.querySelector(`#skiteSelect option[value="${entity.locationKey}"]`)) {
-            document.getElementById('skiteSelect').value = entity.locationKey;
-          }
-          
-          const menu = document.getElementById('menuContainer');
-          if (menu.classList.contains('active')) {
-            toggleMenu();
-          }
-        }
-      }
-    }, Cesium.ScreenSpaceEventType.LEFT_CLICK);
-
-    document.getElementById('closeBtn').addEventListener('click', function() {
-      document.getElementById('customInfoBox').classList.remove('active');
-      clearSelects();
-      forceLabelsUpdate(); // ΔΙΟΡΘΩΣΗ: Επανεμφάνιση των labels αμέσως μόλις κλείσει το infoBox
-    });
-  </script>
-</body>
-</html>
+    const monasterySvg = 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="%23dfb76c" stroke="%23000" stroke-width="1" d="M12 2l-1 2h2l-1-2zm0 4c-3.5 0-6 2.5-
