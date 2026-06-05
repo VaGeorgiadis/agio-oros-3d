@@ -389,7 +389,6 @@
         background: rgba(30, 30, 30, 0.95); box-shadow: none;
       }
       
-      /* ΤΡΟΠΟΠΟΙΗΣΗ: Το introsmall γίνεται μικρό κυκλικό εικονίδιο πάνω αριστερά (θέση Geocoder) */
       #homeFlyBtn {
         position: absolute; 
         top: 15px; 
@@ -397,9 +396,9 @@
         margin: 0;
         width: 35px; 
         height: 35px; 
-        border-radius: 50%; /* Κυκλικό σχήμα */
+        border-radius: 50%;
         box-shadow: 0px 2px 10px rgba(0,0,0,0.5);
-        z-index: 1002; /* Πάνω από τα περισσότερα στοιχεία */
+        z-index: 1002;
       }
       
       #menuContainer { top: 115px; left: -100%; width: 90%; padding: 12px; max-height: 65vh; }
@@ -517,7 +516,6 @@
   <script>
     Cesium.Ion.defaultAccessToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiJhYzA1Y2NhMS1hYjhlLTRjZjUtODRmZS0zNjNhYTFmOTUwYjIiLCJpZCI6NDM5NDgxLCJpc3MiOiJodHRwczovL2FwaS5jZXNpdW0uY29tIiwiYXVkIjoidW5kZWZpbmVkX2RlZmF1bHQiLCJpYXQiOjE3ODA0MTI3Nzl9.TfMTqoDjne1KkA63XMF41szdDtICT4kHVaa9QthS70Q';
 
-    // ΑΦΑΙΡΕΣΗ DEFAULT ΕΙΚΟΝΙΔΙΩΝ: Κλείνουμε geocoder, navigationHelpButton, baseLayerPicker, homeButton
     const viewer = new Cesium.Viewer('cesiumContainer', {
       terrain: Cesium.Terrain.fromWorldTerrain(),
       animation: false,
@@ -525,10 +523,10 @@
       sceneModePicker: false,
       infoBox: false,
       selectionIndicator: false,
-      geocoder: false,                  // Μεγενθυντικός φακός
-      navigationHelpButton: false,      // Ερωτήσεις / Βοήθεια
-      baseLayerPicker: false,           // Επιλογή Χαρτών
-      homeButton: false                 // Αρχική εικόνα / Home
+      geocoder: false,                  
+      navigationHelpButton: false,      
+      baseLayerPicker: false,           
+      homeButton: false                 
     });
 
     // ΑΥΤΟΜΑΤΟΣ ΧΕΙΡΙΣΜΟΣ ΤΗΣ SPLASH SCREEN ΚΑΤΑ ΤΗΝ ΕΙΣΟΔΟ
@@ -602,35 +600,93 @@
       "evaggelismou_filoth": { lon: 24.199945, lat: 40.252755, height: 900, pitch: -60.0, heading: 320.0, name: "Σκήτη Ευαγγελισμού (Φιλοθέου)", folder: "evagelfiloth" }
     };
 
+    // ΝΕΑ ΣΥΝΑΡΤΗΣΗ: Δημιουργεί ένα High-DPI Canvas Label με στρογγυλεμένες γωνίες, border και shadow, εξαλείφοντας τα pixels
+    function createCustomLabelCanvas(text, isSkiti) {
+      const canvas = document.createElement('canvas');
+      const ctx = canvas.getContext('2d');
+      
+      const font = 'bold 28px "Segoe UI", Arial, sans-serif'; // Διπλάσιο μέγεθος για supersampling
+      ctx.font = font;
+      
+      const textMetrics = ctx.measureText(text);
+      const textWidth = textMetrics.width;
+      const textHeight = 28; 
+      
+      const paddingX = 24;
+      const paddingY = 14;
+      
+      canvas.width = textWidth + paddingX * 2 + 10;
+      canvas.height = textHeight + paddingY * 2 + 10;
+      
+      // Ξαναορίζουμε το font μετά την αλλαγή του μεγέθους του canvas
+      ctx.font = font;
+      ctx.textBaseline = 'middle';
+      
+      // Σκιές για 3D βάθος
+      ctx.shadowColor = 'rgba(0, 0, 0, 0.6)';
+      ctx.shadowBlur = 8;
+      ctx.shadowOffsetX = 2;
+      ctx.shadowOffsetY = 4;
+      
+      // Φόντο (Σχεδίαση ομαλού παραλληλογράμμου)
+      ctx.fillStyle = 'rgba(18, 18, 18, 0.92)';
+      const radius = 10; // Στρογγυλεμένες γωνίες
+      const x = 5, y = 5;
+      const w = textWidth + paddingX * 2;
+      const h = textHeight + paddingY * 2;
+      
+      ctx.beginPath();
+      ctx.moveTo(x + radius, y);
+      ctx.lineTo(x + w - radius, y);
+      ctx.quadraticCurveTo(x + w, y, x + w, y + radius);
+      ctx.lineTo(x + w, y + h - radius);
+      ctx.quadraticCurveTo(x + w, y + h, x + w - radius, y + h);
+      ctx.lineTo(x + radius, y + h);
+      ctx.quadraticCurveTo(x, y + h, x, y + h - radius);
+      ctx.lineTo(x, y + radius);
+      ctx.quadraticCurveTo(x, y, x + radius, y);
+      ctx.closePath();
+      ctx.fill();
+      
+      // Border: Χρυσό για Μονές, Γαλάζιο/Μπλε για Σκήτες
+      ctx.shadowColor = 'transparent'; // Απενεργοποίηση σκιάς για το περίγραμμα
+      ctx.lineWidth = 2;
+      ctx.strokeStyle = isSkiti ? '#1e90ff' : '#dfb76c';
+      ctx.stroke();
+      
+      // Σχεδίαση Κειμένου (Κρυστάλλινο λευκό)
+      ctx.fillStyle = '#ffffff';
+      ctx.fillText(text, x + paddingX, y + paddingY + textHeight / 2);
+      
+      return canvas;
+    }
+
     for (const key in locations) {
       const loc = locations[key];
       const isSkiti = loc.name.includes("Σκήτη") || loc.name.includes("Μικρά") || loc.name.includes("Καυσοκαλύβια");
       const markerColor = isSkiti ? Cesium.Color.DODGERBLUE : Cesium.Color.RED;
 
+      // Παραγωγή του premium canvas image
+      const labelCanvas = createCustomLabelCanvas(loc.name, isSkiti);
+
       const entity = viewer.entities.add({
         position: Cesium.Cartesian3.fromDegrees(loc.lon, loc.lat, 0), 
         point: {
-          pixelSize: 12,
+          pixelSize: 11,
           color: markerColor,
           outlineColor: Cesium.Color.WHITE,
           outlineWidth: 2,
           heightReference: Cesium.HeightReference.CLAMP_TO_GROUND 
         },
-        label: {
-          text: loc.name,
-          font: '13px "Segoe UI", Arial, sans-serif',
-          fontWeight: 'bold',
-          style: Cesium.LabelStyle.FILL_AND_OUTLINE,
-          fillColor: Cesium.Color.WHITE,
-          outlineColor: Cesium.Color.BLACK,
-          outlineWidth: 3,
-          showBackground: true,
-          backgroundColor: new Cesium.Color(0.08, 0.08, 0.08, 0.75),
-          backgroundPadding: new Cesium.Cartesian2(6, 4),
+        // Αντικατάσταση του Label με Billboard (Υψηλής Ανάλυσης Canvas Image)
+        billboard: {
+          image: labelCanvas,
+          scale: 0.5, // Υποδιπλασιασμός κλίμακας για τέλειο anti-aliasing (Crisp Look)
           verticalOrigin: Cesium.VerticalOrigin.BOTTOM,
-          pixelOffset: new Cesium.Cartesian2(0, -10),
+          pixelOffset: new Cesium.Cartesian2(0, -15),
           heightReference: Cesium.HeightReference.CLAMP_TO_GROUND,
-          distanceDisplayCondition: new Cesium.DistanceDisplayCondition(0.0, 60000.0) 
+          distanceDisplayCondition: new Cesium.DistanceDisplayCondition(0.0, 60000.0),
+          disableDepthTestDistance: Number.POSITIVE_INFINITY // Αποφυγή «κοψίματος» από το 3D terrain
         },
         name: loc.name
       });
