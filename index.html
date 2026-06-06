@@ -16,10 +16,10 @@
       padding: 0;
       overflow: hidden;
       background-color: #000;
-      font-family: 'Segoe UI', Arial, sans-serif;
+      font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
     }
 
-    /* ΑΡΧΙΚΗ ΟΘΟΝΗ ΥΠΟΔΟΧΗΣ (SPLASH SCREEN) - ΔΙΟΡΘΩΜΕΝΟ ΓΙΑ ΚΙΝΗΤΑ */
+    /* ΑΡΧΙΚΗ ΟΘΟΝΗ ΥΠΟΔΟΧΗΣ (SPLASH SCREEN) */
     #splashScreen {
       position: fixed;
       inset: 0;
@@ -27,7 +27,7 @@
       height: 100vh;
       max-width: 100%;
       background: #0c1219 url('intro.jpg') no-repeat center center;
-      background-size: contain; /* Εξασφαλίζει ότι η εικόνα θα χωρέσει ολόκληρη χωρίς να κοπεί */
+      background-size: contain;
       z-index: 99999;
       display: flex;
       justify-content: center;
@@ -36,64 +36,71 @@
       transition: opacity 1.5s ease;
     }
 
-    /* ΚΕΝΤΡΙΚΟΣ ΤΙΤΛΟΣ ΑΡΧΙΚΗΣ ΟΘΟΝΗΣ (Desktop) */
+    /* ΚΕΝΤΡΙΚΟΣ ΤΙΤΛΟΣ ΑΡΧΙΚΗΣ ΟΘΟΝΗΣ (Σχήμα "Χάπι" - Premium) */
     #mainAppTitle {
       position: absolute;
       top: 20px;
       left: 50%;
       transform: translateX(-50%);
       z-index: 999;
-      background: rgba(20, 20, 20, 0.85);
+      background: rgba(15, 15, 15, 0.8);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
       color: #dfb76c;
-      border: 1px solid #dfb76c;
-      padding: 12px 30px;
+      border: 1px solid rgba(223, 183, 108, 0.6);
+      padding: 10px 30px;
       margin: 0;
-      font-size: 24px;
-      font-weight: bold;
+      font-size: 22px;
+      font-weight: 600;
       letter-spacing: 1.5px;
-      border-radius: 8px;
-      box-shadow: 0px 4px 20px rgba(0,0,0,0.6);
+      border-radius: 30px;
+      text-shadow: 0 2px 4px rgba(0,0,0,0.8);
+      box-shadow: 0px 8px 25px rgba(0,0,0,0.6);
       text-align: center;
       pointer-events: none;
     }
 
-    /* ΚΟΥΜΠΙ ΓΙΑ ΑΝΟΙΓΜΑ ΤΟΥ ΜΕΝΟΥ (Desktop) */
+    /* ΚΟΥΜΠΙ ΓΙΑ ΑΝΟΙΓΜΑ ΤΟΥ ΜΕΝΟΥ */
     #menuToggleBtn {
       position: absolute;
       top: 20px;
       left: 20px;
       z-index: 999;
-      background: rgba(30, 30, 30, 0.95);
+      background: rgba(20, 20, 20, 0.75);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
       color: #dfb76c;
-      border: 1px solid #dfb76c;
-      padding: 10px 15px;
+      border: 1px solid rgba(223, 183, 108, 0.5);
+      padding: 12px 20px;
       font-size: 14px;
       font-weight: bold;
-      border-radius: 6px;
+      border-radius: 8px;
       cursor: pointer;
-      box-shadow: 0px 4px 15px rgba(0,0,0,0.5);
-      transition: background 0.3s;
+      box-shadow: 0px 6px 20px rgba(0,0,0,0.5);
+      transition: all 0.3s ease;
     }
 
     #menuToggleBtn:hover {
-      background: #2a2a2a;
+      background: rgba(40, 40, 40, 0.85);
+      border-color: #dfb76c;
+      box-shadow: 0px 6px 25px rgba(223, 183, 108, 0.2);
     }
 
-    /* ΝΕΟ ΑΥΤΟΝΟΜΟ ΚΟΥΜΠΙ ΕΠΑΝΑΦΟΡΑΣ ΜΕ ΤΟ INTROSMALL.JPG */
+    /* ΑΥΤΟΝΟΜΟ ΚΟΥΜΠΙ ΕΠΑΝΑΦΟΡΑΣ ΜΕ ΤΟ INTROSMALL.JPG */
     #homeFlyBtn {
       position: absolute;
-      top: 75px;
+      top: 80px;
       left: 20px;
       z-index: 999;
       width: 50px;
       height: 50px;
       background: #111 url('introsmall.jpg') no-repeat center center;
       background-size: cover;
-      border: 1px solid #dfb76c;
-      border-radius: 6px;
+      border: 1px solid rgba(223, 183, 108, 0.5);
+      border-radius: 8px;
       cursor: pointer;
-      box-shadow: 0px 4px 15px rgba(0,0,0,0.5);
-      transition: transform 0.2s, border-color 0.3s;
+      box-shadow: 0px 6px 20px rgba(0,0,0,0.5);
+      transition: all 0.2s ease;
     }
 
     #homeFlyBtn:hover {
@@ -101,22 +108,24 @@
       border-color: #fff;
     }
 
-    /* ΚΕΝΤΡΙΚΟ ΜΕΝΟΥ (Αναδυόμενο / Slide-out) */
+    /* ΚΕΝΤΡΙΚΟ ΜΕΝΟΥ (Glassmorphism Slide-out) */
     #menuContainer {
       position: absolute;
       top: 20px;
-      left: -350px;
+      left: -360px;
       z-index: 1000;
-      background: rgba(30, 30, 30, 0.95);
-      padding: 15px;
-      border-radius: 8px;
-      box-shadow: 0px 4px 20px rgba(0,0,0,0.6);
-      border: 1px solid #dfb76c;
+      background: rgba(15, 15, 15, 0.75);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0px 10px 35px rgba(0,0,0,0.6);
+      border: 1px solid rgba(223, 183, 108, 0.4);
       width: 320px;
       box-sizing: border-box;
-      max-height: 90vh;
+      max-height: calc(100% - 40px);
       overflow-y: auto;
-      transition: left 0.4s ease;
+      transition: left 0.4s cubic-bezier(0.16, 1, 0.3, 1);
     }
 
     #menuContainer.active {
@@ -128,107 +137,15 @@
       font-size: 14px;
       font-weight: bold;
       text-transform: uppercase;
-      letter-spacing: 1px;
-      margin-bottom: 12px;
-      border-bottom: 1px solid #555;
-      padding-bottom: 5px;
+      letter-spacing: 1.5px;
+      margin-bottom: 15px;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+      padding-bottom: 8px;
       padding-right: 25px;
+      text-shadow: 0 1px 2px rgba(0,0,0,0.5);
     }
 
     #closeMenuBtn {
-      position: absolute;
-      top: 10px;
-      right: 15px;
-      background: none;
-      border: none;
-      color: #aaa;
-      font-size: 22px;
-      cursor: pointer;
-    }
-
-    #closeMenuBtn:hover {
-      color: #dfb76c;
-    }
-
-    .accordion-btn {
-      width: 100%;
-      background: #222;
-      color: #dfb76c;
-      text-align: left;
-      padding: 10px;
-      font-size: 13px;
-      font-weight: bold;
-      border: 1px solid #444;
-      border-radius: 4px;
-      cursor: pointer;
-      margin-bottom: 5px;
-      outline: none;
-      transition: background 0.3s;
-      display: flex;
-      justify-content: space-between;
-    }
-
-    .accordion-btn:hover {
-      background: #2a2a2a;
-    }
-
-    .accordion-content {
-      max-height: 0;
-      overflow: hidden;
-      transition: max-height 0.3s ease-out;
-      margin-bottom: 5px;
-    }
-
-    .accordion-content select {
-      width: 100%;
-      padding: 10px;
-      border: 1px solid #555;
-      background: #111;
-      color: #fff;
-      font-size: 13px;
-      cursor: pointer;
-      outline: none;
-      box-sizing: border-box;
-    }
-
-    .audio-player-container {
-      background: #1a1a1a;
-      padding: 8px;
-      border-radius: 6px;
-      margin-top: 10px;
-      border-top: 1px solid #444;
-    }
-    
-    .audio-player-container audio {
-      width: 100%;
-      outline: none;
-      margin-top: 5px;
-    }
-
-    /* ΠΑΡΑΘΥΡΟ ΠΛΗΡΟΦΟΡΙΩΝ */
-    #customInfoBox {
-      position: absolute;
-      top: 20px;
-      right: -550px;
-      width: 480px;
-      max-height: calc(100% - 40px);
-      background: rgba(20, 20, 20, 0.95);
-      border: 1px solid #dfb76c;
-      border-radius: 8px;
-      box-shadow: -5px 4px 25px rgba(0,0,0,0.7);
-      z-index: 1001;
-      padding: 20px;
-      box-sizing: border-box;
-      color: #fff;
-      overflow-y: auto;
-      transition: right 0.4s ease, bottom 0.4s ease;
-    }
-
-    #customInfoBox.active {
-      right: 20px;
-    }
-
-    #closeBtn {
       position: absolute;
       top: 15px;
       right: 15px;
@@ -237,6 +154,105 @@
       color: #aaa;
       font-size: 24px;
       cursor: pointer;
+      transition: color 0.2s;
+    }
+
+    #closeMenuBtn:hover {
+      color: #dfb76c;
+    }
+
+    .accordion-btn {
+      width: 100%;
+      background: rgba(35, 35, 35, 0.6);
+      color: #dfb76c;
+      text-align: left;
+      padding: 12px 15px;
+      font-size: 13px;
+      font-weight: bold;
+      border: 1px solid rgba(255,255,255,0.05);
+      border-radius: 6px;
+      cursor: pointer;
+      margin-bottom: 6px;
+      outline: none;
+      transition: all 0.2s ease;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .accordion-btn:hover {
+      background: rgba(55, 55, 55, 0.8);
+      border-color: rgba(223, 183, 108, 0.4);
+    }
+
+    .accordion-content {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.3s ease-out;
+      margin-bottom: 8px;
+    }
+
+    .accordion-content select {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 6px;
+      background: rgba(10, 10, 10, 0.85);
+      color: #fff;
+      font-size: 13px;
+      cursor: pointer;
+      outline: none;
+      box-sizing: border-box;
+    }
+
+    .audio-player-container {
+      background: rgba(255, 255, 255, 0.05);
+      padding: 10px;
+      border-radius: 8px;
+      margin-top: 15px;
+      border-top: 1px solid rgba(255,255,255,0.1);
+    }
+    
+    .audio-player-container audio {
+      width: 100%;
+      outline: none;
+      margin-top: 5px;
+    }
+
+    /* ΠΑΡΑΘΥΡΟ ΠΛΗΡΟΦΟΡΙΩΝ (Glassmorphism InfoBox) */
+    #customInfoBox {
+      position: absolute;
+      top: 20px;
+      right: -550px;
+      width: 480px;
+      max-height: calc(100% - 40px);
+      background: rgba(15, 15, 15, 0.8);
+      backdrop-filter: blur(15px);
+      -webkit-backdrop-filter: blur(15px);
+      border: 1px solid rgba(223, 183, 108, 0.4);
+      border-radius: 12px;
+      box-shadow: -5px 10px 35px rgba(0,0,0,0.7);
+      z-index: 1001;
+      padding: 25px;
+      box-sizing: border-box;
+      color: #fff;
+      overflow-y: auto;
+      transition: right 0.4s cubic-bezier(0.16, 1, 0.3, 1), bottom 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    #customInfoBox.active {
+      right: 20px;
+    }
+
+    #closeBtn {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      background: none;
+      border: none;
+      color: #aaa;
+      font-size: 26px;
+      cursor: pointer;
+      transition: color 0.2s;
     }
 
     #closeBtn:hover {
@@ -245,22 +261,23 @@
 
     #infoTitle {
       color: #dfb76c;
-      margin-top: 10px;
-      border-bottom: 1px solid #444;
-      padding-bottom: 10px;
+      margin-top: 5px;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+      padding-bottom: 12px;
       font-size: 22px;
       margin-bottom: 15px;
+      text-shadow: 0 2px 4px rgba(0,0,0,0.5);
     }
 
     .display-container {
       position: relative;
       width: 100%;
       height: 350px;
-      background: #111;
-      border-radius: 6px;
+      background: rgba(5, 5, 5, 0.6);
+      border-radius: 8px;
       overflow: hidden;
-      box-shadow: 0 5px 15px rgba(0,0,0,0.5);
-      border: 1px solid #333;
+      box-shadow: inset 0 2px 10px rgba(0,0,0,0.8);
+      border: 1px solid rgba(255,255,255,0.05);
     }
 
     .scroll-gallery {
@@ -270,8 +287,8 @@
       flex-direction: column;
       overflow-y: auto;
       overflow-x: hidden;
-      gap: 10px;
-      padding: 10px;
+      gap: 12px;
+      padding: 12px;
       box-sizing: border-box;
     }
 
@@ -283,7 +300,7 @@
       border-radius: 10px;
     }
     .scroll-gallery::-webkit-scrollbar-track {
-      background: #222;
+      background: rgba(0,0,0,0.2);
     }
 
     .scroll-gallery img {
@@ -293,9 +310,14 @@
       object-fit: contain;
       cursor: zoom-in;
       display: block;
-      border-radius: 4px;
-      border: 1px solid #222;
-      background: #050505;
+      border-radius: 6px;
+      border: 1px solid rgba(0,0,0,0.5);
+      background: #020202;
+      transition: transform 0.3s ease;
+    }
+    
+    .scroll-gallery img:hover {
+      transform: scale(1.01);
     }
 
     .text-content-box {
@@ -304,50 +326,52 @@
       padding: 20px;
       box-sizing: border-box;
       font-size: 15px;
-      line-height: 1.6;
-      color: #eee;
+      line-height: 1.7;
+      color: #e5e5e5;
       overflow-y: auto;
-      background: rgba(15, 15, 15, 0.95);
+      background: rgba(10, 10, 10, 0.4);
       display: none;
     }
 
     #infoCaption {
       font-size: 13px;
       font-style: italic;
-      color: #aaa;
-      margin-top: 8px;
+      color: #b0b0b0;
+      margin-top: 10px;
       margin-bottom: 0;
       text-align: center;
     }
 
     .info-tabs {
       display: flex;
-      margin-top: 15px;
-      gap: 5px;
+      margin-top: 20px;
+      gap: 8px;
     }
 
     .tab-btn {
       flex: 1;
-      background: #1a1a1a;
-      color: #aaa;
-      border: 1px solid #444;
-      padding: 10px;
+      background: rgba(255,255,255,0.05);
+      color: #ccc;
+      border: 1px solid rgba(255,255,255,0.1);
+      padding: 12px;
       cursor: pointer;
       font-weight: bold;
       font-size: 13px;
-      transition: all 0.3s;
-      border-radius: 4px;
+      transition: all 0.2s ease;
+      border-radius: 6px;
     }
 
     .tab-btn:hover {
       color: #dfb76c;
-      background: #252525;
+      background: rgba(255,255,255,0.1);
+      border-color: rgba(223, 183, 108, 0.3);
     }
 
     .tab-btn.active {
       background: #dfb76c;
       color: #000;
       border-color: #dfb76c;
+      box-shadow: 0 4px 15px rgba(223, 183, 108, 0.3);
     }
 
     /* LIGHTBOX (ΜΕΓΕΘΥΝΣΗ) */
@@ -358,59 +382,87 @@
       left: 0;
       width: 100%;
       height: 100%;
-      background-color: rgba(0, 0, 0, 0.9);
-      z-index: 9999;
+      background-color: rgba(0, 0, 0, 0.92);
+      z-index: 99999;
       justify-content: center;
       align-items: center;
       cursor: zoom-out;
     }
 
     #lightboxImg {
-      max-width: 90%;
-      max-height: 90%;
+      max-width: 92%;
+      max-height: 92%;
       object-fit: contain;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.8);
-      border: 1px solid #444;
-      border-radius: 4px;
+      box-shadow: 0 15px 40px rgba(0,0,0,0.9);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 6px;
     }
 
-    /* MOBILE LAYOUT & RESPONSIVENESS */
+    /* MOBILE LAYOUT & RESPONSIVENESS - ΠΛΗΡΩΣ ΒΕΛΤΙΩΜΕΝΟ */
     @media screen and (max-width: 768px) {
       #mainAppTitle {
-        position: relative;
-        top: 0; left: 0; transform: none;
-        font-size: 18px; padding: 8px 10px; margin: 10px auto 5px auto;
-        width: 90%; box-sizing: border-box; border-bottom: none; border-radius: 6px 6px 0 0;
-        background: rgba(20, 20, 20, 0.95);
-      }
-      #menuToggleBtn {
-        position: relative; top: 0; left: 0; display: block; width: 90%; margin: 0 auto 5px auto;
-        padding: 10px; font-size: 13px; text-align: center; border-radius: 0 0 6px 6px;
-        background: rgba(30, 30, 30, 0.95); box-shadow: none;
+        position: absolute;
+        top: 15px; 
+        left: auto;
+        right: 15px;
+        transform: none;
+        font-size: 15px; 
+        padding: 8px 16px; 
+        max-width: 55%;
+        border-radius: 20px;
+        box-shadow: 0px 4px 15px rgba(0,0,0,0.5);
       }
       
-      /* ΤΡΟΠΟΠΟΙΗΣΗ: Το introsmall γίνεται μικρό κυκλικό εικονίδιο πάνω αριστερά */
-      #homeFlyBtn {
+      #menuToggleBtn {
         position: absolute; 
         top: 15px; 
         left: 15px; 
-        margin: 0;
-        width: 35px; 
-        height: 35px; 
-        border-radius: 50%; /* Κυκλικό σχήμα */
-        box-shadow: 0px 2px 10px rgba(0,0,0,0.5);
-        z-index: 1002; 
+        padding: 10px 14px; 
+        font-size: 13px;
+        border-radius: 8px;
       }
       
-      #menuContainer { top: 115px; left: -100%; width: 90%; padding: 12px; max-height: 65vh; }
+      #homeFlyBtn {
+        position: absolute; 
+        top: 15px; 
+        left: 145px; /* Floating τοποθέτηση δίπλα από το μενού */
+        margin: 0;
+        width: 38px; 
+        height: 38px; 
+        border-radius: 50%; /* Κομψό κυκλικό εικονίδιο */
+        box-shadow: 0px 4px 15px rgba(0,0,0,0.5);
+        z-index: 1002;
+      }
+      
+      #menuContainer { 
+        top: 70px; 
+        left: -100%; 
+        width: 90%; 
+        padding: 15px; 
+        max-height: 55vh; 
+        border-radius: 12px;
+      }
       #menuContainer.active { left: 5%; }
-      .accordion-btn { padding: 10px; font-size: 13px; }
-      #customInfoBox { top: auto; right: 0 !important; bottom: -100%; left: 0; width: 100%; max-height: 65vh; border-radius: 12px 12px 0 0; padding: 15px; }
+      
+      #customInfoBox { 
+        top: auto; 
+        right: 0 !important; 
+        bottom: -100%; 
+        left: 0; 
+        width: 100%; 
+        max-height: 60vh; 
+        border-radius: 20px 20px 0 0; 
+        padding: 20px; 
+        border-left: none;
+        border-right: none;
+        border-bottom: none;
+      }
       #customInfoBox.active { bottom: 0; }
-      .display-container { height: 180px; }
-      .scroll-gallery img { max-height: 160px; }
-      .text-content-box { font-size: 13px; padding: 12px; }
-      .tab-btn { padding: 8px; font-size: 12px; }
+      
+      .display-container { height: 200px; }
+      .scroll-gallery img { max-height: 180px; }
+      .text-content-box { font-size: 14px; padding: 15px; }
+      .tab-btn { padding: 10px; font-size: 12px; }
     }
   </style>
 </head>
@@ -420,7 +472,7 @@
 
   <h1 id="mainAppTitle">Οδοιπορικό στο Άγιο Όρος</h1>
 
-  <button id="menuToggleBtn" onclick="toggleMenu()">🗺️ Μενού Πλοήγησης</button>
+  <button id="menuToggleBtn" onclick="toggleMenu()">🗺️ Μενού</button>
   <button id="homeFlyBtn" onclick="flyToGeneral()" title="Επιστροφή στην Αρχική Άποψη"></button>
 
   <div id="menuContainer">
@@ -517,7 +569,6 @@
   <script>
     Cesium.Ion.defaultAccessToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiJhYzA1Y2NhMS1hYjhlLTRjZjUtODRmZS0zNjNhYTFmOTUwYjIiLCJpZCI6NDM5NDgxLCJpc3MiOiJodHRwczovL2FwaS5jZXNpdW0uY29tIiwiYXVkIjoidW5kZWZpbmVkX2RlZmF1bHQiLCJpYXQiOjE3ODA0MTI3Nzl9.TfMTqoDjne1KkA63XMF41szdDtICT4kHVaa9QthS70Q';
 
-    // ΑΦΑΙΡΕΣΗ DEFAULT ΕΙΚΟΝΙΔΙΩΝ
     const viewer = new Cesium.Viewer('cesiumContainer', {
       terrain: Cesium.Terrain.fromWorldTerrain(),
       animation: false,
@@ -531,7 +582,6 @@
       homeButton: false                 
     });
 
-    // ΑΥΤΟΜΑΤΟΣ ΧΕΙΡΙΣΜΟΣ ΤΗΣ SPLASH SCREEN ΚΑΤΑ ΤΗΝ ΕΙΣΟΔΟ
     window.addEventListener('DOMContentLoaded', () => {
       const splash = document.getElementById('splashScreen');
       
@@ -602,7 +652,7 @@
       "evaggelismou_filoth": { lon: 24.199945, lat: 40.252755, height: 900, pitch: -60.0, heading: 320.0, name: "Σκήτη Ευαγγελισμού (Φιλοθέου)", folder: "evagelfiloth" }
     };
 
-    // ΔΗΜΙΟΥΡΓΙΑ ENTITIES ΜΕ ΤΙΣ ΧΡΥΣΕΣ ΕΤΙΚΕΤΕΣ (LABEL)
+    // ΑΝΑΝΕΩΜΕΝΟ ΣΤΥΛ ΓΙΑ ΤΑ ΧΡΥΣΑ LABELS ΣΤΟΝ ΧΑΡΤΗ
     for (const key in locations) {
       const loc = locations[key];
       const isSkiti = loc.name.includes("Σκήτη") || loc.name.includes("Μικρά") || loc.name.includes("Καυσοκαλύβια");
@@ -619,17 +669,16 @@
         },
         label: {
           text: loc.name,
-          font: '14px "Segoe UI", Arial, sans-serif',
-          fontWeight: 'bold',
+          font: '600 13px "Segoe UI", Roboto, Helvetica, Arial, sans-serif',
           style: Cesium.LabelStyle.FILL,
           fillColor: Cesium.Color.fromCssColorString('#dfb76c'), 
           showBackground: true,
-          backgroundColor: new Cesium.Color(0.05, 0.05, 0.05, 0.85), 
-          backgroundPadding: new Cesium.Cartesian2(12, 0), 
+          backgroundColor: new Cesium.Color(0.04, 0.04, 0.04, 0.9), 
+          backgroundPadding: new Cesium.Cartesian2(10, 5), 
           verticalOrigin: Cesium.VerticalOrigin.BOTTOM,
-          pixelOffset: new Cesium.Cartesian2(0, -15),
+          pixelOffset: new Cesium.Cartesian2(0, -16),
           heightReference: Cesium.HeightReference.CLAMP_TO_GROUND,
-          distanceDisplayCondition: new Cesium.DistanceDisplayCondition(0.0, 60000.0) 
+          distanceDisplayCondition: new Cesium.DistanceDisplayCondition(0.0, 55000.0) 
         },
         name: loc.name
       });
