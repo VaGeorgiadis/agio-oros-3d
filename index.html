@@ -398,49 +398,46 @@
       border-radius: 6px;
     }
 
-    /* MOBILE LAYOUT & RESPONSIVENESS - ΔΙΟΡΘΩΜΕΝΟ ΓΙΑ ΤΗΝ ΕΠΙΚΑΛΥΨΗ */
+    /* MOBILE LAYOUT & RESPONSIVENESS - ΔΙΟΡΘΩΜΕΝΟ ΓΙΑ ΕΥΘΥΓΡΑΜΜΙΣΗ & INTRO.JPG */
     @media screen and (max-width: 768px) {
-      /* Ο τίτλος κατεβαίνει ελαφρώς για να είναι στην ίδια ευθεία με το Μενού */
+      /* Ο τίτλος έρχεται στο ίδιο ακριβώς ύψος (top: 15px) με το κουμπί */
       #mainAppTitle {
         position: absolute;
-        top: 70px; 
+        top: 15px; 
         left: auto;
         right: 15px;
         transform: none;
         font-size: 14px; 
-        padding: 8px 16px; 
-        max-width: 50%;
+        padding: 9px 16px; 
+        max-width: 52%;
         border-radius: 20px;
         box-shadow: 0px 4px 15px rgba(0,0,0,0.5);
       }
       
-      /* Το κουμπί Επαναφοράς μπαίνει ΠΡΩΤΟ και ΠΑΝΩ αριστερά */
+      /* Το κουμπί Αρχικής Άποψης - Φορτώνει πλέον το intro.jpg */
       #homeFlyBtn {
         position: absolute; 
         top: 15px; 
         left: 15px; 
         margin: 0;
-        width: 42px; 
-        height: 42px; 
-        border-radius: 50%; /* Κυκλικό */
+        width: 38px; 
+        height: 38px; 
+        border-radius: 50%; /* Κυκλικό σχήμα */
         box-shadow: 0px 4px 15px rgba(0,0,0,0.5);
         z-index: 1002;
-        /* Αντί για την εικόνα που σκοτεινιάζει, βάζουμε ένα καθαρό emoji/icon */
-        background: rgba(20, 20, 20, 0.85) !important;
-        backdrop-filter: blur(5px);
-        border-color: #dfb76c;
+        background: #111 url('intro.jpg') no-repeat center center !important;
+        background-size: cover !important;
       }
       
-      /* Χρησιμοποιούμε το :after για να σχεδιάσουμε το εικονίδιο επιστροφής */
+      /* Καταργούμε τυχόν ψευδο-στοιχεία κειμένου */
       #homeFlyBtn:after {
-        content: "🏠";
-        font-size: 18px;
+        content: "" !important;
       }
       
-      /* Το κουμπί Μενού έρχεται ακριβώς ΚΑΤΩ από το homeFlyBtn */
+      /* Το κουμπί Μενού τοποθετείται ακριβώς ΚΑΤΩ από το homeFlyBtn */
       #menuToggleBtn {
         position: absolute; 
-        top: 68px; 
+        top: 65px; 
         left: 15px; 
         padding: 10px 14px; 
         font-size: 13px;
@@ -448,9 +445,8 @@
         width: auto;
       }
       
-      /* Το μενού ανοίγει λίγο πιο κάτω για να μην κρύβει τα floating κουμπιά */
       #menuContainer { 
-        top: 125px; 
+        top: 120px; 
         left: -100%; 
         width: 90%; 
         padding: 15px; 
@@ -617,7 +613,8 @@
       document.getElementById('customInfoBox').classList.remove('active');
       clearSelects();
       viewer.camera.flyTo({
-        destination: Cesium.Cartesian3.fromDegrees(24.317500 40.090000, 5000), 
+        /* ΔΙΟΡΘΩΘΗΚΕ: Προστέθηκε το κόμμα ανάμεσα στα 24.317500 και 40.090000 */
+        destination: Cesium.Cartesian3.fromDegrees(24.317500, 40.090000, 5000), 
         orientation: { heading: Cesium.Math.toRadians(338.0), pitch: Cesium.Math.toRadians(-22.0), roll: 0.0 },
         duration: 3.5
       });
