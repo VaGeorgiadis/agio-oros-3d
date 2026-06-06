@@ -43,9 +43,9 @@
       left: 50%;
       transform: translateX(-50%);
       z-index: 999;
-      background: rgba(15, 15, 15, 0.45);
-      backdrop-filter: blur(18px);
-      -webkit-backdrop-filter: blur(18px);
+      background: rgba(15, 15, 15, 0.8);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
       color: #dfb76c;
       border: 1px solid rgba(223, 183, 108, 0.6);
       padding: 10px 30px;
@@ -66,9 +66,9 @@
       top: 20px;
       left: 20px;
       z-index: 999;
-      background: rgba(15, 15, 15, 0.45);
-      backdrop-filter: blur(18px);
-      -webkit-backdrop-filter: blur(18px);
+      background: rgba(20, 20, 20, 0.75);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
       color: #dfb76c;
       border: 1px solid rgba(223, 183, 108, 0.5);
       padding: 12px 20px;
@@ -398,41 +398,49 @@
       border-radius: 6px;
     }
 
-    /* MOBILE LAYOUT & RESPONSIVENESS - ΔΙΟΡΘΩΜΕΝΟ ΓΙΑ ΕΥΘΥΓΡΑΜΜΙΣΗ & INTROSMALL */
+    /* MOBILE LAYOUT & RESPONSIVENESS - ΔΙΟΡΘΩΜΕΝΟ ΓΙΑ ΤΗΝ ΕΠΙΚΑΛΥΨΗ */
     @media screen and (max-width: 768px) {
-      /* Ο τίτλος έρχεται στο ίδιο ακριβώς ύψος (top: 15px) με το κουμπί */
+      /* Ο τίτλος κατεβαίνει ελαφρώς για να είναι στην ίδια ευθεία με το Μενού */
       #mainAppTitle {
         position: absolute;
-        top: 15px; 
+        top: 70px; 
         left: auto;
         right: 15px;
         transform: none;
         font-size: 14px; 
-        padding: 9px 16px; 
-        max-width: 52%;
+        padding: 8px 16px; 
+        max-width: 50%;
         border-radius: 20px;
         box-shadow: 0px 4px 15px rgba(0,0,0,0.5);
       }
       
-      /* Το κουμπί Αρχικής Άποψης - Διατηρεί το introsmall.jpg ως φόντο */
+      /* Το κουμπί Επαναφοράς μπαίνει ΠΡΩΤΟ και ΠΑΝΩ αριστερά */
       #homeFlyBtn {
         position: absolute; 
         top: 15px; 
         left: 15px; 
         margin: 0;
-        width: 38px; 
-        height: 38px; 
-        border-radius: 50%; /* Κυκλικό σχήμα */
+        width: 42px; 
+        height: 42px; 
+        border-radius: 50%; /* Κυκλικό */
         box-shadow: 0px 4px 15px rgba(0,0,0,0.5);
         z-index: 1002;
-        background: #111 url('introsmall.jpg') no-repeat center center !important;
-        background-size: cover !important;
+        /* Αντί για την εικόνα που σκοτεινιάζει, βάζουμε ένα καθαρό emoji/icon */
+        background: rgba(20, 20, 20, 0.85) !important;
+        backdrop-filter: blur(5px);
+        border-color: #dfb76c;
       }
       
-      /* Το κουμπί Μενού τοποθετείται ακριβώς ΚΑΤΩ από το homeFlyBtn */
+      /* Χρησιμοποιούμε το :after για να σχεδιάσουμε το εικονίδιο επιστροφής */
+      #homeFlyBtn:after {
+        content: "🏠";
+        font-size: 18px;
+      }
+      
+      /* Το κουμπί Μενού έρχεται ακριβώς ΚΑΤΩ από το homeFlyBtn */
       #menuToggleBtn {
         position: absolute; 
-        top: 65px; 
+        top: 68px; 
         left: 15px; 
         padding: 10px 14px; 
         font-size: 13px;
@@ -440,8 +448,9 @@
         width: auto;
       }
       
+      /* Το μενού ανοίγει λίγο πιο κάτω για να μην κρύβει τα floating κουμπιά */
       #menuContainer { 
-        top: 120px; 
+        top: 125px; 
         left: -100%; 
         width: 90%; 
         padding: 15px; 
@@ -571,7 +580,7 @@
   <div id="cesiumContainer"></div>
 
   <script>
-    Cesium.Ion.defaultAccessToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiJhYzA1Y2NhMS1hYjhlLTRjZjUtODRmZS0zNjNhYTFmOTUwYjIiLCJpZCI6NDM5NDgxLCJpc3MiOiJodHRwczovL2FwaS5jZXNpdW0uY29tIiwiYXVkIjoidW5kZWZpbmVkX2RlZmF1bHQpLCJpYXQiOjE3ODA0MTI3Nzl9.TfMTqoDjne1KkA63XMF41szdDtICT4kHVaa9QthS70Q';
+    Cesium.Ion.defaultAccessToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiJhYzA1Y2NhMS1hYjhlLTRjZjUtODRmZS0zNjNhYTFmOTUwYjIiLCJpZCI6NDM5NDgxLCJpc3MiOiJodHRwczovL2FwaS5jZXNpdW0uY29tIiwiYXVkIjoidW5kZWZpbmVkX2RlZmF1bHQiLCJpYXQiOjE3ODA0MTI3Nzl9.TfMTqoDjne1KkA63XMF41szdDtICT4kHVaa9QthS70Q';
 
     const viewer = new Cesium.Viewer('cesiumContainer', {
       terrain: Cesium.Terrain.fromWorldTerrain(),
@@ -656,13 +665,11 @@
       "evaggelismou_filoth": { lon: 24.199945, lat: 40.252755, height: 900, pitch: -60.0, heading: 320.0, name: "Σκήτη Ευαγγελισμού (Φιλοθέου)", folder: "evagelfiloth" }
     };
 
-    // ΔΗΜΙΟΥΡΓΙΑ ΠΙΝΕΖΩΝ ΜΕ ΤΑ ΝΕΑ ΧΡΩΜΑΤΑ (ΧΡΥΣΟ ΓΙΑ ΜΟΝΕΣ, ΠΟΡΦΥΡΟ ΓΙΑ ΣΚΗΤΕΣ)
+    // ΑΝΑΝΕΩΜΕΝΟ ΣΤΥΛ ΓΙΑ ΤΑ ΧΡΥΣΑ LABELS ΣΤΟΝ ΧΑΡΤΗ
     for (const key in locations) {
       const loc = locations[key];
       const isSkiti = loc.name.includes("Σκήτη") || loc.name.includes("Μικρά") || loc.name.includes("Καυσοκαλύβια");
-      
-      // Χρυσό (#dfb76c) για Μονές, Πορφυρό / Βυζαντινό Κόκκινο (#800020) για Σκήτες
-      const markerColor = isSkiti ? Cesium.Color.fromCssColorString('#800020') : Cesium.Color.fromCssColorString('#dfb76c');
+      const markerColor = isSkiti ? Cesium.Color.DODGERBLUE : Cesium.Color.RED;
 
       const entity = viewer.entities.add({
         position: Cesium.Cartesian3.fromDegrees(loc.lon, loc.lat, 0), 
