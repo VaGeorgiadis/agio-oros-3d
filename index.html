@@ -20,21 +20,21 @@
     }
 
     /* ΑΡΧΙΚΗ ΟΘΟΝΗ ΥΠΟΔΟΧΗΣ (SPLASH SCREEN) - ΔΙΟΡΘΩΜΕΝΟ ΓΙΑ ΚΙΝΗΤΑ */
-#splashScreen {
-  position: fixed;
-  inset: 0;
-  width: 100vw;
-  height: 100vh;
-  max-width: 100%;
-  background: #0c1219 url('intro.jpg') no-repeat center center;
-  background-size: contain; /* Εξασφαλίζει ότι η εικόνα θα χωρέσει ολόκληρη χωρίς να κοπεί */
-  z-index: 99999;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  opacity: 1;
-  transition: opacity 1.5s ease;
-}
+    #splashScreen {
+      position: fixed;
+      inset: 0;
+      width: 100vw;
+      height: 100vh;
+      max-width: 100%;
+      background: #0c1219 url('intro.jpg') no-repeat center center;
+      background-size: contain; /* Εξασφαλίζει ότι η εικόνα θα χωρέσει ολόκληρη χωρίς να κοπεί */
+      z-index: 99999;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      opacity: 1;
+      transition: opacity 1.5s ease;
+    }
 
     /* ΚΕΝΤΡΙΚΟΣ ΤΙΤΛΟΣ ΑΡΧΙΚΗΣ ΟΘΟΝΗΣ (Desktop) */
     #mainAppTitle {
@@ -100,26 +100,6 @@
       transform: scale(1.05);
       border-color: #fff;
     }
-
-label: {
-  text: loc.name,
-  font: '14px "Segoe UI", Arial, sans-serif',
-  fontWeight: 'bold',
-  style: Cesium.LabelStyle.FILL,
-  fillColor: Cesium.Color.fromCssColorString('#dfb76c'), // Χρυσά γράμματα
-  
-  // ΑΥΤΟ ΕΙΝΑΙ ΤΟ ΚΛΕΙΔΙ: Ενεργοποιούμε το background
-  showBackground: true,
-  backgroundColor: new Cesium.Color(0.05, 0.05, 0.05, 0.85), // Σκούρο διαφανές εσωτερικό
-  
-  // Μειώνουμε το κάθετο padding στο 0 για να αναγκάσουμε το Cesium να το δείξει ως καθαρό παραλληλόγραμμο
-  backgroundPadding: new Cesium.Cartesian2(12, 0), 
-  
-  verticalOrigin: Cesium.VerticalOrigin.BOTTOM,
-  pixelOffset: new Cesium.Cartesian2(0, -15),
-  heightReference: Cesium.HeightReference.CLAMP_TO_GROUND,
-  distanceDisplayCondition: new Cesium.DistanceDisplayCondition(0.0, 60000.0) 
-}
 
     /* ΚΕΝΤΡΙΚΟ ΜΕΝΟΥ (Αναδυόμενο / Slide-out) */
     #menuContainer {
@@ -409,7 +389,7 @@ label: {
         background: rgba(30, 30, 30, 0.95); box-shadow: none;
       }
       
-      /* ΤΡΟΠΟΠΟΙΗΣΗ: Το introsmall γίνεται μικρό κυκλικό εικονίδιο πάνω αριστερά (θέση Geocoder) */
+      /* ΤΡΟΠΟΠΟΙΗΣΗ: Το introsmall γίνεται μικρό κυκλικό εικονίδιο πάνω αριστερά */
       #homeFlyBtn {
         position: absolute; 
         top: 15px; 
@@ -419,7 +399,7 @@ label: {
         height: 35px; 
         border-radius: 50%; /* Κυκλικό σχήμα */
         box-shadow: 0px 2px 10px rgba(0,0,0,0.5);
-        z-index: 1002; /* Πάνω από τα περισσότερα στοιχεία */
+        z-index: 1002; 
       }
       
       #menuContainer { top: 115px; left: -100%; width: 90%; padding: 12px; max-height: 65vh; }
@@ -537,7 +517,7 @@ label: {
   <script>
     Cesium.Ion.defaultAccessToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiJhYzA1Y2NhMS1hYjhlLTRjZjUtODRmZS0zNjNhYTFmOTUwYjIiLCJpZCI6NDM5NDgxLCJpc3MiOiJodHRwczovL2FwaS5jZXNpdW0uY29tIiwiYXVkIjoidW5kZWZpbmVkX2RlZmF1bHQiLCJpYXQiOjE3ODA0MTI3Nzl9.TfMTqoDjne1KkA63XMF41szdDtICT4kHVaa9QthS70Q';
 
-    // ΑΦΑΙΡΕΣΗ DEFAULT ΕΙΚΟΝΙΔΙΩΝ: Κλείνουμε geocoder, navigationHelpButton, baseLayerPicker, homeButton
+    // ΑΦΑΙΡΕΣΗ DEFAULT ΕΙΚΟΝΙΔΙΩΝ
     const viewer = new Cesium.Viewer('cesiumContainer', {
       terrain: Cesium.Terrain.fromWorldTerrain(),
       animation: false,
@@ -545,10 +525,10 @@ label: {
       sceneModePicker: false,
       infoBox: false,
       selectionIndicator: false,
-      geocoder: false,                  // Μεγενθυντικός φακός
-      navigationHelpButton: false,      // Ερωτήσεις / Βοήθεια
-      baseLayerPicker: false,           // Επιλογή Χαρτών
-      homeButton: false                 // Αρχική εικόνα / Home
+      geocoder: false,                  
+      navigationHelpButton: false,      
+      baseLayerPicker: false,           
+      homeButton: false                 
     });
 
     // ΑΥΤΟΜΑΤΟΣ ΧΕΙΡΙΣΜΟΣ ΤΗΣ SPLASH SCREEN ΚΑΤΑ ΤΗΝ ΕΙΣΟΔΟ
@@ -622,6 +602,7 @@ label: {
       "evaggelismou_filoth": { lon: 24.199945, lat: 40.252755, height: 900, pitch: -60.0, heading: 320.0, name: "Σκήτη Ευαγγελισμού (Φιλοθέου)", folder: "evagelfiloth" }
     };
 
+    // ΔΗΜΙΟΥΡΓΙΑ ENTITIES ΜΕ ΤΙΣ ΧΡΥΣΕΣ ΕΤΙΚΕΤΕΣ (LABEL)
     for (const key in locations) {
       const loc = locations[key];
       const isSkiti = loc.name.includes("Σκήτη") || loc.name.includes("Μικρά") || loc.name.includes("Καυσοκαλύβια");
@@ -638,17 +619,15 @@ label: {
         },
         label: {
           text: loc.name,
-          font: '13px "Segoe UI", Arial, sans-serif',
+          font: '14px "Segoe UI", Arial, sans-serif',
           fontWeight: 'bold',
-          style: Cesium.LabelStyle.FILL_AND_OUTLINE,
-          fillColor: Cesium.Color.WHITE,
-          outlineColor: Cesium.Color.BLACK,
-          outlineWidth: 3,
+          style: Cesium.LabelStyle.FILL,
+          fillColor: Cesium.Color.fromCssColorString('#dfb76c'), 
           showBackground: true,
-          backgroundColor: new Cesium.Color(0.08, 0.08, 0.08, 0.75),
-          backgroundPadding: new Cesium.Cartesian2(6, 4),
+          backgroundColor: new Cesium.Color(0.05, 0.05, 0.05, 0.85), 
+          backgroundPadding: new Cesium.Cartesian2(12, 0), 
           verticalOrigin: Cesium.VerticalOrigin.BOTTOM,
-          pixelOffset: new Cesium.Cartesian2(0, -10),
+          pixelOffset: new Cesium.Cartesian2(0, -15),
           heightReference: Cesium.HeightReference.CLAMP_TO_GROUND,
           distanceDisplayCondition: new Cesium.DistanceDisplayCondition(0.0, 60000.0) 
         },
