@@ -264,7 +264,7 @@
       </select>
     </div>
     <div class="menu-section">
-      <h3>Establishment ⛪ Ιερές Σκήτες</h3>
+      <h3>⛪ Ιερές Σκήτες</h3>
       <select id="sketesSelect">
         <option value="" disabled selected>-- Επιλέξτε Σκήτη --</option>
       </select>
@@ -351,7 +351,7 @@
       "agiou_pavlou": { lon: 24.290312, lat: 40.160358, height: 900, pitch: -60.0, heading: 20.0, name: "Ι.Μ. Αγίου Παύλου", folder: "pavlou", category: "monastery" },
       "stavronikita": { lon: 24.276963, lat: 40.267846, height: 900, pitch: -60.0, heading: 240.0, name: "Ι.Μ. Σταυρονικήτα", folder: "stavronikita", category: "monastery" },
       "xenofontos": { lon: 24.178726, lat: 40.258651, height: 900, pitch: -60.0, heading: 90.0, name: "Ι.Μ. Ξενοφώντος", folder: "xenofodos", category: "monastery" },
-      "grigoriou": { lon: 24.255946, lat: 40.179635, height: 900, pitch: -60.0, heading: 45.0, name: "Ι.Μ. Γρηγορίου", folder: "grigoriou"., category: "monastery" },
+      "grigoriou": { lon: 24.255946, lat: 40.179635, height: 900, pitch: -60.0, heading: 45.0, name: "Ι.Μ. Γρηγορίου", folder: "grigoriou", category: "monastery" },
       "esfigmenou": { lon: 24.138106, lat: 40.352487, height: 900, pitch: -60.0, heading: 180.0, name: "Ι.Μ. Εσφιγμένου", folder: "esfigmenou", category: "monastery" },
       "agiou_panteleimonos": { lon: 24.201154, lat: 40.237667, height: 900, pitch: -60.0, heading: 90.0, name: "Ι.Μ. Αγίου Παντελεήμονος", folder: "pantel", category: "monastery" },
       "konstamonitou": { lon: 24.174820, lat: 40.288587, height: 900, pitch: -60.0, heading: 120.0, name: "Ι.Μ. Κωνσταμονίτου", folder: "konstamonitou", category: "monastery" },
@@ -371,56 +371,7 @@
       "evaggelismou_filoth": { lon: 24.199945, lat: 40.252755, height: 900, pitch: -60.0, heading: 320.0, name: "Σκήτη Ευαγγελισμού (Φιλοθέου)", folder: "evagelfiloth", category: "skete" }
     };
 
-    // 3. ΔΗΜΙΟΥΡΓΙΑ HIGH-DPI LABELS (SUPERSAMPLING)
-    function createLabelCanvas(text, hexColor) {
-      const scaleFactor = 2; 
-      const paddingX = 20;
-      const paddingY = 12;
-      const fontSize = 26;
-      const radius = 6;
-      const lineWidth = 4;
-
-      // Πρώτο βήμα: Μέτρηση του κειμένου με offscreen context για ακρίβεια pixel
-      const calcCanvas = document.createElement('canvas');
-      const calcCtx = calcCanvas.getContext('2d');
-      calcCtx.font = `bold ${fontSize}px "Segoe UI", Arial, sans-serif`;
-      const textWidth = calcCtx.measureText(text).width;
-
-      const canvas = document.createElement('canvas');
-      const w = textWidth + paddingX * 2 + 10;
-      const h = fontSize + paddingY * 2 + 10;
-
-      canvas.width = w * scaleFactor;
-      canvas.height = h * scaleFactor;
-
-      const ctx = canvas.getContext('2d');
-      ctx.scale(scaleFactor, scaleFactor);
-
-      // Σχεδίαση Μαύρου Φόντου
-      ctx.fillStyle = '#0a0a0a';
-      ctx.beginPath();
-      if (ctx.roundRect) {
-        ctx.roundRect(5, 5, textWidth + paddingX * 2, fontSize + paddingY * 2, radius);
-      } else {
-        ctx.rect(5, 5, textWidth + paddingX * 2, fontSize + paddingY * 2);
-      }
-      ctx.fill();
-
-      // Σχεδίαση Έντονου Περιγράμματος
-      ctx.lineWidth = lineWidth;
-      ctx.strokeStyle = hexColor;
-      ctx.stroke();
-
-      // Σχεδίαση Κειμένου
-      ctx.font = `bold ${fontSize}px "Segoe UI", Arial, sans-serif`;
-      ctx.fillStyle = hexColor;
-      ctx.textBaseline = 'top';
-      ctx.fillText(text, 5 + paddingX, 5 + paddingY);
-
-      return canvas.toDataURL('image/png');
-    }
-
-    // 4. ΠΡΟΣΘΗΚΗ ENTITY ΜΕ POINTGRAPHICS & BILLBOARD LABEL (LOD)
+    // 3. ΠΡΟΣΘΗΚΗ ENTITY ΜΕ POINTGRAPHICS ΜΟΝΟ (ΚΑΘΟΛΟΥ ΟΝΟΜΑΤΑ/BILLBOARDS)
     function addLocationEntity(key, options) {
       const { name, lon, lat, category } = options;
 
@@ -432,17 +383,6 @@
       };
 
       const hexColor = colorMap[category] || colorMap.other;
-      const labelImage = createLabelCanvas(name, hexColor);
-
-      // Υπολογισμός δυναμικής απόστασης εμφάνισης τίτλων (Slant Range LOD)
-      let maxLabelDistance = 32000.0; // Σκήτες & Τοπόσημα
-      if (category === "monastery") {
-        if (key === "megistis_lavras" || key === "vatopediou" || key === "iviron") {
-          maxLabelDistance = 500000.0; // Οι 3 μεγάλες Μονές φαίνονται από την αρχή
-        } else {
-          maxLabelDistance = 95000.0;  // Οι υπόλοιπες Μονές ξεπροβάλλουν με λίγο ζουμ
-        }
-      }
 
       const entity = viewer.entities.add({
         name,
@@ -453,16 +393,7 @@
           outlineColor: Cesium.Color.WHITE,
           outlineWidth: 2,
           heightReference: Cesium.HeightReference.CLAMP_TO_GROUND,
-          distanceDisplayCondition: new Cesium.DistanceDisplayCondition(0.0, 500000.0) // Πινέζες ορατές πάντα
-        },
-        billboard: {
-          image: labelImage,
-          scale: 0.5,
-          verticalOrigin: Cesium.VerticalOrigin.BOTTOM,
-          pixelOffset: new Cesium.Cartesian2(0, -15),
-          heightReference: Cesium.HeightReference.CLAMP_TO_GROUND,
-          disableDepthTestDistance: Number.POSITIVE_INFINITY,
-          distanceDisplayCondition: new Cesium.DistanceDisplayCondition(0.0, maxLabelDistance)
+          distanceDisplayCondition: new Cesium.DistanceDisplayCondition(0.0, 500000.0) // Ορατές παντού
         }
       });
 
@@ -470,13 +401,13 @@
       return entity;
     }
 
-    // 5. ΑΥΤΟΜΑΤΟ LOOP ΓΙΑ ΓΕΜΙΣΜΑ SELECTS ΚΑΙ ΧΑΡΤΗ
+    // 4. ΑΥΤΟΜΑΤΟ LOOP ΓΙΑ ΓΕΜΙΣΜΑ SELECTS ΚΑΙ ΧΑΡΤΗ
     const monasterySelect = document.getElementById('monasterySelect');
     const sketesSelect = document.getElementById('sketesSelect');
 
     for (const key in locations) {
       const loc = locations[key];
-      addLocationEntity(key, loc); // Σχεδίαση στον 3D Χάρτη
+      addLocationEntity(key, loc); // Σχεδίαση μόνο της πινέζας
 
       // Γέμισμα των drop-down μενού πλοήγησης
       const opt = document.createElement('option');
@@ -490,7 +421,7 @@
       }
     }
 
-    // 6. CLICK HANDLER & FLYTOBOUNDINGSPHERE
+    // 5. CLICK HANDLER & FLYTOBOUNDINGSPHERE
     const handler = new Cesium.ScreenSpaceEventHandler(viewer.scene.canvas);
     let windowCurrentFolder = 'default';
 
@@ -515,7 +446,6 @@
           updateInfoBox(locData.name, windowCurrentFolder);
           clearSelects();
           
-          // Συγχρονισμός των Select με το κλικ
           if (locData.category === 'monastery') {
             monasterySelect.value = entity.locationKey;
           } else if (locData.category === 'skete') {
@@ -525,7 +455,7 @@
       }
     }, Cesium.ScreenSpaceEventType.LEFT_CLICK);
 
-    // 7. ΔΙΑΧΕΙΡΙΣΗ SELECTS ПΛΟΗΓΗΣΗΣ
+    // 6. ΔΙΑΧΕΙΡΙΣΗ SELECTS ΠΛΟΗΓΗΣΗΣ
     function handleSelectChange(selectEl) {
       if (selectEl.value) {
         const key = selectEl.value;
@@ -545,7 +475,6 @@
         windowCurrentFolder = locData.folder;
         updateInfoBox(locData.name, windowCurrentFolder);
         
-        // Καθαρισμός του άλλου select
         if (selectEl.id === 'monasterySelect') document.getElementById('sketesSelect').value = '';
         if (selectEl.id === 'sketesSelect') document.getElementById('monasterySelect').value = '';
       }
@@ -560,7 +489,7 @@
       document.getElementById('routesSelect').value = '';
     }
 
-    // 8. ΣΕΙΡΙΑΚΗ ΦΟΡΤΩΣΗ ΦΩΤΟΓΡΑΦΙΩΝ & TABS
+    // 7. ΣΕΙΡΙΑΚΗ ΦΟΡΤΩΣΗ ΦΩΤΟΓΡΑΦΙΩΝ & TABS
     function loadPhotos(currentFolder) {
       const gallery = document.getElementById('galleryLayer');
       gallery.innerHTML = '';
@@ -617,15 +546,17 @@
       });
     });
 
-    // 9. UI CONTROL INTERACTION
+    // 8. UI CONTROL INTERACTION
     document.getElementById('homeFlyBtn').addEventListener('click', () => {
       flyToGeneral(25000.0);
     });
 
     function toggleMenu() {
-      document.getElementById('menuContainer').classList.toggle('active');
+      const menu = document.getElementById('menuContainer');
+      menu.classList.toggle('active');
     }
-    // Άνοιγμα/κλείσιμο μενού με πάτημα του πλήκτρου τίτλου ή αυτόνομης διεπαφής αν χρειαστεί
+
+    // Άνοιγμα/κλείσιμο μενού με κλικ στον τίτλο της εφαρμογής
     document.getElementById('mainAppTitle').style.pointerEvents = 'auto';
     document.getElementById('mainAppTitle').addEventListener('click', toggleMenu);
 
