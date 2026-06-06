@@ -19,7 +19,7 @@
       font-family: 'Segoe UI', Arial, sans-serif;
     }
 
-    /* ΑΡΧΙΚΗ ΟΘΟΝΗ ΥΠΟΔΟΧΗΣ (SPLASH SCREEN) - ΟΡΙΣΤΙΚΗ ΔΙΟΡΘΩΣΗ ΓΙΑ SMARTPHONES */
+    /* ΑΡΧΙΚΗ ΟΘΟΝΗ ΥΠΟΔΟΧΗΣ (SPLASH SCREEN) */
     #splashScreen {
       position: fixed;
       top: 0;
@@ -28,7 +28,7 @@
       height: 100vh;
       max-width: 100%;
       background: #0c1219 url('intro.jpg') no-repeat center center;
-      background-size: contain; /* Εξασφαλίζει ότι η εικόνα θα χωρέσει ολόκληρη χωρίς να κοπεί */
+      background-size: contain;
       z-index: 99999;
       display: flex;
       justify-content: center;
@@ -37,13 +37,13 @@
       transition: opacity 1.5s ease-in-out;
     }
 
-    /* ΚΕΝΤΡΙΚΟΣ ΤΙΤΛΟΣ ΑΡΧΙΚΗΣ ΟΘΟΝΗΣ */
+    /* ΚΕΝΤΡΙΚΟΣ ΤΙΤΛΟΣ ΑΡΧΙΚΗΣ ΟΘΟΝΗΣ (ΕΜΦΑΝΙΣΗ ΠΑΝΤΟΥ) */
     #mainAppTitle {
       position: absolute;
       top: 20px;
       left: 50%;
       transform: translateX(-50%);
-      z-index: 999;
+      z-index: 100000; /* Πάνω από τη splash screen και πάνω από το Cesium */
       background: rgba(20, 20, 20, 0.85);
       color: #dfb76c;
       border: 1px solid #dfb76c;
@@ -56,6 +56,7 @@
       box-shadow: 0px 4px 20px rgba(0,0,0,0.6);
       text-align: center;
       pointer-events: none;
+      white-space: nowrap;
     }
 
     /* ΚΟΥΜΠΙ ΓΙΑ ΑΝΟΙΓΜΑ ΤΟΥ ΜΕΝΟΥ */
@@ -375,13 +376,14 @@
       border-radius: 4px;
     }
 
-    /* RESPONSIVENESS */
+    /* RESPONSIVENESS ΓΙΑ ΚΙΝΗΤΑ */
     @media screen and (max-width: 768px) {
       #mainAppTitle {
-        position: relative;
-        top: 0; left: 0; transform: none;
-        font-size: 18px; padding: 8px 10px; margin: 10px auto 5px auto;
-        width: 90%; box-sizing: border-box; border-bottom: none; border-radius: 6px 6px 0 0;
+        top: 15%; /* Στοχοθετείται ακριβώς πάνω στην εικόνα contain στα κινητά */
+        font-size: 18px; 
+        padding: 8px 16px;
+        max-width: 90%;
+        border-radius: 6px;
         background: rgba(20, 20, 20, 0.95);
       }
       #menuToggleBtn {
@@ -475,7 +477,7 @@
       <select id="routeSelect" size="3">
         <option value="" disabled selected>-- Επιλέξτε Διαδρομή --</option>
         <option value="route1">Προσεχώς: Διαδρομή 1</option>
-        <option value="route2">Προσεχώς: Διαδρομή 2</option>
+        <option value="route2">Προσευώς: Διαδρομή 2</option>
       </select>
     </div>
 
