@@ -371,7 +371,7 @@
       "evaggelismou_filoth": { lon: 24.199945, lat: 40.252755, height: 900, pitch: -60.0, heading: 320.0, name: "Σκήτη Ευαγγελισμού (Φιλοθέου)", folder: "evagelfiloth", category: "skete" }
     };
 
-    // 3. ΠΡΟΣΘΗΚΗ ENTITY ΜΕ POINTGRAPHICS ΜΟΝΟ (ΚΑΘΟΛΟΥ ΟΝΟΜΑΤΑ/BILLBOARDS)
+    // 3. ΠΡΟΣΘΗΚΗ ENTITY ΜΕ POINTGRAPHICS ΚΑΙ LABELGRAPHICS (ΕΜΦΑΝΙΣΗ ΟΝΟΜΑΤΩΝ)
     function addLocationEntity(key, options) {
       const { name, lon, lat, category } = options;
 
@@ -394,6 +394,18 @@
           outlineWidth: 2,
           heightReference: Cesium.HeightReference.CLAMP_TO_GROUND,
           distanceDisplayCondition: new Cesium.DistanceDisplayCondition(0.0, 500000.0) // Ορατές παντού
+        },
+        label: {
+          text: name,
+          font: 'bold 14px "Segoe UI", Arial, sans-serif',
+          style: Cesium.LabelStyle.FILL_AND_OUTLINE,
+          fillColor: Cesium.Color.WHITE,
+          outlineColor: Cesium.Color.BLACK,
+          outlineWidth: 3,
+          verticalOrigin: Cesium.VerticalOrigin.BOTTOM,
+          pixelOffset: new Cesium.Cartesian2(0, -15), // Τοποθέτηση ακριβώς πάνω από την πινέζα
+          heightReference: Cesium.HeightReference.CLAMP_TO_GROUND,
+          distanceDisplayCondition: new Cesium.DistanceDisplayCondition(0.0, 300000.0) // Εμφάνιση και από την αρχική οθόνη
         }
       });
 
@@ -407,7 +419,7 @@
 
     for (const key in locations) {
       const loc = locations[key];
-      addLocationEntity(key, loc); // Σχεδίαση μόνο της πινέζας
+      addLocationEntity(key, loc); // Σχεδίαση πινέζας και ονόματος
 
       // Γέμισμα των drop-down μενού πλοήγησης
       const opt = document.createElement('option');
