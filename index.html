@@ -101,6 +101,26 @@
       border-color: #fff;
     }
 
+label: {
+  text: loc.name,
+  font: '14px "Segoe UI", Arial, sans-serif',
+  fontWeight: 'bold',
+  style: Cesium.LabelStyle.FILL,
+  fillColor: Cesium.Color.fromCssColorString('#dfb76c'), // Χρυσά γράμματα
+  
+  // ΑΥΤΟ ΕΙΝΑΙ ΤΟ ΚΛΕΙΔΙ: Ενεργοποιούμε το background
+  showBackground: true,
+  backgroundColor: new Cesium.Color(0.05, 0.05, 0.05, 0.85), // Σκούρο διαφανές εσωτερικό
+  
+  // Μειώνουμε το κάθετο padding στο 0 για να αναγκάσουμε το Cesium να το δείξει ως καθαρό παραλληλόγραμμο
+  backgroundPadding: new Cesium.Cartesian2(12, 0), 
+  
+  verticalOrigin: Cesium.VerticalOrigin.BOTTOM,
+  pixelOffset: new Cesium.Cartesian2(0, -15),
+  heightReference: Cesium.HeightReference.CLAMP_TO_GROUND,
+  distanceDisplayCondition: new Cesium.DistanceDisplayCondition(0.0, 60000.0) 
+}
+
     /* ΚΕΝΤΡΙΚΟ ΜΕΝΟΥ (Αναδυόμενο / Slide-out) */
     #menuContainer {
       position: absolute;
