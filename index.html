@@ -37,13 +37,13 @@
       transition: opacity 1.5s ease-in-out;
     }
 
-    /* ΚΕΝΤΡΙΚΟΣ ΤΙΤΛΟΣ ΑΡΧΙΚΗΣ ΟΘΟΝΗΣ (ΕΜΦΑΝΙΣΗ ΠΑΝΤΟΥ) */
+    /* ΚΕΝΤΡΙΚΟΣ ΤΙΤΛΟΣ ΑΡΧΙΚΗΣ ΟΘΟΝΗΣ */
     #mainAppTitle {
       position: absolute;
       top: 20px;
       left: 50%;
       transform: translateX(-50%);
-      z-index: 100000; /* Πάνω από τη splash screen και πάνω από το Cesium */
+      z-index: 100000; 
       background: rgba(20, 20, 20, 0.85);
       color: #dfb76c;
       border: 1px solid #dfb76c;
@@ -379,7 +379,7 @@
     /* RESPONSIVENESS ΓΙΑ ΚΙΝΗΤΑ */
     @media screen and (max-width: 768px) {
       #mainAppTitle {
-        top: 15%; /* Στοχοθετείται ακριβώς πάνω στην εικόνα contain στα κινητά */
+        top: 15%; 
         font-size: 18px; 
         padding: 8px 16px;
         max-width: 90%;
@@ -477,7 +477,7 @@
       <select id="routeSelect" size="3">
         <option value="" disabled selected>-- Επιλέξτε Διαδρομή --</option>
         <option value="route1">Προσεχώς: Διαδρομή 1</option>
-        <option value="route2">Προσευώς: Διαδρομή 2</option>
+        <option value="route2">Προσεχώς: Διαδρομή 2</option>
       </select>
     </div>
 
@@ -608,7 +608,8 @@
       "evaggelismou_filoth": { lon: 24.199945, lat: 40.252755, height: 900, pitch: -60.0, heading: 320.0, name: "Σκήτη Ευαγγελισμού (Φιλοθέου)", folder: "evagelfiloth" }
     };
 
-    function createGoldLabelCanvas(text) {
+    // ΣΥΝΑΡΤΗΣΗ ΔΗΜΙΟΥΡΓΙΑΣ ΔΥΝΑΜΙΚΟΥ ΠΛΑΙΣΙΟΥ (HIGH-DPI) ΜΕ ΤΟ ΧΡΩΜΑ ΤΗΣ ΚΑΤΗΓΟΡΙΑΣ ΤΟΥ
+    function createCustomLabelCanvas(text, borderColorHex) {
       const canvas = document.createElement('canvas');
       const ctx = canvas.getContext('2d');
       
@@ -633,6 +634,7 @@
       const h = fontSize + paddingY * 2;
       const radius = 6; 
       
+      // 1. Σχεδίαση Μαύρου Φόντου
       ctx.fillStyle = '#0a0a0a'; 
       ctx.beginPath();
       ctx.moveTo(x + radius, y);
@@ -647,22 +649,46 @@
       ctx.closePath();
       ctx.fill();
       
-      ctx.strokeStyle = '#dfb76c'; 
+      // 2. Σχεδίαση Περιγράμματος (Ακολουθεί το χρώμα της κατηγορίας)
+      ctx.strokeStyle = borderColorHex; 
       ctx.lineWidth = 3;           
       ctx.stroke();
       
-      ctx.fillStyle = '#dfb76c';   
+      // 3. Σχεδίαση Γραμμάτων (Ακολουθεί το χρώμα της κατηγορίας)
+      ctx.fillStyle = borderColorHex;   
       ctx.fillText(text, x + paddingX, y + paddingY);
       
       return canvas;
     }
 
+    // ΔΗΜΙΟΥΡΓΙΑ ENTITIES ΜΕ ΔΥΝΑΜΙΚΑ ΧΡΩΜΑΤΑ ΑΝΑ ΚΑΤΗΓΟΡΙΑ
     for (const key in locations) {
       const loc = locations[key];
-      const isSkiti = loc.name.includes("Σκήτη") || loc.name.includes("Μικρά") || loc.name.includes("Καυσοκαλύβια");
-      const markerColor = isSkiti ? Cesium.Color.DODGERBLUE : Cesium.Color.RED;
+      
+      // Διαχωρισμός κατηγοριών και ορισμός χρωμάτων πινέζας & ετικέτας
+      let markerColor;
+      let themeColorHex;
 
-      const goldCanvas = createGoldLabelCanvas(loc.name);
+      if (loc.name.includes("Ι.Μ.")) {
+        // 1. Μοναστήρια -> Χρυσό
+        themeColorHex = '#dfb76c';
+        markerColor = Cesium.Color.fromCssColorString('#dfb76c');
+      } else if (loc.name.includes("Σκήτη") || loc.name.includes("Μικρά") || loc.name.includes("Καυσοκαλύβια")) {
+        // 2. Σκήτες -> Πορφυρό (Crimson/Deep Red)
+        themeColorHex = '#800020';
+        markerColor = Cesium.Color.fromCssColorString('#800020');
+      } else if (loc.name.includes("Διαδρομή") || loc.name.includes("Μονοπάτι")) {
+        // 3. Διαδρομές -> Γαλάζιο (Google Maps Blue)
+        themeColorHex = '#1a73e8';
+        markerColor = Cesium.Color.fromCssColorString('#1a73e8');
+      } else {
+        // 4. Άλλα Τοπόσημα -> Χάλκινο (Bronze/Copper)
+        themeColorHex = '#cd7f32';
+        markerColor = Cesium.Color.fromCssColorString('#cd7f32');
+      }
+
+      // Παραγωγή του canvas με το κατάλληλο χρώμα
+      const labelCanvas = createCustomLabelCanvas(loc.name, themeColorHex);
 
       const entity = viewer.entities.add({
         position: Cesium.Cartesian3.fromDegrees(loc.lon, loc.lat, 0), 
@@ -674,7 +700,7 @@
           heightReference: Cesium.HeightReference.CLAMP_TO_GROUND 
         },
         billboard: {
-          image: goldCanvas,
+          image: labelCanvas,
           scale: 0.5, 
           verticalOrigin: Cesium.VerticalOrigin.BOTTOM,
           pixelOffset: new Cesium.Cartesian2(0, -15),
