@@ -19,13 +19,14 @@
       font-family: 'Segoe UI', Arial, sans-serif;
     }
 
-    /* Cesium πλήρης κάλυψη */
+    /* Cesium πλήρης κάλυψη στο υπόβαθρο */
     #cesiumContainer {
-      position: fixed;
+      position: absolute;
       top: 0;
       left: 0;
-      width: 100vw;
-      height: 100vh;
+      width: 100%;
+      height: 100%;
+      z-index: 1; /* Πρώτο επίπεδο */
     }
 
     /* Splash screen */
@@ -47,35 +48,42 @@
       pointer-events: none;
     }
 
-    /* Κεντρικός τίτλος & Στυλ για τα HTML ονόματα των Μονών */
-    #mainAppTitle, .cesium-html-label {
+    /* Κεντρικός τίτλος */
+    #mainAppTitle {
       position: absolute;
+      top: 10%;
+      left: 50%;
+      transform: translateX(-50%);
       padding: 10px 20px;
       border: 1px solid #dfb76c;
       background: rgba(20, 20, 20, 0.85);
       color: #dfb76c;
       border-radius: 8px;
       box-shadow: 0 0 12px rgba(0,0,0,0.7);
-      font-weight: bold;
-      white-space: nowrap;
-      pointer-events: none;
-    }
-
-    #mainAppTitle {
-      top: 10%;
-      left: 50%;
-      transform: translateX(-50%);
       z-index: 100000;
       font-size: 22px;
+      font-weight: bold;
+      white-space: nowrap;
+      pointer-events: auto;
+      cursor: pointer;
     }
 
-    /* Δυναμικό HTML Πλαίσιο Ονομάτων Μονών/Σκητών πάνω στον χάρτη */
+    /* Δυναμικά HTML Πλαίσια Ονομάτων (Όπως ακριβώς στο image_ffd9de.jpg) */
     .cesium-html-label {
-      z-index: 99;
-      font-size: 14px;
+      position: absolute;
+      z-index: 10; /* Πάνω από το Cesium (z-index: 1) */
+      padding: 8px 16px;
+      border: 1px solid #dfb76c;
+      background: rgba(15, 15, 15, 0.85); /* Σκούρο διαφανές εσωτερικό */
+      color: #dfb76c; /* Χρυσά γράμματα */
+      border-radius: 6px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.6);
+      font-weight: bold;
+      font-size: 13px;
+      white-space: nowrap;
+      pointer-events: none; /* Δεν εμποδίζουν τα κλικ στον χάρτη */
+      display: none; 
       transform: translate(-50%, -140%); /* Κεντράρισμα ακριβώς πάνω από την πινέζα */
-      display: none; /* Ελέγχεται δυναμικά από το JS */
-      transition: opacity 0.2s ease;
     }
 
     /* Μενού πλοήγησης slide-out */
@@ -122,7 +130,7 @@
       cursor: pointer;
     }
 
-    /* Κουμπί επαναφοράς */
+    /* Κουμπί επαναφοράς (introsmall) */
     #homeFlyBtn {
       position: fixed;
       top: 20px;
@@ -262,6 +270,8 @@
 </head>
 <body>
 
+  <div id="cesiumContainer"></div>
+
   <div id="mainAppTitle">Οδοιπορικό στο Άγιο Όρος</div>
 
   <div id="splashScreen"></div>
@@ -276,7 +286,7 @@
       </select>
     </div>
     <div class="menu-section">
-      <h3>⛪ Ιερές Σκήτες</h3>
+      <h3>Establishment ⛪ Ιερές Σκήτες</h3>
       <select id="sketesSelect">
         <option value="" disabled selected>-- Επιλέξτε Σκήτη --</option>
       </select>
@@ -303,8 +313,6 @@
       <div id="traditionLayer" class="tab-panel"></div>
     </div>
   </div>
-
-  <div id="cesiumContainer"></div>
 
   <script>
     // 1. ΑΡΧΙΚΟΠΟΙΗΣΗ CESIUM
@@ -386,15 +394,15 @@
     // Λίστα για την παρακολούθηση των HTML Overlays
     const htmlOverlays = [];
 
-    // 3. ΣΥΝΑΡΤΗΣΗ ΔΗΜΙΟΥΡΓΙΑΣ ΔΥΝΑΜΙΚΩΝ HTML LABELS (ΑΠΟΛΥΤΗ ΚΑΘΑΡΟΤΗΤΑ CSS)
+    // 3. ΣΥΝΑΡΤΗΣΗ ΔΗΜΙΟΥΡΓΙΑΣ ΔΥΝΑΜΙΚΩΝ HTML LABELS (Όπως ακριβώς το ζήτησες)
     function createHTMLOverlayLabel(key, name, category) {
       const div = document.createElement('div');
       div.className = 'cesium-html-label';
       div.innerText = name;
       document.body.appendChild(div);
 
-      // Καθορισμός ορίων ορατότητας (LOD) με βάση το υψόμετρο κάμερας
-      let maxVisibleDistance = 32000.0; // Σκήτες
+      // Καθορισμός ορίων ορατότητας (LOD) με βάση το υψόμετρο
+      let maxVisibleDistance = 32000.0; // Σκήτες & Τοπόσημα
       if (category === "monastery") {
         if (key === "megistis_lavras" || key === "vatopediou" || key === "iviron") {
           maxVisibleDistance = 500000.0; // Οι 3 μεγάλες Μονές
@@ -467,8 +475,6 @@
     // ΜΗΧΑΝΙΣΜΟΣ ΣΥΓΧΡΟΝΙΣΜΟΥ HTML LABELS ΜΕ ΤΗΝ ΚΙΝΗΣΗ ΤΗΣ 3D ΚΑΜΕΡΑΣ
     viewer.scene.postRender.addEventListener(function () {
       const cameraPosition = viewer.camera.position;
-      const cartographic = Cesium.Cartographic.fromCartesian(cameraPosition);
-      const cameraHeight = cartographic.height; // Κατακόρυφο υψόμετρο κάμερας
 
       htmlOverlays.forEach(overlay => {
         const locData = locations[overlay.key];
