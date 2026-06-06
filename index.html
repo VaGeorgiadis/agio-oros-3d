@@ -19,22 +19,22 @@
       font-family: 'Segoe UI', Arial, sans-serif;
     }
 
-    /* ΑΡΧΙΚΗ ΟΘΟΝΗ ΥΠΟΔΟΧΗΣ (SPLASH SCREEN) */
-    #splashScreen {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: #0d131a url('intro.jpg') no-repeat center center;
-      background-size: cover;
-      z-index: 99999;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      opacity: 1;
-      transition: opacity 1.5s ease-in-out;
-    }
+    /* ΑΡΧΙΚΗ ΟΘΟΝΗ ΥΠΟΔΟΧΗΣ (SPLASH SCREEN) - ΔΙΟΡΘΩΜΕΝΟ ΓΙΑ ΚΙΝΗΤΑ */
+#splashScreen {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  max-width: 100%;
+  background: #0c1219 url('intro.jpg') no-repeat center center;
+  background-size: contain; /* Εξασφαλίζει ότι η εικόνα θα χωρέσει ολόκληρη χωρίς να κοπεί */
+  z-index: 99999;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  opacity: 1;
+  transition: opacity 1.5s ease;
+}
 
     /* ΚΕΝΤΡΙΚΟΣ ΤΙΤΛΟΣ ΑΡΧΙΚΗΣ ΟΘΟΝΗΣ (Desktop) */
     #mainAppTitle {
