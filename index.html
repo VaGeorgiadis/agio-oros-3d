@@ -578,7 +578,6 @@
     Cesium.Ion.defaultAccessToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiJhYzA1Y2NhMS1hYjhlLTRjZjUtODRmZS0zNjNhYTFmOTUwYjIiLCJpZCI6NDM5NDgxLCJpc3MiOiJodHRwczovL2FwaS5jZXNpdW0uY29tIiwiYXVkIjoidW5kZWZpbmVkX2RlZmF1bHQiLCJpYXQiOjE3ODA0MTI3Nzl9.TfMTqoDjne1KkA63XMF41szdDtICT4kHVaa9QthS70Q';
 
     const viewer = new Cesium.Viewer('cesiumContainer', {
-      terrain: Cesium.Terrain.fromWorldTerrain(),
       animation: false,
       timeline: false,
       sceneModePicker: false,
@@ -589,6 +588,22 @@
       baseLayerPicker: false,           
       homeButton: false                 
     });
+
+
+    // ΣΥΝΔΕΣΗ ΚΑΙ ΦΟΡΤΩΣΗ GOOGLE PHOTOREALISTIC 3D TILES
+    async function loadGoogle3DTiles() {
+      try {
+        const googleTileset = await Cesium.createGooglePhotorealistic3dTileset({
+          key: 'AIzaSyASVKPzeVprnQgf_SsrKnlhRt3m6nI1KzM' 
+        });
+        viewer.scene.primitives.add(googleTileset);
+      } catch (error) {
+        console.error(`Αποτυχία φόρτωσης Google 3D Tiles: ${error}`);
+      }
+    }
+    
+    // Ενεργοποίηση του τρισδιάστατου χάρτη
+    loadGoogle3DTiles();
 
     window.addEventListener('DOMContentLoaded', () => {
       const splash = document.getElementById('splashScreen');
@@ -612,15 +627,15 @@
       document.getElementById('customInfoBox').classList.remove('active');
       clearSelects();
       viewer.camera.flyTo({
-        destination: Cesium.Cartesian3.fromDegrees(24.340000, 40.020000, 5000), 
-        orientation: { heading: Cesium.Math.toRadians(350.0), pitch: Cesium.Math.toRadians(-15.0), roll: 0.0 },
+        destination: Cesium.Cartesian3.fromDegrees(24.317500, 40.090000, 5000), 
+        orientation: { heading: Cesium.Math.toRadians(338.0), pitch: Cesium.Math.toRadians(-22.0), roll: 0.0 },
         duration: 3.5
       });
     }
 
     viewer.camera.setView({
-      destination: Cesium.Cartesian3.fromDegrees(24.340000, 40.020000, 5000),
-      orientation: { heading: Cesium.Math.toRadians(350.0), pitch: Cesium.Math.toRadians(-15.0), roll: 0.0 }
+      destination: Cesium.Cartesian3.fromDegrees(24.317500, 40.090000, 5000),
+      orientation: { heading: Cesium.Math.toRadians(338.0), pitch: Cesium.Math.toRadians(-35.0), roll: 0.0 }
     });
 
     const locations = {
