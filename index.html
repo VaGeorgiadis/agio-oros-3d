@@ -578,6 +578,7 @@
     Cesium.Ion.defaultAccessToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiJhYzA1Y2NhMS1hYjhlLTRjZjUtODRmZS0zNjNhYTFmOTUwYjIiLCJpZCI6NDM5NDgxLCJpc3MiOiJodHRwczovL2FwaS5jZXNpdW0uY29tIiwiYXVkIjoidW5kZWZpbmVkX2RlZmF1bHQiLCJpYXQiOjE3ODA0MTI3Nzl9.TfMTqoDjne1KkA63XMF41szdDtICT4kHVaa9QthS70Q';
 
     const viewer = new Cesium.Viewer('cesiumContainer', {
+      terrain: Cesium.Terrain.fromWorldTerrain(),
       animation: false,
       timeline: false,
       sceneModePicker: false,
@@ -588,22 +589,6 @@
       baseLayerPicker: false,           
       homeButton: false                 
     });
-
-
-    // ΣΥΝΔΕΣΗ ΚΑΙ ΦΟΡΤΩΣΗ GOOGLE PHOTOREALISTIC 3D TILES
-    async function loadGoogle3DTiles() {
-      try {
-        const googleTileset = await Cesium.createGooglePhotorealistic3dTileset({
-          key: 'AIzaSyASVKPzeVprnQgf_SsrKnlhRt3m6nI1KzM' 
-        });
-        viewer.scene.primitives.add(googleTileset);
-      } catch (error) {
-        console.error(`Αποτυχία φόρτωσης Google 3D Tiles: ${error}`);
-      }
-    }
-    
-    // Ενεργοποίηση του τρισδιάστατου χάρτη
-    loadGoogle3DTiles();
 
     window.addEventListener('DOMContentLoaded', () => {
       const splash = document.getElementById('splashScreen');
@@ -627,23 +612,24 @@
       document.getElementById('customInfoBox').classList.remove('active');
       clearSelects();
       viewer.camera.flyTo({
-        destination: Cesium.Cartesian3.fromDegrees(24.370000, 40.000000, 6000), 
+        destination: Cesium.Cartesian3.fromDegrees(24.317500, 40.090000, 5000), 
         orientation: { heading: Cesium.Math.toRadians(338.0), pitch: Cesium.Math.toRadians(-22.0), roll: 0.0 },
         duration: 3.5
       });
     }
 
     viewer.camera.setView({
-      destination: Cesium.Cartesian3.fromDegrees(24.370000, 40.000000, 6000),
+      destination: Cesium.Cartesian3.fromDegrees(24.317500, 40.090000, 5000),
       orientation: { heading: Cesium.Math.toRadians(338.0), pitch: Cesium.Math.toRadians(-35.0), roll: 0.0 }
     });
 
+    // ΔΙΟΡΘΩΜΕΝΕΣ ΣΥΝΤΕΤΑΓΜΕΝΕΣ ΧΙΛΑΝΔΑΡΙΟΥ ΚΑΙ ΔΙΟΝΥΣΙΟΥ
     const locations = {
       "megistis_lavras": { lon: 24.382442, lat: 40.170425, height: 900, pitch: -60.0, heading: 340.0, name: "Ι.Μ. Μεγίστης Λαύρας", folder: "lavra" },
       "vatopediou": { lon: 24.212023, lat: 40.314502, height: 900, pitch: -60.0, heading: 180.0, name: "Ι.Μ. Βατοπαιδίου", folder: "vatopedi" },
       "iviron": { lon: 24.285096, lat: 40.245582, height: 900, pitch: -60.0, heading: 290.0, name: "Ι.Μ. Ιβήρων", folder: "iviron" },
       "chilandariou": { lon: 24.119725, lat: 40.334444, height: 900, pitch: -60.0, heading: 45.0, name: "Ι.Μ. Χιλανδαρίου", folder: "hiliantari" },
-      "dionysiou": { lon: 24.120889, lat: 40.339883, height: 900, pitch: -60.0, heading: 45.0, name: "Ι.Μ. Διονυσίου", folder: "dion" },
+      "dionysiou": { lon: 24.175111, lat: 40.168528, height: 900, pitch: -60.0, heading: 45.0, name: "Ι.Μ. Διονυσίου", folder: "dion" },
       "koutloumousiou": { lon: 24.247580, lat: 40.253324, height: 900, pitch: -60.0, heading: 0.0, name: "Ι.Μ. Κουτλουμουσίου", folder: "koutlou" },
       "pantokratoros": { lon: 24.266387, lat: 40.283611, height: 900, pitch: -60.0, heading: 250.0, name: "Ι.Μ. Παντοκράτορος", folder: "padokratoros" },
       "xiropotamou": { lon: 24.221407, lat: 40.228528, height: 900, pitch: -60.0, heading: 60.0, name: "Ι.Μ. Ξηροποτάμου", folder: "xiropotamou" },
@@ -675,15 +661,15 @@
       "evaggelismou_filoth": { lon: 24.199945, lat: 40.252755, height: 900, pitch: -60.0, heading: 320.0, name: "Σκήτη Ευαγγελισμού (Φιλοθέου)", folder: "evagelfiloth" }
     };
 
-    // ΔΗΜΙΟΥΡΓΙΑ ΠΙΝΕΖΩΝ ΜΕ ΕΛΕΓΧΟ ΕΜΦΑΝΙΣΗΣ ΟΝΟΜΑΤΩΝ (DISTANCE DISPLAY CONDITION)
+    // ΔΗΜΙΟΥΡΓΙΑ ΠΙΝΕΖΩΝ ΜΕ ΕΛΕΓΧΟ ΕΜΦΑΝΙΣΗΣ ΟΝΟΜΑΤΩΝ
     for (const key in locations) {
       const loc = locations[key];
       const isSkiti = loc.name.includes("Σκήτη") || loc.name.includes("Μικρά") || loc.name.includes("Καυσοκαλύβια");
       
-      // Χρυσό (#dfb76c) για Μονές, Πορφυρό / Βυζαντινό Κόκκινο (#800020) για Σκήτες
+      // Χρυσό (#dfb76c) για Μονές, Πορφυρό (#800020) για Σκήτες
       const markerColor = isSkiti ? Cesium.Color.fromCssColorString('#800020') : Cesium.Color.fromCssColorString('#dfb76c');
 
-      // 3 Μεγάλες Μονές (Λαύρα, Βατοπέδι, Ιβήρων) φαίνονται πάντα. Οι άλλες τοποθεσίες αποκαλύπτονται στα 18 χιλιόμετρα
+      // Έλεγχος: Λαύρα, Βατοπέδι, Ιβήρων φαίνονται μόνιμα. Τα υπόλοιπα αποκαλύπτονται στα 18 χιλιόμετρα
       let maxVisibilityDistance = 18000.0;
       if (key === "megistis_lavras" || key === "vatopediou" || key === "iviron") {
         maxVisibilityDistance = 55000.0;
